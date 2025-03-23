@@ -1,11 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace MedicalSearchingPlatform.Data.Entities
 {
     public class User
     {
         [Key]
-        public int UserId { get; set; }
+        public string UserId { get; set; } = Guid.NewGuid().ToString();
 
         [Required, MaxLength(100)]
         public string FullName { get; set; } = string.Empty;
