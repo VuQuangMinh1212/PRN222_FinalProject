@@ -1,5 +1,6 @@
 ﻿using MedicalSearchingPlatform.Data.DataContext;
 using MedicalSearchingPlatform.Data.Entities;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,16 +17,22 @@ namespace MedicalSearchingPlatform.Data
             // Check if Users table is empty
             if (!context.Users.Any())
             {
+                var passwordHasher = new PasswordHasher<User>();
                 var users = new List<User>
                 {
-                    new User { UserId = "U1", FullName = "Admin User", Email = "admin@example.com", Role = "Admin", IsActive = true, Password = "admin123" },
-                    new User { UserId = "U2", FullName = "Staff One", Email = "staff1@example.com", Role = "Staff", IsActive = true, Password = "staff123" },
-                    new User { UserId = "U3", FullName = "Staff Two", Email = "staff2@example.com", Role = "Staff", IsActive = true, Password = "staff123" },
-                    new User { UserId = "U4", FullName = "Dr. Alice Smith", Email = "alice.smith@example.com", Role = "Doctor", IsActive = true, Password = "doctor123" },
-                    new User { UserId = "U5", FullName = "Dr. Bob Johnson", Email = "bob.johnson@example.com", Role = "Doctor", IsActive = true, Password = "doctor123" },
-                    new User { UserId = "U6", FullName = "Patient One", Email = "patient1@example.com", Role = "Patient", IsActive = true, Password = "patient123" },
-                    new User { UserId = "U7", FullName = "Patient Two", Email = "patient2@example.com", Role = "Patient", IsActive = true, Password = "patient123" }
+                    new User { Id = "U1",UserName = "admin@example.com", NormalizedUserName ="ADMIN@EXAMPLE.COM", FullName = "Admin User", Email = "admin@example.com", Role = "Admin", IsActive = true, PasswordHash = "admin123"},
+                    new User { Id = "U2",UserName = "staff1@example.com",NormalizedUserName ="STAFF1@EXAMPLE.COM",FullName = "Staff One", Email = "staff1@example.com", Role = "Staff", IsActive = true, PasswordHash = "staff123"},
+                    new User { Id = "U3",UserName = "staff2@example.com",NormalizedUserName ="STAFF2@EXAMPLE.COM",FullName = "Staff Two", Email = "staff2@example.com", Role = "Staff", IsActive = true, PasswordHash = "staff123"},
+                    new User { Id = "U4",UserName = "alice.smith@example.com",NormalizedUserName ="ALICE.SMITH@EXAMPLE.COM",FullName = "Dr. Alice Smith", Email = "alice.smith@example.com", Role = "Doctor", IsActive = true, PasswordHash = "doctor123"},
+                    new User { Id = "U5",UserName = "bob.johnson@example.com",NormalizedUserName ="BOB.JOHNSON@EXAMPLE.COM",FullName = "Dr. Bob Johnson", Email = "bob.johnson@example.com", Role = "Doctor", IsActive = true, PasswordHash = "doctor123"},
+                    new User { Id = "U6",UserName = "patient1@example.com",NormalizedUserName ="PATIENT1@EXAMPLE.COM",FullName = "Patient One", Email = "patient1@example.com", Role = "Patient", IsActive = true, PasswordHash = "patient123"},
+                    new User { Id = "U7",UserName = "patient2@example.com",NormalizedUserName ="PATIENT2@EXAMPLE.COM",FullName = "Patient Two", Email = "patient2@example.com", Role = "Patient", IsActive = true, PasswordHash ="patient123"}
                 };
+
+                foreach (var user in users)
+                {
+                    user.PasswordHash = passwordHasher.HashPassword(user, user.PasswordHash);
+                }
 
                 context.Users.AddRange(users);
                 context.SaveChanges();
