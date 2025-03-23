@@ -1,0 +1,44 @@
+﻿@page
+@model SignInModel
+@{
+    ViewData["Title"] = "Sign In";
+}
+
+<div class="modal fade show d-block" id="signInModal" tabindex="-1" aria-labelledby="signInModalLabel" aria-hidden="false">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content p-4">
+            <div class="modal-header">
+                <h5 class="modal-title">Sign in to your account</h5>
+            </div>
+            <div class="modal-body">
+                <!-- OAuth Sign In -->
+                <a asp-page="/Account/ExternalLogin" asp-route-provider="Google" class="btn btn-dark w-100 mb-2">
+                    <i class="fab fa-google"></i> Sign in with Google
+                </a>
+                <a asp-page="/Account/ExternalLogin" asp-route-provider="Apple" class="btn btn-dark w-100 mb-2">
+                    <i class="fab fa-apple"></i> Sign in with Apple
+                </a>
+
+                <div class="text-center my-3">or</div>
+
+                <!-- Email & Password Sign In Form -->
+                <form method="post">
+                    <div class="mb-3">
+                        <input type="email" class="form-control" placeholder="Email" asp-for="Input.Email" required>
+                    </div>
+                    <div class="mb-3">
+                        <input type="password" class="form-control" placeholder="Password" asp-for="Input.Password" required>
+                    </div>
+                    <div class="mb-2">
+                        <a asp-page="/Account/ForgotPassword">Forgot your password? <strong>Set a new one</strong></a>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Sign in</button>
+                </form>
+
+                <div class="text-center mt-3">
+                    <a asp-page="/Account/Register">Create new account</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

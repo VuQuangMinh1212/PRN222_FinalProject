@@ -2,6 +2,10 @@
 using MedicalSearchingPlatform.Data.Entities;
 using MedicalSearchingPlatform.Data.IRepositories;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MedicalSearchingPlatform.Data.Repositories
 {
@@ -16,7 +20,10 @@ namespace MedicalSearchingPlatform.Data.Repositories
 
         public async Task<IEnumerable<MedicalFacility>> GetAllAsync()
         {
-            return await _context.MedicalFacilities.Include(f => f.FacilityServices).ToListAsync();
+            return await _context.MedicalFacilities
+                .Include(f => f.FacilityServices)
+                .OrderByDescending(f => f.CreatedAt)
+                .ToListAsync();
         }
 
         public async Task<MedicalFacility> GetByIdAsync(string facilityId)
@@ -28,6 +35,9 @@ namespace MedicalSearchingPlatform.Data.Repositories
 
         public async Task AddAsync(MedicalFacility facility)
         {
+            facility.CreatedAt = DateTime.UtcNow;
+            facility.ImageUrl = $"/img/testimonials/departments-{new Random().Next(1, 6)}.jpg";
+
             await _context.MedicalFacilities.AddAsync(facility);
             await _context.SaveChangesAsync();
         }

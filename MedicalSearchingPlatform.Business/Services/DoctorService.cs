@@ -1,6 +1,10 @@
 ﻿using MedicalSearchingPlatform.Business.Interfaces;
 using MedicalSearchingPlatform.Data.Entities;
 using MedicalSearchingPlatform.Data.IRepositories;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MedicalSearchingPlatform.Business.Services
 {
@@ -15,7 +19,8 @@ namespace MedicalSearchingPlatform.Business.Services
 
         public async Task<IEnumerable<Doctor>> GetAllDoctorsAsync()
         {
-            return await _doctorRepository.GetAllDoctorsAsync();
+            var doctors = await _doctorRepository.GetAllDoctorsAsync();
+            return doctors.OrderByDescending(d => d.CreatedAt);
         }
 
         public async Task<Doctor> GetDoctorByIdAsync(string doctorId)
@@ -25,6 +30,9 @@ namespace MedicalSearchingPlatform.Business.Services
 
         public async Task AddDoctorAsync(Doctor doctor)
         {
+            doctor.CreatedAt = DateTime.UtcNow;
+            doctor.ImageUrl = $"/img/doctors/doctors-{new Random().Next(1, 5)}.jpg";
+
             await _doctorRepository.AddDoctorAsync(doctor);
         }
 

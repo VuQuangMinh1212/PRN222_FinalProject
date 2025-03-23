@@ -2,6 +2,10 @@
 using MedicalSearchingPlatform.Data.Entities;
 using MedicalSearchingPlatform.Data.IRepositories;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MedicalSearchingPlatform.Data.Repositories
 {
@@ -16,20 +20,26 @@ namespace MedicalSearchingPlatform.Data.Repositories
 
         public async Task<IEnumerable<Doctor>> GetAllDoctorsAsync()
         {
-            return await _context.Doctors.Include(d => d.User)
-                                         .Include(d => d.Facility)
-                                         .ToListAsync();
+            return await _context.Doctors
+                .Include(d => d.User)
+                .Include(d => d.Facility)
+                .OrderByDescending(d => d.CreatedAt) // Sort by latest doctors
+                .ToListAsync();
         }
 
         public async Task<Doctor> GetDoctorByIdAsync(string doctorId)
         {
-            return await _context.Doctors.Include(d => d.User)
-                                         .Include(d => d.Facility)
-                                         .FirstOrDefaultAsync(d => d.DoctorId == doctorId);
+            return await _context.Doctors
+                .Include(d => d.User)
+                .Include(d => d.Facility)
+                .FirstOrDefaultAsync(d => d.DoctorId == doctorId);
         }
 
         public async Task AddDoctorAsync(Doctor doctor)
         {
+            doctor.CreatedAt = DateTime.UtcNow;
+            doctor.ImageUrl = $"/img/doctors/doctors-{new Random().Next(1, 5)}.jpg";
+
             await _context.Doctors.AddAsync(doctor);
             await _context.SaveChangesAsync();
         }

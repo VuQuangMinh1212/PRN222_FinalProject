@@ -6,11 +6,20 @@ using MedicalSearchingPlatform.Business.Services;
 using Microsoft.EntityFrameworkCore;
 using MedicalSearchingPlatform.Data.IRepositories;
 using MedicalSearchingPlatform.Services;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+
+//builder.Services.AddAuthentication()
+//    .AddGoogle(options =>
+//    {
+//        options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+//        options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+//    });
+
 
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -56,6 +65,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseAuthentication();
 app.UseRouting();
 app.UseAuthorization();
 app.MapRazorPages();
