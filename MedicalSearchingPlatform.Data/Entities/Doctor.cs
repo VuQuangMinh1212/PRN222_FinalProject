@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MedicalSearchingPlatform.Data.Entities
@@ -20,5 +21,11 @@ namespace MedicalSearchingPlatform.Data.Entities
         public int ExperienceYears { get; set; }
         public string Qualifications { get; set; }
         public string Experience { get; set; }
+
+        [MaxLength(255)]
+        public string ImageUrl { get; set; } = "/img/doctors/doctors-1.jpg";
+
+        [Required]
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
 }
