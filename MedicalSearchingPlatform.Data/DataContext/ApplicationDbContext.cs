@@ -20,6 +20,7 @@ namespace MedicalSearchingPlatform.Data.DataContext
         public DbSet<Review> Reviews { get; set; }
         public DbSet<Payment> Payments { get; set; }
 
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -76,10 +77,9 @@ namespace MedicalSearchingPlatform.Data.DataContext
                 .HasKey(mfs => new { mfs.FacilityId, mfs.ServiceId });
 
             modelBuilder.Entity<Doctor>()
-                .HasKey(d => d.DoctorId);
+                 .HasKey(d => d.DoctorId);
             modelBuilder.Entity<Doctor>()
                 .Property(d => d.DoctorId)
-                .IsRequired()
                 .HasMaxLength(50);
             modelBuilder.Entity<Doctor>()
                 .HasOne(d => d.User)
@@ -101,6 +101,31 @@ namespace MedicalSearchingPlatform.Data.DataContext
             modelBuilder.Entity<Doctor>()
                 .Property(d => d.Experience)
                 .HasMaxLength(500);
+            modelBuilder.Entity<Doctor>()
+                .Property(d => d.Fee)
+                .HasColumnType("decimal(10,2)")
+                .HasDefaultValue(0m); 
+            modelBuilder.Entity<Doctor>()
+                .HasMany(d => d.Reviews)
+                .WithOne()
+                .HasForeignKey(r => r.DoctorId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Review>()
+                .HasKey(r => r.ReviewId);
+            modelBuilder.Entity<Review>()
+                .Property(r => r.DoctorId)
+                .IsRequired();
+            modelBuilder.Entity<Review>()
+                .Property(r => r.Rating)
+                .IsRequired()
+                .HasDefaultValue(5);
+            modelBuilder.Entity<Review>()
+                .Property(r => r.Comment)
+                .HasMaxLength(500);
+            modelBuilder.Entity<Review>()
+                .Property(r => r.CreatedDate)
+                .IsRequired();
 
             modelBuilder.Entity<Patient>()
                 .HasKey(p => p.PatientId);

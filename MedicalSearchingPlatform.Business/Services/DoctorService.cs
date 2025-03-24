@@ -32,7 +32,6 @@ namespace MedicalSearchingPlatform.Business.Services
         {
             doctor.CreatedAt = DateTime.UtcNow;
             doctor.ImageUrl = $"/img/doctors/doctors-{new Random().Next(1, 5)}.jpg";
-
             await _doctorRepository.AddDoctorAsync(doctor);
         }
 
@@ -44,6 +43,19 @@ namespace MedicalSearchingPlatform.Business.Services
         public async Task DeleteDoctorAsync(string doctorId)
         {
             await _doctorRepository.DeleteDoctorAsync(doctorId);
+        }
+
+        public async Task<IEnumerable<Doctor>> SearchDoctorsAsync(
+            string name = null,
+            string specialty = null,
+            string facility = null,
+            string expertise = null,
+            double? minRating = null,
+            decimal? maxFee = null)
+        {
+            var doctors = await _doctorRepository.SearchDoctorsAsync(
+                name, specialty, facility, expertise, minRating, maxFee);
+            return doctors.OrderByDescending(d => d.CreatedAt);
         }
     }
 }

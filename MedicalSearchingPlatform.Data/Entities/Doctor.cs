@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Collections.Generic;
 
 namespace MedicalSearchingPlatform.Data.Entities
 {
@@ -27,5 +28,10 @@ namespace MedicalSearchingPlatform.Data.Entities
 
         [Required]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+        // New fields
+        [Column(TypeName = "decimal(10,2)")]
+        public decimal Fee { get; set; }
+        public ICollection<Review> Reviews { get; set; }
     }
 }
