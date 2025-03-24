@@ -2,14 +2,20 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
+using System.Security.Claims;
+using MedicalSearchingPlatform.Business.Interfaces;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 
 public class SignInModel : PageModel
 {
     private readonly SignInManager<IdentityUser> _signInManager;
+    private readonly IUserService _userService;
 
-    public SignInModel(SignInManager<IdentityUser> signInManager)
+    public SignInModel(SignInManager<IdentityUser> signInManager, IUserService userService)
     {
         _signInManager = signInManager;
+        _userService = userService;
     }
 
     [BindProperty]
@@ -19,6 +25,17 @@ public class SignInModel : PageModel
     {
         public string Email { get; set; }
         public string Password { get; set; }
+    }
+
+    public void OnGet()
+    {
+
+    }
+
+    public async Task<IActionResult> OnPostLogoutAsync()
+    {
+        await _signInManager.SignOutAsync();
+        return RedirectToPage("/Index");
     }
 
     public async Task<IActionResult> OnPostAsync()

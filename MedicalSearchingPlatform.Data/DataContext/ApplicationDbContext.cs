@@ -1,9 +1,11 @@
 ﻿using MedicalSearchingPlatform.Data.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace MedicalSearchingPlatform.Data.DataContext
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
@@ -21,30 +23,16 @@ namespace MedicalSearchingPlatform.Data.DataContext
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>()
-                .HasKey(u => u.UserId);
-            modelBuilder.Entity<User>()
-                .Property(u => u.UserId)
-                .HasMaxLength(50);
-            modelBuilder.Entity<User>()
-                .Property(u => u.FullName)
-                .IsRequired()
-                .HasMaxLength(100);
-            modelBuilder.Entity<User>()
-                .Property(u => u.Email)
-                .IsRequired()
-                .HasMaxLength(100);
-            modelBuilder.Entity<User>()
-                .Property(u => u.Phone)
-                .HasMaxLength(15);
-            modelBuilder.Entity<User>()
-                .Property(u => u.Role)
-                .IsRequired()
-                .HasMaxLength(10);
-            modelBuilder.Entity<User>()
-                .Property(u => u.Password)
-                .IsRequired()
-                .HasMaxLength(255);
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<IdentityUserLogin<string>>()
+                .HasKey(l => new { l.LoginProvider, l.ProviderKey });
+
+            // Fix Identity Key issue
+            modelBuilder.Entity<IdentityUserLogin<string>>().HasKey(l => new { l.LoginProvider, l.ProviderKey });
+            modelBuilder.Entity<IdentityUserRole<string>>().HasKey(r => new { r.UserId, r.RoleId });
+            modelBuilder.Entity<IdentityUserToken<string>>().HasKey(t => new { t.UserId, t.LoginProvider, t.Name });
+
             modelBuilder.Entity<User>()
                 .Property(u => u.IsActive)
                 .HasDefaultValue(true);

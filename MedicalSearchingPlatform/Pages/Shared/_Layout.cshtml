@@ -44,6 +44,9 @@
             @if (User.Identity.IsAuthenticated)
             {
                 <a href="/Account/Detail" class="btn btn-outline-light">Profile</a>
+                <form method="post" asp-page="/Account/Signin" asp-page-handler="Logout">
+                    <button class="btn btn-danger text-white" type="submit">Logout</button>
+                </form>
             }
             else
             {
