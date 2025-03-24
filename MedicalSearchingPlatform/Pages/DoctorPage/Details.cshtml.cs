@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -12,9 +10,9 @@ namespace MedicalSearchingPlatform.Pages.DoctorPage
 {
     public class DetailsModel : PageModel
     {
-        private readonly MedicalSearchingPlatform.Data.DataContext.ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public DetailsModel(MedicalSearchingPlatform.Data.DataContext.ApplicationDbContext context)
+        public DetailsModel(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -23,20 +21,21 @@ namespace MedicalSearchingPlatform.Pages.DoctorPage
 
         public async Task<IActionResult> OnGetAsync(string id)
         {
-            if (id == null)
+            if (string.IsNullOrEmpty(id))
             {
                 return NotFound();
             }
 
-            var doctor = await _context.Doctors.FirstOrDefaultAsync(m => m.DoctorId == id);
-            if (doctor == null)
+            Doctor = await _context.Doctors
+                .Include(d => d.User)   
+                .Include(d => d.Facility)   
+                .FirstOrDefaultAsync(m => m.DoctorId == id);
+
+            if (Doctor == null)
             {
                 return NotFound();
             }
-            else
-            {
-                Doctor = doctor;
-            }
+
             return Page();
         }
     }

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -12,9 +10,9 @@ namespace MedicalSearchingPlatform.Pages.DoctorPage
 {
     public class DeleteModel : PageModel
     {
-        private readonly MedicalSearchingPlatform.Data.DataContext.ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public DeleteModel(MedicalSearchingPlatform.Data.DataContext.ApplicationDbContext context)
+        public DeleteModel(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -24,27 +22,27 @@ namespace MedicalSearchingPlatform.Pages.DoctorPage
 
         public async Task<IActionResult> OnGetAsync(string id)
         {
-            if (id == null)
+            if (string.IsNullOrEmpty(id))
             {
                 return NotFound();
             }
 
-            var doctor = await _context.Doctors.FirstOrDefaultAsync(m => m.DoctorId == id);
+            Doctor = await _context.Doctors
+                .Include(d => d.User)     
+                .Include(d => d.Facility)   
+                .FirstOrDefaultAsync(m => m.DoctorId == id);
 
-            if (doctor == null)
+            if (Doctor == null)
             {
                 return NotFound();
             }
-            else
-            {
-                Doctor = doctor;
-            }
+
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync(string id)
         {
-            if (id == null)
+            if (string.IsNullOrEmpty(id))
             {
                 return NotFound();
             }
@@ -52,8 +50,7 @@ namespace MedicalSearchingPlatform.Pages.DoctorPage
             var doctor = await _context.Doctors.FindAsync(id);
             if (doctor != null)
             {
-                Doctor = doctor;
-                _context.Doctors.Remove(Doctor);
+                _context.Doctors.Remove(doctor);
                 await _context.SaveChangesAsync();
             }
 
