@@ -1,12 +1,13 @@
-﻿using MedicalSearchingPlatform.Data.DataContext;
-using MedicalSearchingPlatform.Data;
-using MedicalSearchingPlatform.Data.Repositories;
-using MedicalSearchingPlatform.Business.Interfaces;
+﻿using MedicalSearchingPlatform.Business.Interfaces;
 using MedicalSearchingPlatform.Business.Services;
-using Microsoft.EntityFrameworkCore;
+using MedicalSearchingPlatform.Data;
+using MedicalSearchingPlatform.Data.DataContext;
+using MedicalSearchingPlatform.Data.Entities;
 using MedicalSearchingPlatform.Data.IRepositories;
+using MedicalSearchingPlatform.Data.Repositories;
 using MedicalSearchingPlatform.Services;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,12 +26,9 @@ builder.Services.AddRazorPages();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+builder.Services.AddIdentity<User, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
-
-
-builder.Services.AddScoped<SignInManager<IdentityUser>>();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IMedicalFacilityRepository, MedicalFacilityRepository>();
@@ -43,7 +41,7 @@ builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
 builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
 
 builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IMedicalFacilityService, MedicalFacilityService>();
+builder.Services.AddScoped<IMedicalFacilityService, MedicalSearchingPlatform.Business.Services.MedicalFacilityService>();
 builder.Services.AddScoped<IMedicalServiceService, MedicalServiceService>();
 builder.Services.AddScoped<IDoctorService, DoctorService>();
 builder.Services.AddScoped<IPatientService, PatientService>();
