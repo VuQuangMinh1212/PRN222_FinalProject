@@ -1,0 +1,67 @@
+﻿@page
+@model MedicalSearchingPlatform.Pages.DoctorPage.IndexModel
+@{
+    ViewData["Title"] = "Doctors";
+}
+
+<h1>Find a Doctor</h1>
+
+<form method="get" class="mb-4">
+    <div class="row">
+        <div class="col-md-3">
+            <input type="text" class="form-control" asp-for="SearchName" placeholder="Doctor Name" />
+        </div>
+        <div class="col-md-3">
+            <input type="text" class="form-control" asp-for="SearchSpecialty" placeholder="Specialty" />
+        </div>
+        <div class="col-md-3">
+            <input type="text" class="form-control" asp-for="SearchFacility" placeholder="Facility" />
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-md-3">
+            <input type="text" class="form-control" asp-for="SearchExpertise" placeholder="Expertise" />
+        </div>
+        <div class="col-md-3">
+            <input type="number" class="form-control" asp-for="SearchMinRating" placeholder="Min Rating" step="0.1" />
+        </div>
+        <div class="col-md-3">
+            <input type="number" class="form-control" asp-for="SearchMaxFee" placeholder="Max Fee" step="0.01" />
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary mt-2">Search</button>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Facility</th>
+            <th>Specialization</th>
+            <th>Experience (Years)</th>
+            <th>Qualifications</th>
+            <th>Experience</th>
+            <th>Fee</th>
+            <th>Rating</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var doctor in Model.Doctors)
+        {
+            <tr>
+                <td>@doctor.User.FullName</td>
+                <td>@doctor.Facility.FacilityName</td>
+                <td>@doctor.Specialization</td>
+                <td>@doctor.ExperienceYears</td>
+                <td>@doctor.Qualifications</td>
+                <td>@doctor.Experience</td>
+                <td>@doctor.Fee.ToString("C")</td>
+                <td>@(doctor.Reviews.Any() ? doctor.Reviews.Average(r => r.Rating).ToString("F1") : "N/A")</td>
+                <td>
+                    <a asp-page="./Details" asp-route-id="@doctor.DoctorId">Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
