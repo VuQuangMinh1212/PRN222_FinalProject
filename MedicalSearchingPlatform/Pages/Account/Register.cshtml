@@ -1,41 +1,49 @@
 ﻿@page
 @model MedicalSearchingPlatform.Pages.Account.RegisterModel
 @{
+    ViewData["Title"] = "Register";
 }
-<div class="modal fade show d-block" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="false">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content p-4">
-            <div class="modal-header">
-                <h5 class="modal-title">Create your account</h5>
-            </div>
-            <div class="modal-body">
-                <!-- Email & Password Register Form -->
-                <form method="post" asp-page="/Account/Register">
-                    <div class="text-danger" asp-validation-summary="All"></div>
-                    <div class="mb-1">
-                        <input type="text" class="form-control" placeholder="Full Name" asp-for="Input.FullName">
-                        <span class="ms-1 text-danger" asp-validation-for="Input.FullName"></span>
-                    </div>
-                    <div class="mb-1">
-                        <input type="text" class="form-control" placeholder="Email" asp-for="Input.Email">
-                        <span class="ms-1 text-danger" asp-validation-for="Input.Email"></span>
-                    </div>
-                    <div class="mb-1">
-                        <input type="password" class="form-control" placeholder="Password" asp-for="Input.Password">
-                        <span class="ms-1 text-danger" asp-validation-for="Input.Password"></span>
-                    </div>
-                    <div class="mb-1">
-                        <input type="password" class="form-control" placeholder="Confirm Password" asp-for="Input.ConfirmPassword">
-                        <span class="ms-1 text-danger" asp-validation-for="Input.ConfirmPassword"></span>
-                    </div>
-                    <button type="submit" class="btn btn-primary w-100">Sign up</button>
-                </form>
 
-                <div class="text-center mt-3">
-                    Already have an account? <a asp-page="/Account/SignIn">Sign in</a>
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="card shadow-lg p-4" style="max-width: 500px; width: 100%;">
+        <div class="card-body">
+            <h2 class="text-center mb-3">Create Your Account</h2>
+            <p class="text-center text-muted">Fill in the details to get started</p>
+
+            <form method="post" asp-page="/Account/Register">
+                <div class="text-danger" asp-validation-summary="All"></div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Full Name</label>
+                    <input type="text" class="form-control" placeholder="Enter your full name" asp-for="Input.FullName">
+                    <span class="text-danger small" asp-validation-for="Input.FullName"></span>
                 </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Email</label>
+                    <input type="email" class="form-control" placeholder="Enter your email" asp-for="Input.Email">
+                    <span class="text-danger small" asp-validation-for="Input.Email"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Password</label>
+                    <input type="password" class="form-control" placeholder="Create a password" asp-for="Input.Password">
+                    <span class="text-danger small" asp-validation-for="Input.Password"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Confirm Password</label>
+                    <input type="password" class="form-control" placeholder="Confirm your password" asp-for="Input.ConfirmPassword">
+                    <span class="text-danger small" asp-validation-for="Input.ConfirmPassword"></span>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100 mt-2">Sign Up</button>
+            </form>
+
+            <div class="text-center mt-3">
+                <span class="text-muted">Already have an account?</span>
+                <a asp-page="/Account/SignIn" class="fw-bold">Sign in</a>
             </div>
         </div>
     </div>
 </div>
-

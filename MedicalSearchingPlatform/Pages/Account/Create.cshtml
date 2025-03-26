@@ -1,0 +1,60 @@
+﻿@page
+@model MedicalSearchingPlatform.Pages.Account.CreateModel
+@{
+    ViewData["Title"] = "Create Account";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg p-4">
+                <h2 class="text-center mb-4">Create New Account</h2>
+
+                <form method="post">
+                    <div class="text-danger" asp-validation-summary="All"></div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Full Name</label>
+                        <input type="text" class="form-control" asp-for="Input.FullName" placeholder="Enter full name" required>
+                        <span class="text-danger small" asp-validation-for="Input.FullName"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Email</label>
+                        <input type="email" class="form-control" asp-for="Input.Email" placeholder="Enter email" required>
+                        <span class="text-danger small" asp-validation-for="Input.Email"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Password</label>
+                        <input type="password" class="form-control" asp-for="Input.Password" placeholder="Enter password" required>
+                        <span class="text-danger small" asp-validation-for="Input.Password"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Confirm Password</label>
+                        <input type="password" class="form-control" asp-for="Input.ConfirmPassword" placeholder="Confirm password" required>
+                        <span class="text-danger small" asp-validation-for="Input.ConfirmPassword"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Role</label>
+                        <select class="form-select" asp-for="Input.Role">
+                            <option value="Admin">Admin</option>
+                            <option value="Doctor">Doctor</option>
+                            <option value="Staff">Staff</option>
+                            <option value="Patient">Patient</option>
+                        </select>
+                        <span class="text-danger small" asp-validation-for="Input.Role"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100 mt-2">Create Account</button>
+                </form>
+
+                <div class="text-center mt-3">
+                    <a asp-page="/Account/Index" class="btn btn-outline-secondary">Back to List</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -27,7 +27,7 @@ namespace MedicalSearchingPlatform.Data.Entities
         public ICollection<MedicalFacilityService> FacilityServices { get; set; } = new List<MedicalFacilityService>();
 
         [MaxLength(255)]
-        public string ImageUrl { get; set; } = "/img/testimonials/departments-1.jpg";
+        public string ImageUrl { get; set; } = "/img/testimonials/departments-2.jpg";
 
         [Required]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
