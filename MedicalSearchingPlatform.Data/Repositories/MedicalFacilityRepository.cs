@@ -57,5 +57,41 @@ namespace MedicalSearchingPlatform.Data.Repositories
                 await _context.SaveChangesAsync();
             }
         }
+
+        public async Task<IEnumerable<MedicalFacility>> SearchFacilityAsync(
+      string name = null,
+      string address = null,
+      string information = null,
+      string phoneNumber = null)
+        {
+            var query = _context.MedicalFacilities.AsQueryable();
+
+            // Search by name
+            if (!string.IsNullOrEmpty(name))
+            {
+                query = query.Where(d => d.FacilityName.ToLower().Contains(name.ToLower()));
+            }
+
+            // Search by address
+            if (!string.IsNullOrEmpty(address))
+            {
+                query = query.Where(d => d.Address.ToLower().Contains(address.ToLower()));
+            }
+
+            // Search by facility information
+            if (!string.IsNullOrEmpty(information))
+            {
+                query = query.Where(d => d.Infor.ToLower().Contains(information.ToLower()));
+            }
+
+            // Search by phone number
+            if (!string.IsNullOrEmpty(phoneNumber))
+            {
+                query = query.Where(d => d.PhoneNumber.ToLower().Contains(phoneNumber.ToLower()));
+            }
+
+            return await query.OrderByDescending(d => d.CreatedAt).ToListAsync();
+        }
+
     }
 }
