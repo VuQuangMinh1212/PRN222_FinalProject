@@ -33,5 +33,7 @@ namespace MedicalSearchingPlatform.Data.Entities
         [Column(TypeName = "decimal(10,2)")]
         public decimal Fee { get; set; }
         public ICollection<Review> Reviews { get; set; }
+
+        public ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
     }
 }

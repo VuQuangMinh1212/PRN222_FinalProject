@@ -21,10 +21,13 @@ builder.Services.AddRazorPages();
 //        options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
 //    });
 
-
+var configuration = new ConfigurationBuilder()
+    .SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), "../MedicalSearchingPlatform.Data")) // Trỏ đến thư mục Data
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .Build();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
 
 builder.Services.AddIdentity<User, IdentityRole>()

@@ -111,6 +111,16 @@ namespace MedicalSearchingPlatform.Data.Repositories
             }
 
             return await query.OrderByDescending(d => d.CreatedAt).ToListAsync();
-        } 
+        }
+
+        public async Task<IEnumerable<Doctor>> GetMostBookedDoctorsAsync(int top = 5)
+        {
+            return await _context.Doctors
+                .Include(d => d.User)
+                .Include(d => d.Appointments) // Lấy số lượng đặt lịch
+                .OrderByDescending(d => d.Appointments.Count)
+                .Take(top)
+                .ToListAsync();
+        }
     }
 }

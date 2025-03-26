@@ -115,6 +115,14 @@ namespace MedicalSearchingPlatform.Data.DataContext
                 .HasForeignKey(a => a.DoctorId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            // Appointment Configuration
+            modelBuilder.Entity<Appointment>()
+                .HasOne(a => a.Doctor)
+                .WithMany(d => d.Appointments)
+                .HasForeignKey(a => a.DoctorId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+
             // Article Configuration
             modelBuilder.Entity<Article>()
                 .HasKey(a => a.ArticleId);

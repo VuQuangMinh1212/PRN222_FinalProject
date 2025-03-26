@@ -57,5 +57,10 @@ namespace MedicalSearchingPlatform.Business.Services
                 name, specialty, facility, expertise, minRating, maxFee);
             return doctors.OrderByDescending(d => d.CreatedAt);
         }
+
+        public async Task<IEnumerable<Doctor>> GetMostBookedDoctorsAsync(int top = 5)
+        {
+            return await _doctorRepository.GetMostBookedDoctorsAsync(top);
+        }
     }
 }
