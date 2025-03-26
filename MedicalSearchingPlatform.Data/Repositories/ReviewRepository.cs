@@ -1,9 +1,6 @@
 ﻿using MedicalSearchingPlatform.Data.DataContext;
 using MedicalSearchingPlatform.Data.Entities;
-using MedicalSearchingPlatform.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace MedicalSearchingPlatform.Data.Repositories
 {

@@ -16,5 +16,5 @@ namespace MedicalSearchingPlatform.Data.IRepositories
             string expertise,
             double? minRating,
             decimal? maxFee);
-        }
+    }
 }

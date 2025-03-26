@@ -2,10 +2,6 @@
 using MedicalSearchingPlatform.Data.Entities;
 using MedicalSearchingPlatform.Data.IRepositories;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace MedicalSearchingPlatform.Data.Repositories
 {
@@ -111,6 +107,6 @@ namespace MedicalSearchingPlatform.Data.Repositories
             }
 
             return await query.OrderByDescending(d => d.CreatedAt).ToListAsync();
-        } 
+        }
     }
 }

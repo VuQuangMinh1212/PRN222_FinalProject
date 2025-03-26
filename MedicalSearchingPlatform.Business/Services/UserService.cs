@@ -1,7 +1,6 @@
 ﻿using MedicalSearchingPlatform.Business.Interfaces;
 using MedicalSearchingPlatform.Data.Entities;
 using MedicalSearchingPlatform.Data.Repositories;
-using System.Collections.Generic;
 
 namespace MedicalSearchingPlatform.Business.Services
 {

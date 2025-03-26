@@ -2,8 +2,6 @@
 using MedicalSearchingPlatform.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace MedicalSearchingPlatform.Pages.DoctorPage
 {
