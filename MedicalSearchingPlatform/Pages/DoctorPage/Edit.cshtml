@@ -4,6 +4,21 @@
 @{
     ViewData["Title"] = "Edit";
 }
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+@{
+    var userName = HttpContextAccessor.HttpContext?.Session.GetString("UserName") ?? "Guest";
+    var userRole = HttpContextAccessor.HttpContext?.Session.GetString("UserRole") ?? "No Role";
+}
+
+@if (userRole == "Admin")
+{
+    <p>You have permission to edit doctor details.</p>
+}
+else
+{
+    <p class="text-danger">You do not have permission to edit this page.</p>
+}
 
 <h1>Edit</h1>
 

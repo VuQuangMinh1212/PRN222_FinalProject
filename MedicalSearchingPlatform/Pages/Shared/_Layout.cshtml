@@ -70,13 +70,13 @@
                                 <li class="nav-item"><a class="nav-link text-white" asp-page="/MedicalServicePage/Index">Services</a></li>
                                 <li class="nav-item"><a class="nav-link text-white" asp-page="/Facilities">Facilities</a></li>
                                 <li class="nav-item"><a class="nav-link text-white" asp-page="/DoctorPage/Index">Doctors</a></li>
-                                <li class="nav-item"><a class="nav-link text-white" asp-page="/Appointments">Appointments</a></li>
+                                <li class="nav-item"><a class="nav-link text-white" asp-page="/AppointmentPage">Appointments</a></li>
                                 <li class="nav-item"><a class="nav-link text-white" asp-page="/Articles">Articles</a></li>
                                 <li class="nav-item"><a class="nav-link text-white" asp-page="/Contact">Contact</a></li>
                             }
                             else if (roles.Contains("Doctor"))
                             {
-                                <li class="nav-item"><a class="nav-link text-white" asp-page="/Appointments">Appointments</a></li>
+                                <li class="nav-item"><a class="nav-link text-white" asp-page="/AppointmentPage">Appointments</a></li>
                                 <li class="nav-item"><a class="nav-link text-white" asp-page="/Contact">Contact</a></li>
                                 <li class="nav-item"><a class="nav-link text-white" asp-page="/Privacy">Privacy</a></li>
                             }
@@ -88,6 +88,7 @@
                             <li class="nav-item"><a class="nav-link text-white" asp-page="/MedicalFacilityPage/Index">Medical Facility</a></li>
                             <li class="nav-item"><a class="nav-link text-white" asp-page="/Contact">Contact</a></li>
                             <li class="nav-item"><a class="nav-link text-white" asp-page="/Privacy">Privacy</a></li>
+                            <li class="nav-item"><a class="nav-link text-white" asp-page="/AppointmentPage/Index">Appointments</a></li>
                         }
                     </ul>
                 </div>
@@ -113,7 +114,7 @@
 
 
             <!-- Make an Appointment Button -->
-            <a href="/Appointment/Create" class="btn btn-warning ms-3 text-dark fw-bold">Make an Appointment</a>
+            <a href="/AppointmentPage/Create" class="btn btn-warning ms-3 text-dark fw-bold">Make an Appointment</a>
         </div>
     </header>
 
