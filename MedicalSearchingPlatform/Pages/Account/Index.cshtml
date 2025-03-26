@@ -41,18 +41,54 @@
                         </span>
                     </td>
                     <td>
-                        <a asp-page="Edit" asp-route-id="@user.Id" class="btn btn-warning btn-sm">Edit</a>
-                        <form method="post" asp-page-handler="ToggleStatus" asp-route-id="@user.Id" class="d-inline">
-                            <button type="submit" class="btn @(user.IsActive ? "btn-danger" : "btn-success") btn-sm">
-                                @(user.IsActive ? "Deactivate" : "Activate")
-                            </button>
-                        </form>
-                        <form method="post" asp-page-handler="Delete" asp-route-id="@user.Id" class="d-inline" onsubmit="return confirm('Are you sure?');">
-                            <button type="submit" class="btn btn-dark btn-sm">Delete</button>
-                        </form>
+                        <a asp-page="Detail" asp-route-id="@user.Id" class="btn btn-info btn-sm">Detail</a>
+                        <button type="button" class="btn @(user.IsActive ? "btn-danger" : "btn-success") btn-sm"
+                                data-bs-toggle="modal" data-bs-target="#confirmDeactivateModal"
+                                data-userid="@user.Id" data-username="@user.FullName">
+                            @(user.IsActive ? "Deactivate" : "Activate")
+                        </button>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
 </div>
+
+<!-- Deactivate Confirmation Modal -->
+<div class="modal fade" id="confirmDeactivateModal" tabindex="-1" aria-labelledby="confirmDeactivateLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content p-4">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmDeactivateLabel">Confirm Action</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to <span id="actionText">deactivate</span> the user <strong id="usernamePlaceholder"></strong>?</p>
+            </div>
+            <div class="modal-footer">
+                <form method="post" asp-page-handler="ToggleStatus">
+                    <input type="hidden" id="userIdInput" name="id" />
+                    <button type="submit" class="btn btn-danger">Confirm</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var confirmModal = document.getElementById("confirmDeactivateModal");
+
+        confirmModal.addEventListener("show.bs.modal", function (event) {
+            var button = event.relatedTarget;
+            var userId = button.getAttribute("data-userid");
+            var username = button.getAttribute("data-username");
+            var actionText = button.innerText.trim();
+
+            document.getElementById("userIdInput").value = userId;
+            document.getElementById("usernamePlaceholder").textContent = username;
+            document.getElementById("actionText").textContent = actionText.toLowerCase();
+        });
+    });
+</script>

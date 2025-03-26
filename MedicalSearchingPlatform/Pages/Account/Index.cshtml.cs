@@ -18,7 +18,7 @@ namespace MedicalSearchingPlatform.Pages.Account
         public IndexModel(UserManager<User> userManager, ApplicationDbContext dbContext)
         {
             _userManager = userManager;
-            _dbContext = dbContext;  // ✅ Inject Database Context
+            _dbContext = dbContext;
         }
 
         public List<UserViewModel> Users { get; set; }
