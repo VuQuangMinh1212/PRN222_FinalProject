@@ -96,6 +96,8 @@
 
             @if (User.Identity.IsAuthenticated)
             {
+                var user = await _userManager.GetUserAsync(User);
+                bool isInactive = user != null && !user.IsActive;
                 <a href="/Account/Detail" class="btn btn-outline-light me-3">Profile</a>
                 <form method="post" asp-page="/Account/Signin" asp-page-handler="Logout" class="d-inline">
                     <button class="btn btn-danger text-white" type="submit">Logout</button>
@@ -126,6 +128,13 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                    @if (TempData["DeactivatedMessage"] != null)
+                    {
+                        <div id="inactiveAlert" class="alert alert-danger text-center">
+                            @TempData["DeactivatedMessage"]
+                        </div>
+                    }
+
                     <!-- OAuth Sign In -->
                     <a asp-page="/Account/ExternalLogin" asp-route-provider="Google" class="btn btn-dark w-100 mb-2">
                         <i class="fab fa-google"></i> Sign in with Google
