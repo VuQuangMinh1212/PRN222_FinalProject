@@ -1,10 +1,8 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using MedicalSearchingPlatform.Data.DataContext;
+using MedicalSearchingPlatform.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using MedicalSearchingPlatform.Data.DataContext;
-using MedicalSearchingPlatform.Data.Entities;
 
 namespace MedicalSearchingPlatform.Pages.DoctorPage
 {
@@ -27,8 +25,8 @@ namespace MedicalSearchingPlatform.Pages.DoctorPage
             }
 
             Doctor = await _context.Doctors
-                .Include(d => d.User)   
-                .Include(d => d.Facility)   
+                .Include(d => d.User)
+                .Include(d => d.Facility)
                 .FirstOrDefaultAsync(m => m.DoctorId == id);
 
             if (Doctor == null)

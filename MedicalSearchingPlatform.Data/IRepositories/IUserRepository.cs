@@ -1,5 +1,4 @@
 ﻿using MedicalSearchingPlatform.Data.Entities;
-using System.Collections.Generic;
 
 namespace MedicalSearchingPlatform.Data.Repositories
 {

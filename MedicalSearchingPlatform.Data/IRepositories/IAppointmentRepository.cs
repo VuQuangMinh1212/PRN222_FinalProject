@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using MedicalSearchingPlatform.Data.Entities;
+﻿using MedicalSearchingPlatform.Data.Entities;
 
 namespace MedicalSearchingPlatform.Data.IRepositories
 {

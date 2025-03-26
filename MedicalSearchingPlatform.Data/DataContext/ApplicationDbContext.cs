@@ -19,6 +19,8 @@ namespace MedicalSearchingPlatform.Data.DataContext
         public DbSet<Article> Articles { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<Payment> Payments { get; set; }
+        public DbSet<ArticleLike> ArticleLikes { get; set; }
+        public DbSet<ArticleCategory> ArticleCategories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -115,12 +117,27 @@ namespace MedicalSearchingPlatform.Data.DataContext
                 .HasForeignKey(a => a.DoctorId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            // Appointment Configuration
+            modelBuilder.Entity<Appointment>()
+                .HasOne(a => a.Doctor)
+                .WithMany(d => d.Appointments)
+                .HasForeignKey(a => a.DoctorId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+
             // Article Configuration
             modelBuilder.Entity<Article>()
                 .HasKey(a => a.ArticleId);
+
             modelBuilder.Entity<Article>()
                 .Property(a => a.Status)
                 .HasDefaultValue("Draft");
+
+            modelBuilder.Entity<Article>()
+                .HasOne(a => a.Category)
+                .WithMany()
+                .HasForeignKey(a => a.ArticleCategoryId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             // Payment Configuration
             modelBuilder.Entity<Payment>()
@@ -137,6 +154,22 @@ namespace MedicalSearchingPlatform.Data.DataContext
                 .HasOne(p => p.Appointment)
                 .WithOne()
                 .HasForeignKey<Payment>(p => p.AppointmentId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+
+            // Article Like
+            modelBuilder.Entity<ArticleLike>().HasKey(al => new { al.ArticleId, al.UserId });
+
+            modelBuilder.Entity<ArticleLike>()
+                .HasOne(al => al.Article)
+                .WithMany(a => a.Likes)
+                .HasForeignKey(al => al.ArticleId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<ArticleLike>()
+                .HasOne(al => al.User)
+                .WithMany()
+                .HasForeignKey(al => al.UserId)
                 .OnDelete(DeleteBehavior.NoAction);
         }
     }

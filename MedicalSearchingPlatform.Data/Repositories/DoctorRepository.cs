@@ -2,10 +2,6 @@
 using MedicalSearchingPlatform.Data.Entities;
 using MedicalSearchingPlatform.Data.IRepositories;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace MedicalSearchingPlatform.Data.Repositories
 {
@@ -111,6 +107,16 @@ namespace MedicalSearchingPlatform.Data.Repositories
             }
 
             return await query.OrderByDescending(d => d.CreatedAt).ToListAsync();
-        } 
+        }
+
+        public async Task<IEnumerable<Doctor>> GetMostBookedDoctorsAsync(int top = 5)
+        {
+            return await _context.Doctors
+                .Include(d => d.User)
+                .Include(d => d.Appointments) // Lấy số lượng đặt lịch
+                .OrderByDescending(d => d.Appointments.Count)
+                .Take(top)
+                .ToListAsync();
+        }
     }
 }

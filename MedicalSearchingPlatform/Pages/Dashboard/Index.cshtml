@@ -1,0 +1,83 @@
+﻿@page
+@model MedicalSearchingPlatform.Pages.Dashboard.IndexModel
+@{
+    ViewData["Title"] = "Dashboard";
+}
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Dữ liệu mẫu - cần thay bằng dữ liệu từ backend
+            var doctorData = {
+                labels: @Json.Serialize(Model.DoctorNames),
+                datasets: [{
+                    label: "Số lần đặt lịch",
+                    data: @Json.Serialize(Model.BookingCounts),
+                    backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF"]
+                }]
+            };
+
+            var blogData = {
+                labels: ["Bài viết 1", "Bài viết 2", "Bài viết 3"],
+                datasets: [{
+                    data: [50, 75, 30],
+                    backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"]
+                }]
+            };
+
+            var appointmentData = {
+                labels: ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5"],
+                datasets: [{
+                    label: "Số lượng lịch hẹn",
+                    data: [15, 25, 30, 20, 35],
+                    borderColor: "#36A2EB",
+                    fill: false
+                }]
+            };
+
+            new Chart(document.getElementById("doctorChart"), { type: "bar", data: doctorData });
+            new Chart(document.getElementById("blogChart"), { type: "pie", data: blogData });
+            new Chart(document.getElementById("appointmentChart"), { type: "line", data: appointmentData });
+        });
+    </script>
+}
+
+<style>
+    .chart-container {
+        width: 60%;
+        margin: 0 auto;
+        padding-bottom: 20px;
+    }
+</style>
+
+<div class="container mt-5">
+    <h2 class="mb-4">Dashboard</h2>
+
+    <div class="row mb-4" style="margin-bottom: 20px;">
+        <div class="col-12 text-center">
+            <h4>Bác sĩ được đặt lịch nhiều nhất</h4>
+            <div class="chart-container">
+                <canvas id="doctorChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4" style="margin-bottom: 20px;">
+        <div class="col-12 text-center">
+            <h4>Bài viết được nhiều lượt thích nhất</h4>
+            <div class="chart-container">
+                <canvas id="blogChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" style="margin-bottom: 20px;">
+        <div class="col-12 text-center">
+            <h4>Bảng báo cáo số lượng lịch hẹn</h4>
+            <div class="chart-container">
+                <canvas id="appointmentChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+

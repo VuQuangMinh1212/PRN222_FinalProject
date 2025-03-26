@@ -1,8 +1,5 @@
 ﻿using MedicalSearchingPlatform.Data.Entities;
 using MedicalSearchingPlatform.Data.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace MedicalSearchingPlatform.Services
 {

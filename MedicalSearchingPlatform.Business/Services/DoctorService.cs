@@ -1,10 +1,6 @@
 ﻿using MedicalSearchingPlatform.Business.Interfaces;
 using MedicalSearchingPlatform.Data.Entities;
 using MedicalSearchingPlatform.Data.IRepositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace MedicalSearchingPlatform.Business.Services
 {
@@ -56,6 +52,11 @@ namespace MedicalSearchingPlatform.Business.Services
             var doctors = await _doctorRepository.SearchDoctorsAsync(
                 name, specialty, facility, expertise, minRating, maxFee);
             return doctors.OrderByDescending(d => d.CreatedAt);
+        }
+
+        public async Task<IEnumerable<Doctor>> GetMostBookedDoctorsAsync(int top = 5)
+        {
+            return await _doctorRepository.GetMostBookedDoctorsAsync(top);
         }
     }
 }

@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using MedicalSearchingPlatform.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using MedicalSearchingPlatform.Data.DataContext;
-using MedicalSearchingPlatform.Data.Entities;
 
 namespace MedicalSearchingPlatform.Pages.DoctorPage
 {
@@ -21,8 +16,8 @@ namespace MedicalSearchingPlatform.Pages.DoctorPage
 
         public IActionResult OnGet()
         {
-        ViewData["FacilityId"] = new SelectList(_context.MedicalFacilities, "FacilityId", "FacilityId");
-        ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserId");
+            ViewData["FacilityId"] = new SelectList(_context.MedicalFacilities, "FacilityId", "FacilityId");
+            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserId");
             return Page();
         }
 

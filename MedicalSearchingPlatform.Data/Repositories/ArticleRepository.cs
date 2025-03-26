@@ -1,9 +1,6 @@
 ﻿using MedicalSearchingPlatform.Data.DataContext;
 using MedicalSearchingPlatform.Data.Entities;
-using MedicalSearchingPlatform.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace MedicalSearchingPlatform.Data.Repositories
 {
@@ -29,7 +26,7 @@ namespace MedicalSearchingPlatform.Data.Repositories
 
         public async Task<IEnumerable<Article>> GetArticlesByCategoryAsync(string category)
         {
-            return await _context.Articles.Where(a => a.Category == category).ToListAsync();
+            return await _context.Articles.Include(ac => ac.Category).ToListAsync();
         }
 
         public async Task AddArticleAsync(Article article)
