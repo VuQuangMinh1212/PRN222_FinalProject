@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using MedicalSearchingPlatform.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using MedicalSearchingPlatform.Data.DataContext;
-using MedicalSearchingPlatform.Data.Entities;
 
 namespace MedicalSearchingPlatform.Pages.DoctorPage
 {
@@ -30,14 +25,14 @@ namespace MedicalSearchingPlatform.Pages.DoctorPage
                 return NotFound();
             }
 
-            var doctor =  await _context.Doctors.FirstOrDefaultAsync(m => m.DoctorId == id);
+            var doctor = await _context.Doctors.FirstOrDefaultAsync(m => m.DoctorId == id);
             if (doctor == null)
             {
                 return NotFound();
             }
             Doctor = doctor;
-           ViewData["FacilityId"] = new SelectList(_context.MedicalFacilities, "FacilityId", "FacilityId");
-           ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserId");
+            ViewData["FacilityId"] = new SelectList(_context.MedicalFacilities, "FacilityId", "FacilityId");
+            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserId");
             return Page();
         }
 

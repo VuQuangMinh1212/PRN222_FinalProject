@@ -1,0 +1,67 @@
+﻿@page
+@model MedicalSearchingPlatform.Pages.ArticlePage.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a class="btn btn-success" onclick="jQueryModalGet('?handler=CreateArticle','Create Articles')">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Articles[0].Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Articles[0].Content)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Articles[0].PublishedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Articles[0].Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Articles[0].Author)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Articles[0].Category)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Articles)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Content)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PublishedDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Author.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category.CategoryId)
+                </td>
+                <td>
+                    <a class="bg-warning" asp-page="./Edit" asp-route-id="@item.ArticleId"><i class="fa fa-pen"></i></a>
+                    <a class="bg-info" asp-page="./Details" asp-route-id="@item.ArticleId"><i class="fa fa-eye"></i> </a>
+                    <a class="bg-danger" asp-page="./Delete" asp-route-id="@item.ArticleId"><i class="fa fa-trash"></i></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

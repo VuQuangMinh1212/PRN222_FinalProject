@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MedicalSearchingPlatform.Data.Entities
@@ -19,16 +18,22 @@ namespace MedicalSearchingPlatform.Data.Entities
         [Required]
         [ForeignKey("User")]
         public string AuthorId { get; set; }
-        public User Author { get; set; }
+
+
+        [Required, ForeignKey("ArticleCategory")]
+        public string ArticleCategoryId { get; set; }
 
         [Required]
         public DateTime PublishedDate { get; set; } = DateTime.UtcNow;
 
-        [MaxLength(100)]
-        public string Category { get; set; }
-
         [Required]
         [MaxLength(50)]
         public string Status { get; set; } = "Draft"; // Draft, Published, Archived
+
+        public virtual User Author { get; set; }
+
+        public virtual ArticleCategory Category { get; set; }
+
+        public virtual ICollection<ArticleLike> Likes { get; set; } = new List<ArticleLike>();
     }
 }

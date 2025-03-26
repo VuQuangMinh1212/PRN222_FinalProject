@@ -1,7 +1,5 @@
 ﻿using MedicalSearchingPlatform.Data.DataContext;
 using MedicalSearchingPlatform.Data.Entities;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MedicalSearchingPlatform.Data.Repositories
 {

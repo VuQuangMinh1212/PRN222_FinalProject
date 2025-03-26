@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using MedicalSearchingPlatform.Data.DataContext;
+﻿using MedicalSearchingPlatform.Data.DataContext;
 using MedicalSearchingPlatform.Data.Entities;
 using MedicalSearchingPlatform.Data.IRepositories;
 using Microsoft.EntityFrameworkCore;
