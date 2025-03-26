@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using MedicalSearchingPlatform.Business.Interfaces;
+using MedicalSearchingPlatform.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using MedicalSearchingPlatform.Data.DataContext;
-using MedicalSearchingPlatform.Data.Entities;
-using MedicalSearchingPlatform.Business.Interfaces;
-using MedicalSearchingPlatform.Business.Services;
 
 namespace MedicalSearchingPlatform.Pages.MedicalFacilityPage
 {
@@ -21,7 +14,7 @@ namespace MedicalSearchingPlatform.Pages.MedicalFacilityPage
             _facilityService = facilityService;
         }
 
-        public IList<MedicalFacility> MedicalFacility { get;set; } = default!;
+        public IList<MedicalFacility> MedicalFacility { get; set; } = default!;
         [BindProperty(SupportsGet = true)]
         public string SearchName { get; set; }
         [BindProperty(SupportsGet = true)]

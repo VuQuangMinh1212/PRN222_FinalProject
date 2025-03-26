@@ -1,11 +1,6 @@
 ﻿using MedicalSearchingPlatform.Business.Interfaces;
 using MedicalSearchingPlatform.Data.Entities;
 using MedicalSearchingPlatform.Data.IRepositories;
-using MedicalSearchingPlatform.Data.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace MedicalSearchingPlatform.Business.Services
 {
@@ -51,9 +46,9 @@ namespace MedicalSearchingPlatform.Business.Services
           string name,
           string address,
           string information,
-          string phoneNumber) 
+          string phoneNumber)
         {
-           var facilities = await _facilityRepo.SearchFacilityAsync(name, address, information, phoneNumber);
+            var facilities = await _facilityRepo.SearchFacilityAsync(name, address, information, phoneNumber);
             return facilities.OrderByDescending(d => d.CreatedAt);
         }
     }

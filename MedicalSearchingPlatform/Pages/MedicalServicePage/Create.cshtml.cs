@@ -1,14 +1,15 @@
-﻿using MedicalSearchingPlatform.Data.Entities;
+﻿using MedicalSearchingPlatform.Data.DataContext;
+using MedicalSearchingPlatform.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace MedicalSearchingPlatform.Pages.MedicalFacilityPage
+namespace MedicalSearchingPlatform.Pages.MedicalServicePage
 {
     public class CreateModel : PageModel
     {
-        private readonly MedicalSearchingPlatform.Data.DataContext.ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public CreateModel(MedicalSearchingPlatform.Data.DataContext.ApplicationDbContext context)
+        public CreateModel(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -19,9 +20,8 @@ namespace MedicalSearchingPlatform.Pages.MedicalFacilityPage
         }
 
         [BindProperty]
-        public MedicalFacility MedicalFacility { get; set; } = default!;
+        public MedicalService MedicalService { get; set; } = default!;
 
-        // For more information, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
@@ -29,7 +29,7 @@ namespace MedicalSearchingPlatform.Pages.MedicalFacilityPage
                 return Page();
             }
 
-            _context.MedicalFacilities.Add(MedicalFacility);
+            _context.MedicalServices.Add(MedicalService);
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");

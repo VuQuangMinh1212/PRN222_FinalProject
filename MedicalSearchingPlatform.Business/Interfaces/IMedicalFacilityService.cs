@@ -14,5 +14,5 @@ namespace MedicalSearchingPlatform.Business.Interfaces
           string address,
           string information,
           string phoneNumber);
-        }
+    }
 }
