@@ -43,7 +43,7 @@ public class SignInModel : PageModel
 
         if (user == null)
         {
-            TempData["DeactivatedMessage"] = "Invalid login attempt.";
+            TempData["DeactivatedMessage"] = "Invalid user.";
             return RedirectToPage("/Index");
         }
 
