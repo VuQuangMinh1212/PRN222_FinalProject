@@ -1,4 +1,11 @@
-﻿<!DOCTYPE html>
+﻿@using MedicalSearchingPlatform.Data.DataContext
+@using Microsoft.AspNetCore.Identity 
+@using Microsoft.EntityFrameworkCore;
+@inject UserManager<IdentityUser> _userManager
+@inject ApplicationDbContext _dbContext
+@inject Microsoft.AspNetCore.Identity.SignInManager<IdentityUser> SignInManager
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -24,34 +31,78 @@
                 <a asp-page="/Index" class="text-white">FUMedical</a>
             </h1>
 
-            <nav id="navbar" class="navbar navbar-expand-lg navbar-dark">
+            <nav id="navbar" class="navbar navbar-expand-lg navbar-dark bg-primary">
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav me-auto">
+                    <ul class="navbar-nav ms-0" style="font-size: 1.2rem;">
                         <li class="nav-item"><a class="nav-link text-white active" asp-page="/Index">Home</a></li>
                         <li class="nav-item"><a class="nav-link text-white" asp-page="/About">About</a></li>
-                        <li class="nav-item"><a class="nav-link text-white" asp-page="/Services">Services</a></li>
-                        <li class="nav-item"><a class="nav-link text-white" asp-page="/Facilities">Facilities</a></li>
-                        <li class="nav-item"><a class="nav-link text-white" asp-page="/DoctorPage/Index">Doctor</a></li>
-                        <li class="nav-item"><a class="nav-link text-white" asp-page="/Contact">Contact</a></li>
+
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            var user = await _userManager.GetUserAsync(User);
+                            string roles = user != null ? (await _dbContext.Users
+                            .Where(u => u.Id == user.Id)
+                            .Select(u => u.Role)
+                            .FirstOrDefaultAsync()) ?? "Unknown" : "Guest";
+
+                            if (roles.Contains("Patient"))
+                            {
+                                <li class="nav-item"><a class="nav-link text-white" asp-page="/Services">Services</a></li>
+                                <li class="nav-item"><a class="nav-link text-white" asp-page="/Facilities">Facilities</a></li>
+                                <li class="nav-item"><a class="nav-link text-white" asp-page="/DoctorPage/Index">Doctors</a></li>
+                                <li class="nav-item"><a class="nav-link text-white" asp-page="/Articles">Articles</a></li>
+                                <li class="nav-item"><a class="nav-link text-white" asp-page="/Contact">Contact</a></li>
+                                <li class="nav-item"><a class="nav-link text-white" asp-page="/Privacy">Privacy</a></li>
+                            }
+                            else if (roles.Contains("Admin"))
+                            {
+                                <li class="nav-item"><a class="nav-link text-white" asp-page="/Account/Index">Accounts</a></li>
+                                <li class="nav-item"><a class="nav-link text-white" asp-page="/Dashboard">Dashboard</a></li>
+                                <li class="nav-item"><a class="nav-link text-white" asp-page="/Contact">Contact</a></li>
+                            }
+                            else if (roles.Contains("Staff"))
+                            {
+                                <li class="nav-item"><a class="nav-link text-white" asp-page="/Services">Services</a></li>
+                                <li class="nav-item"><a class="nav-link text-white" asp-page="/Facilities">Facilities</a></li>
+                                <li class="nav-item"><a class="nav-link text-white" asp-page="/DoctorPage/Index">Doctors</a></li>
+                                <li class="nav-item"><a class="nav-link text-white" asp-page="/Appointments">Appointments</a></li>
+                                <li class="nav-item"><a class="nav-link text-white" asp-page="/Articles">Articles</a></li>
+                                <li class="nav-item"><a class="nav-link text-white" asp-page="/Contact">Contact</a></li>
+                            }
+                            else if (roles.Contains("Doctor"))
+                            {
+                                <li class="nav-item"><a class="nav-link text-white" asp-page="/Appointments">Appointments</a></li>
+                                <li class="nav-item"><a class="nav-link text-white" asp-page="/Contact">Contact</a></li>
+                                <li class="nav-item"><a class="nav-link text-white" asp-page="/Privacy">Privacy</a></li>
+                            }
+                        }
+                        else
+                        {
+                            <!-- Default links for non-authenticated users -->
+                            <li class="nav-item"><a class="nav-link text-white" asp-page="/Services">Services</a></li>
+                            <li class="nav-item"><a class="nav-link text-white" asp-page="/Contact">Contact</a></li>
+                            <li class="nav-item"><a class="nav-link text-white" asp-page="/Privacy">Privacy</a></li>
+                        }
                     </ul>
                 </div>
             </nav>
 
             @if (User.Identity.IsAuthenticated)
             {
-                <a href="/Account/Detail" class="btn btn-outline-light">Profile</a>
-                <form method="post" asp-page="/Account/Signin" asp-page-handler="Logout">
+                <a href="/Account/Detail" class="btn btn-outline-light me-3">Profile</a>
+                <form method="post" asp-page="/Account/Signin" asp-page-handler="Logout" class="d-inline">
                     <button class="btn btn-danger text-white" type="submit">Logout</button>
                 </form>
             }
             else
             {
-                <a asp-page="/Account/SignIn" class="btn btn-outline-light">Sign in</a>
+                <a asp-page="/Account/SignIn" class="btn btn-outline-light ms-3">Sign in</a>
             }
+
 
             <!-- Make an Appointment Button -->
             <a href="/Appointment/Create" class="btn btn-warning ms-3 text-dark fw-bold">Make an Appointment</a>
@@ -64,7 +115,6 @@
         <div class="container text-center">
             <h1>Welcome to FUMedical</h1>
             <h2>We are a team of talented healthcare professionals</h2>
-            <a href="#services" class="btn-get-started scrollto">Get Started</a>
         </div>
     </section>
 
