@@ -54,5 +54,11 @@ namespace MedicalSearchingPlatform.Business.Services
             await _appointmentRepository.DeleteAppointmentAsync(appointmentId);
             return true;
         }
+
+        public async Task<IEnumerable<(string MonthName, int Count)>> GetAppointmentCountByMonthAsync()
+        {
+            return await _appointmentRepository.GetAppointmentCountByMonthAsync();
+        }
+
     }
 }

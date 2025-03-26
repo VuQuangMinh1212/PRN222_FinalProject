@@ -24,14 +24,20 @@
                     backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF"]
                 }]
             };
+           @* var month = @Json.Serialize(Model.Months);
+            var appointment = @Json.Serialize(Model.AppointmentCounts);
+            console.log("Month:", month);
+            console.log("Appointments:", appointment);*@
 
             var appointmentData = {
-                labels: ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5"],
+                labels: @Json.Serialize(Model.Months),
                 datasets: [{
                     label: "Số lượng lịch hẹn",
-                    data: [15, 25, 30, 20, 35],
+                    data: @Json.Serialize(Model.AppointmentCounts),
                     borderColor: "#36A2EB",
-                    fill: false
+                    backgroundColor: "rgba(54, 162, 235, 0.5)",
+                    fill: true
+            
                 }]
             };
 
@@ -51,7 +57,7 @@
 </style>
 
 <div class="container mt-5">
-    <h2 class="mb-4">Dashboard</h2>
+    <h2 class="mb-4 text-center fw-bold display-4">Dashboard</h2>
 
     <div class="row mb-4" style="margin-bottom: 20px;">
         <div class="col-12 text-center">

@@ -9,11 +9,13 @@ namespace MedicalSearchingPlatform.Pages.Dashboard
     {
         private readonly IDoctorService _doctorService;
         private readonly IArticleService _articleService;
+        private readonly IAppointmentService _appointmentService;
 
-        public IndexModel(IDoctorService doctorService, IArticleService articleService)
+        public IndexModel(IDoctorService doctorService, IArticleService articleService, IAppointmentService appointmentService)
         {
             _doctorService = doctorService;
             _articleService = articleService;
+            _appointmentService = appointmentService;
         }
 
         // Danh sách bác sĩ được đặt lịch nhiều nhất
@@ -23,6 +25,10 @@ namespace MedicalSearchingPlatform.Pages.Dashboard
         // Danh sách bài viết có nhiều lượt thích nhất
         public List<string> ArticleTitles { get; set; } = new();
         public List<int> ArticleLikes { get; set; } = new();
+
+        // Báo cáo số lượng lịch hẹn theo tháng
+        public List<string> Months { get; set; } = new();
+        public List<int> AppointmentCounts { get; set; } = new();
         public async Task OnGetAsync()
         {
             // Lấy top 5 bác sĩ được đặt lịch nhiều nhất
@@ -41,6 +47,10 @@ namespace MedicalSearchingPlatform.Pages.Dashboard
                 int likeCount = await _articleService.GetArticleLikeCountAsync(article.ArticleId);
                 ArticleLikes.Add(likeCount);
             }
+
+            var monthlyAppointments = await _appointmentService.GetAppointmentCountByMonthAsync();
+            Months = monthlyAppointments.Select(a => a.MonthName).ToList();
+            AppointmentCounts = monthlyAppointments.Select(a => a.Count).ToList();
         }
 
     }

@@ -57,5 +57,24 @@ namespace MedicalSearchingPlatform.Data.Repositories
                 await _context.SaveChangesAsync();
             }
         }
+
+        public async Task<IEnumerable<(string MonthName, int Count)>> GetAppointmentCountByMonthAsync()
+        {
+            return await Task.Run(() =>
+         _context.Appointments
+             .GroupBy(a => new { Year = a.AppointmentDate.Year, Month = a.AppointmentDate.Month })
+             .Select(g => new
+             {
+                 Month = g.Key.Month,
+                 Year = g.Key.Year,
+                 Count = g.Count()
+             })
+             .OrderBy(e => e.Year)
+             .ThenBy(e => e.Month)
+             .AsEnumerable()
+             .Select(e => ($"{e.Month}/{e.Year}", e.Count))
+             .ToList()
+     );
+        }
     }
 }
