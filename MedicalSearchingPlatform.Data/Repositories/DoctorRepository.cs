@@ -109,7 +109,7 @@ namespace MedicalSearchingPlatform.Data.Repositories
             return await query.OrderByDescending(d => d.CreatedAt).ToListAsync();
         }
 
-        public async Task<IEnumerable<Doctor>> GetMostBookedDoctorsAsync(int top = 5)
+        public async Task<IEnumerable<Doctor>> GetMostBookedDoctorsAsync(int top)
         {
             return await _context.Doctors
                 .Include(d => d.User)

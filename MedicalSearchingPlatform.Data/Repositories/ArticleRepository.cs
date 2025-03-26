@@ -50,5 +50,26 @@ namespace MedicalSearchingPlatform.Data.Repositories
                 await _context.SaveChangesAsync();
             }
         }
+
+        public async Task<IEnumerable<Article>> GetMostLikedArticlesAsync(int top)
+        {
+            return await _context.Articles
+        .Select(a => new
+        {
+            Article = a,
+            LikeCount = _context.ArticleLikes.Count(l => l.ArticleId == a.ArticleId)
+        })
+        .OrderByDescending(a => a.LikeCount)
+        .Take(top)
+        .Select(a => a.Article)
+        .Include(a => a.Author) // Include thêm nếu cần
+        .ToListAsync();
+        }
+
+        public async Task<int> GetArticleLikeCountAsync(string articleId)
+        {
+            return await _context.ArticleLikes.CountAsync(l => l.ArticleId == articleId);
+        }
+
     }
 }

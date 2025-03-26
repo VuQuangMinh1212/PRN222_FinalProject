@@ -7,7 +7,6 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            // Dữ liệu mẫu - cần thay bằng dữ liệu từ backend
             var doctorData = {
                 labels: @Json.Serialize(Model.DoctorNames),
                 datasets: [{
@@ -16,12 +15,13 @@
                     backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF"]
                 }]
             };
-
+            
             var blogData = {
-                labels: ["Bài viết 1", "Bài viết 2", "Bài viết 3"],
+                labels: @Json.Serialize(Model.ArticleTitles),
                 datasets: [{
-                    data: [50, 75, 30],
-                    backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"]
+                   
+                    data: @Json.Serialize(Model.ArticleLikes),
+                    backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF"]
                 }]
             };
 
