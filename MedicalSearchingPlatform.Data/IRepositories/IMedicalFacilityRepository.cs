@@ -9,5 +9,10 @@ namespace MedicalSearchingPlatform.Data.IRepositories
         Task AddAsync(MedicalFacility facility);
         Task UpdateAsync(MedicalFacility facility);
         Task DeleteAsync(string facilityId);
+        Task<IEnumerable<MedicalFacility>> SearchFacilityAsync(
+          string name,
+          string address,
+          string information,
+          string phoneNumber);
     }
 }

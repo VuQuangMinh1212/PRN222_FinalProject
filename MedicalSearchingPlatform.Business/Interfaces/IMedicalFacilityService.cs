@@ -9,5 +9,10 @@ namespace MedicalSearchingPlatform.Business.Interfaces
         Task AddFacilityAsync(MedicalFacility facility);
         Task UpdateFacilityAsync(MedicalFacility facility);
         Task DeleteFacilityAsync(string facilityId);
-    }
+        Task<IEnumerable<MedicalFacility>> SearchFacilityAsync(
+          string name,
+          string address,
+          string information,
+          string phoneNumber);
+        }
 }

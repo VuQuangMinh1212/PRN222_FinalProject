@@ -1,0 +1,85 @@
+﻿@page
+@model MedicalSearchingPlatform.Pages.MedicalFacilityPage.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<form method="get" class="mb-4">
+    <div class="row">
+        <div class="col-md-3">
+            <input type="text" class="form-control" asp-for="SearchName" placeholder="Facility Name" />
+        </div>
+        <div class="col-md-3">
+            <input type="text" class="form-control" asp-for="SearchAddress" placeholder="Address" />
+        </div>
+        <div class="col-md-3">
+            <input type="text" class="form-control" asp-for="SearchInfor" placeholder="Infor" />
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-md-3">
+            <input type="text" class="form-control" asp-for="SearchPhoneNumber" placeholder="PhoneNumber" />
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary mt-2">Search</button>
+</form>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.MedicalFacility[0].FacilityName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MedicalFacility[0].Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MedicalFacility[0].Infor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MedicalFacility[0].PhoneNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MedicalFacility[0].ImageUrl)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MedicalFacility[0].CreatedAt)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.MedicalFacility) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FacilityName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Infor)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PhoneNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ImageUrl)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedAt)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.FacilityId">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.FacilityId">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.FacilityId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
