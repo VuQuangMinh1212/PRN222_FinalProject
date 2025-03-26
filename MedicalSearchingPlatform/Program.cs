@@ -34,6 +34,10 @@ builder.Services.AddIdentity<User, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
+builder.Services.AddSession();
+builder.Services.AddHttpContextAccessor();
+
+
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IMedicalFacilityRepository, MedicalFacilityRepository>();
 builder.Services.AddScoped<IMedicalServiceRepository, MedicalServiceRepository>();
@@ -79,4 +83,5 @@ app.UseAuthentication();
 app.UseRouting();
 app.UseAuthorization();
 app.MapRazorPages();
+app.UseSession();
 app.Run();
