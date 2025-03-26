@@ -53,6 +53,7 @@ namespace MedicalSearchingPlatform.Data
 
                 foreach (var user in users)
                 {
+                    user.NormalizedEmail = user.Email.ToUpper();
                     user.PasswordHash = passwordHasher.HashPassword(user, user.PasswordHash);
                 }
 
