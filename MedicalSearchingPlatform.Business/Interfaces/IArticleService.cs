@@ -4,6 +4,7 @@ namespace MedicalSearchingPlatform.Services
 {
     public interface IArticleService
     {
+        IQueryable<Article> GetArticlesQueryable();
         Task<IEnumerable<Article>> GetAllArticlesAsync();
         Task<Article> GetArticleByIdAsync(string articleId);
         Task<IEnumerable<Article>> GetArticlesByCategoryAsync(string category);

@@ -44,5 +44,10 @@ namespace MedicalSearchingPlatform.Services
             await _articleRepository.DeleteArticleAsync(articleId);
             return true;
         }
+
+        public IQueryable<Article> GetArticlesQueryable()
+        {
+            return _articleRepository.GetAllQueryable();
+        }
     }
 }

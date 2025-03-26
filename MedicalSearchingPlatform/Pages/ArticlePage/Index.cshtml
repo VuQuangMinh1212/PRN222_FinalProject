@@ -8,9 +8,10 @@
 <h1>Index</h1>
 
 <p>
-    <a class="btn btn-success" onclick="jQueryModalGet('?handler=CreateArticle','Create Articles')">Create New</a>
+    <a class="btn btn-success" onclick="jQueryModalGet('?handler=CreateOrEditArticle','Create Articles')">Create New</a>
 </p>
 <table class="table">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <thead>
         <tr>
             <th>
@@ -31,11 +32,11 @@
             <th>
                 @Html.DisplayNameFor(model => model.Articles[0].Category)
             </th>
-            <th></th>
+            <th>Action</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.Articles)
+        @foreach (var item in Model.ArticlePaginated)
         {
             <tr>
                 <td>
@@ -54,14 +55,28 @@
                     @Html.DisplayFor(modelItem => item.Author.Id)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Category.CategoryId)
+                    @Html.DisplayFor(modelItem => item.Category.Name)
                 </td>
-                <td>
-                    <a class="bg-warning" asp-page="./Edit" asp-route-id="@item.ArticleId"><i class="fa fa-pen"></i></a>
-                    <a class="bg-info" asp-page="./Details" asp-route-id="@item.ArticleId"><i class="fa fa-eye"></i> </a>
-                    <a class="bg-danger" asp-page="./Delete" asp-route-id="@item.ArticleId"><i class="fa fa-trash"></i></a>
+                <td class="d-flex align-items-center">
+                    <a class="text-warning" onclick="jQueryModalGet('?handler=CreateOrEditArticle&id=@item.ArticleId')"><i class="fa fa-pen"></i></a>
+                    <a class="text-info mx-2" onclick="jQueryModalGet('?handler=DetailArticle&id=@item.ArticleId')"><i class="fa fa-eye"></i> </a>
+                    <form asp-page="/ArticlePage/Index" asp-page-handler="DeleteArticle" onsubmit="return jQueryModalDelete(this)" method="post" asp-route-id="@item.ArticleId">
+                        <button class="btn p-0 border-0 bg-transparent text-danger" type="submit"><i class="fa fa-trash"></i></button>
+                    </form>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
+<div class="d-flex justify-content-center">
+    @if (Model.ArticlePaginated.HasPreviousPage)
+    {
+        <a class="me-1" asp-page="/ArticlePage/Index" asp-route-pageIndex="@(Model.ArticlePaginated.PageIndex - 1)">Previous</a>
+    }
+    <span>Page @Model.ArticlePaginated.PageIndex of @Model.ArticlePaginated.TotalPages</span>
+    @if (Model.ArticlePaginated.HasNextPage)
+    {
+        <a class="ms-1" asp-page="/ArticlePage/Index" asp-route-pageIndex="@(Model.ArticlePaginated.PageIndex + 1)">Next</a>
+    }
+</div>

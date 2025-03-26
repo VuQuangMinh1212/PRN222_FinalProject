@@ -15,12 +15,12 @@ namespace MedicalSearchingPlatform.Data.Repositories
 
         public async Task<IEnumerable<Article>> GetAllArticlesAsync()
         {
-            return await _context.Articles.Include(a => a.Author).ToListAsync();
+            return await _context.Articles.Include(a => a.Author).Include(a => a.Category).ToListAsync();
         }
 
         public async Task<Article> GetArticleByIdAsync(string articleId)
         {
-            return await _context.Articles.Include(a => a.Author)
+            return await _context.Articles.Include(a => a.Author).Include(a => a.Category)
                                           .FirstOrDefaultAsync(a => a.ArticleId == articleId);
         }
 
@@ -49,6 +49,11 @@ namespace MedicalSearchingPlatform.Data.Repositories
                 _context.Articles.Remove(article);
                 await _context.SaveChangesAsync();
             }
+        }
+
+        public IQueryable<Article> GetAllQueryable()
+        {
+            return _context.Articles.Include(a => a.Category).OrderByDescending(x => x.PublishedDate);
         }
     }
 }

@@ -41,7 +41,6 @@
                     console.log(err)
                 }
             })
-            return false;
         } catch (ex) {
             console.log(ex)
         }

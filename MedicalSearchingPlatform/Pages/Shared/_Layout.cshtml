@@ -1,9 +1,10 @@
 ﻿@using MedicalSearchingPlatform.Data.DataContext
+@using MedicalSearchingPlatform.Data.Entities
 @using Microsoft.AspNetCore.Identity 
 @using Microsoft.EntityFrameworkCore;
-@inject UserManager<IdentityUser> _userManager
+@inject UserManager<User> _userManager
 @inject ApplicationDbContext _dbContext
-@inject Microsoft.AspNetCore.Identity.SignInManager<IdentityUser> SignInManager
+@inject Microsoft.AspNetCore.Identity.SignInManager<User> SignInManager
 
 <!DOCTYPE html>
 <html lang="en">
@@ -54,7 +55,7 @@
                                 <li class="nav-item"><a class="nav-link text-white" asp-page="/Services">Services</a></li>
                                 <li class="nav-item"><a class="nav-link text-white" asp-page="/Facilities">Facilities</a></li>
                                 <li class="nav-item"><a class="nav-link text-white" asp-page="/DoctorPage/Index">Doctors</a></li>
-                                <li class="nav-item"><a class="nav-link text-white" asp-page="/Articles">Articles</a></li>
+                                <li class="nav-item"><a class="nav-link text-white" asp-page="/ArticlePage/Index">Articles</a></li>
                                 <li class="nav-item"><a class="nav-link text-white" asp-page="/Contact">Contact</a></li>
                                 <li class="nav-item"><a class="nav-link text-white" asp-page="/Privacy">Privacy</a></li>
                             }
@@ -70,7 +71,7 @@
                                 <li class="nav-item"><a class="nav-link text-white" asp-page="/Facilities">Facilities</a></li>
                                 <li class="nav-item"><a class="nav-link text-white" asp-page="/DoctorPage/Index">Doctors</a></li>
                                 <li class="nav-item"><a class="nav-link text-white" asp-page="/Appointments">Appointments</a></li>
-                                <li class="nav-item"><a class="nav-link text-white" asp-page="/Articles">Articles</a></li>
+                                <li class="nav-item"><a class="nav-link text-white" asp-page="/ArticlePage/Index">Articles</a></li>
                                 <li class="nav-item"><a class="nav-link text-white" asp-page="/Contact">Contact</a></li>
                             }
                             else if (roles.Contains("Doctor"))
