@@ -1,12 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using MedicalSearchingPlatform.Data.DataContext;
+using MedicalSearchingPlatform.Data.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using MedicalSearchingPlatform.Data.DataContext;
-using MedicalSearchingPlatform.Data.Entities;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace MedicalSearchingPlatform.Pages.Account
 {

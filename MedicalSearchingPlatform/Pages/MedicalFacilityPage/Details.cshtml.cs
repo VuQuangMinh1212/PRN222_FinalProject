@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using MedicalSearchingPlatform.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using MedicalSearchingPlatform.Data.DataContext;
-using MedicalSearchingPlatform.Data.Entities;
 
 namespace MedicalSearchingPlatform.Pages.MedicalFacilityPage
 {
