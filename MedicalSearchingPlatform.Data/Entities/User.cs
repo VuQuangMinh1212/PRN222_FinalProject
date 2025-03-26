@@ -13,5 +13,18 @@ namespace MedicalSearchingPlatform.Data.Entities
         public string Role { get; set; } = "Patient";
 
         public bool IsActive { get; set; } = true;
+        public User()
+        {
+
+        }
+        public User(string fullName, string email, string role)
+        {
+            FullName = fullName;
+            Role = role;
+            Email = email;
+            UserName = email;
+            NormalizedEmail = email.ToUpper();
+            NormalizedUserName = email.ToUpper();
+        }
     }
 }

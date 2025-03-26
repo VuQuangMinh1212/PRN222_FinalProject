@@ -1,0 +1,41 @@
+﻿@page
+@model MedicalSearchingPlatform.Pages.Account.RegisterModel
+@{
+}
+<div class="modal fade show d-block" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="false">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content p-4">
+            <div class="modal-header">
+                <h5 class="modal-title">Create your account</h5>
+            </div>
+            <div class="modal-body">
+                <!-- Email & Password Register Form -->
+                <form method="post" asp-page="/Account/Register">
+                    <div class="text-danger" asp-validation-summary="All"></div>
+                    <div class="mb-1">
+                        <input type="text" class="form-control" placeholder="Full Name" asp-for="Input.FullName">
+                        <span class="ms-1 text-danger" asp-validation-for="Input.FullName"></span>
+                    </div>
+                    <div class="mb-1">
+                        <input type="text" class="form-control" placeholder="Email" asp-for="Input.Email">
+                        <span class="ms-1 text-danger" asp-validation-for="Input.Email"></span>
+                    </div>
+                    <div class="mb-1">
+                        <input type="password" class="form-control" placeholder="Password" asp-for="Input.Password">
+                        <span class="ms-1 text-danger" asp-validation-for="Input.Password"></span>
+                    </div>
+                    <div class="mb-1">
+                        <input type="password" class="form-control" placeholder="Confirm Password" asp-for="Input.ConfirmPassword">
+                        <span class="ms-1 text-danger" asp-validation-for="Input.ConfirmPassword"></span>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Sign up</button>
+                </form>
+
+                <div class="text-center mt-3">
+                    Already have an account? <a asp-page="/Account/SignIn">Sign in</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -6,13 +6,14 @@ using System.Security.Claims;
 using MedicalSearchingPlatform.Business.Interfaces;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
+using MedicalSearchingPlatform.Data.Entities;
 
 public class SignInModel : PageModel
 {
-    private readonly SignInManager<IdentityUser> _signInManager;
+    private readonly SignInManager<User> _signInManager;
     private readonly IUserService _userService;
 
-    public SignInModel(SignInManager<IdentityUser> signInManager, IUserService userService)
+    public SignInModel(SignInManager<User> signInManager, IUserService userService)
     {
         _signInManager = signInManager;
         _userService = userService;
