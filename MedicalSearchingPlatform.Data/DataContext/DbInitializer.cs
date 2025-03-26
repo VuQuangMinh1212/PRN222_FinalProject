@@ -45,11 +45,11 @@ namespace MedicalSearchingPlatform.Data
                 {
                     new MedicalFacility { FacilityId = "F1", FacilityName = "City Hospital", Address = "123 Main St", PhoneNumber = "123-456-7890",
                         CreatedAt = DateTime.UtcNow.AddDays(-10), Infor = "A top-tier hospital with modern equipment.",
-                        ImageUrl = "/img/departments/departments-1.jpg" },
+                        ImageUrl = "/img/departments-2.jpg" },
 
                     new MedicalFacility { FacilityId = "F2", FacilityName = "Downtown Clinic", Address = "456 Market St", PhoneNumber = "987-654-3210",
                         CreatedAt = DateTime.UtcNow.AddDays(-8), Infor = "Conveniently located clinic for quick medical check-ups.",
-                        ImageUrl = "/img/departments/departments-2.jpg" }
+                        ImageUrl = "/img/departments-3.jpg" }
                 };
 
                 context.MedicalFacilities.AddRange(facilities);
