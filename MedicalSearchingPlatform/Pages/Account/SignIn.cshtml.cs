@@ -3,6 +3,7 @@ using MedicalSearchingPlatform.Data.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Diagnostics;
 
 public class SignInModel : PageModel
 {
@@ -36,7 +37,7 @@ public class SignInModel : PageModel
 
     public async Task<IActionResult> OnPostAsync()
     {
-        var user = await _userManager.FindByNameAsync(Input.Email);
+        var user = await _userManager.FindByEmailAsync(Input.Email);
 
         if (user == null)
         {
@@ -55,7 +56,7 @@ public class SignInModel : PageModel
         var isPasswordValid = await _userManager.CheckPasswordAsync(user, Input.Password);
         if (!isPasswordValid)
         {
-            TempData["DeactivatedMessage"] = "Invalid login attempt.";
+            TempData["DeactivatedMessage"] = "Invalid password";
             return RedirectToPage("/Index");
         }
 
@@ -63,13 +64,21 @@ public class SignInModel : PageModel
 
         if (result.Succeeded)
         {
+            var userName = user.FullName ?? user.UserName;
+
+            var roles = await _userManager.GetRolesAsync(user);
+            var userRole = roles.FirstOrDefault() ?? "No Role Assigned";
+            Debug.WriteLine("------------------------------------------------"+userRole);
+
+            HttpContext.Session.SetString("UserName", userName);
+            HttpContext.Session.SetString("UserRole", userRole);
+
             return RedirectToPage("/Index");
         }
 
         TempData["DeactivatedMessage"] = "Invalid login attempt.";
         return RedirectToPage("/Index");
-
-
     }
+
 
 }

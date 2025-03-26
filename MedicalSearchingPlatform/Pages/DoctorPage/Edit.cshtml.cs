@@ -1,4 +1,5 @@
 ﻿using MedicalSearchingPlatform.Data.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -6,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MedicalSearchingPlatform.Pages.DoctorPage
 {
+    [Authorize(Roles = "Admin,Doctor")]
     public class EditModel : PageModel
     {
         private readonly MedicalSearchingPlatform.Data.DataContext.ApplicationDbContext _context;
