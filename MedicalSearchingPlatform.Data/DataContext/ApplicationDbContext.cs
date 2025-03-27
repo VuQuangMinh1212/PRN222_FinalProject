@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 
 namespace MedicalSearchingPlatform.Data.DataContext
 {
@@ -15,6 +16,9 @@ namespace MedicalSearchingPlatform.Data.DataContext
         public DbSet<MedicalFacilityService> MedicalFacilityServices { get; set; }
         public DbSet<Doctor> Doctors { get; set; }
         public DbSet<Patient> Patients { get; set; }
+        public DbSet<MedicalRecord> MedicalRecords { get; set; }
+        public DbSet<MedicalFile> MedicalFiles { get; set; }
+        public DbSet<SharedMedicalRecord> SharedMedicalRecords { get; set; }
         public DbSet<Appointment> Appointments { get; set; }
         public DbSet<Article> Articles { get; set; }
         public DbSet<Review> Reviews { get; set; }
