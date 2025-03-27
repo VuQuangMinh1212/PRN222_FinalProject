@@ -15,7 +15,7 @@ namespace MedicalSearchingPlatform.Data.Repositories
 
         public async Task<IEnumerable<Article>> GetAllArticlesAsync()
         {
-            return await _context.Articles.Include(a => a.Author).Include(a => a.Category).ToListAsync();
+            return await _context.Articles.Include(a => a.Author).Include(a => a.Category).OrderByDescending(x=>x.PublishedDate).ToListAsync();
         }
 
         public async Task<Article> GetArticleByIdAsync(string articleId)

@@ -24,6 +24,7 @@ namespace MedicalSearchingPlatform.Pages.ArticlesPage
 
         public async Task<IActionResult> OnGetAsync(int? pageIndex)
         {
+            //var user = User.Identity;
             int pageSize = 5;
             PageIndex = pageIndex ?? 1;
             var articles = _articleService.GetArticlesQueryable();

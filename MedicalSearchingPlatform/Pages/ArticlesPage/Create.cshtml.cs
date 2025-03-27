@@ -15,13 +15,11 @@ namespace MedicalSearchingPlatform.Pages.ArticlesPage
     {
         private readonly IArticleService _articleService;
         private readonly IArticleCategoryService _articleCategoryService;
-        private readonly UserManager<User> _userManager;
 
         public CreateModel(IArticleService articleService, IArticleCategoryService articleCategoryService)
         {
             _articleService = articleService;
             _articleCategoryService = articleCategoryService;
-            _userManager = userManager;
         }
 
         public SelectList ArticleCategories { get; set; }
