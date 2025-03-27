@@ -1,0 +1,82 @@
+﻿@page
+@model MedicalSearchingPlatform.Pages.ArticlesPage.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a class="btn btn-success" onclick="jQueryModalGet('/ArticlesPage/Create','Create Articles')">Create New</a>
+</p>
+<table class="table">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Articles[0].Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Articles[0].Content)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Articles[0].PublishedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Articles[0].Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Articles[0].Author)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Articles[0].Category)
+            </th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.ArticlePaginated)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Content)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PublishedDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Author.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category.Name)
+                </td>
+                <td class="d-flex align-items-center">
+                    <a class="text-warning" onclick="jQueryModalGet('/ArticlesPage/Edit?id=@item.ArticleId','Edit Article')"><i class="fa fa-pen"></i></a>
+                    <a class="text-info mx-2" onclick="jQueryModalGet('/ArticlesPage/Details?id=@item.ArticleId')"><i class="fa fa-eye"></i> </a>
+                    <form asp-page="/ArticlesPage/Delete" onsubmit="return jQueryModalDelete(this)" method="post" asp-route-id="@item.ArticleId">
+                        <button class="btn p-0 border-0 bg-transparent text-danger" type="submit"><i class="fa fa-trash"></i></button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="d-flex justify-content-center">
+    @if (Model.ArticlePaginated.HasPreviousPage)
+    {
+        <a class="me-1" asp-page="/ArticlesPage/Index" asp-route-pageIndex="@(Model.ArticlePaginated.PageIndex - 1)">Previous</a>
+    }
+    <span>Page @Model.ArticlePaginated.PageIndex of @Model.ArticlePaginated.TotalPages</span>
+    @if (Model.ArticlePaginated.HasNextPage)
+    {
+        <a class="ms-1" asp-page="/ArticlesPage/Index" asp-route-pageIndex="@(Model.ArticlePaginated.PageIndex + 1)">Next</a>
+    }
+</div>

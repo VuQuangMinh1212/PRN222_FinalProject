@@ -1,4 +1,5 @@
-﻿using MedicalSearchingPlatform.Business.Interfaces;
+﻿using MedicalSearchingPlatform.Business.Hubs;
+using MedicalSearchingPlatform.Business.Interfaces;
 using MedicalSearchingPlatform.Business.Services;
 using MedicalSearchingPlatform.Data;
 using MedicalSearchingPlatform.Data.DataContext;
@@ -53,6 +54,9 @@ builder.Services.AddScoped<IReviewService, ReviewService>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
 builder.Services.AddScoped<IArticleCategoryService, ArticleCategoryService>();
 
+//SignalR
+builder.Services.AddSignalR();
+
 var app = builder.Build();
 
 // Ensure the database is migrated and seeded with initial data
@@ -72,8 +76,9 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-app.UseAuthentication();
 app.UseRouting();
+app.MapHub<SignalRServer>("/signalRServer");
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapRazorPages();
 app.Run();
