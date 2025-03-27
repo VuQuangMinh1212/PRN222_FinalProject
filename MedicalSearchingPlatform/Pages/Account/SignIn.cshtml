@@ -4,11 +4,13 @@
     ViewData["Title"] = "Sign In";
 }
 
-<div class="modal fade show d-block" id="signInModal" tabindex="-1" aria-labelledby="signInModalLabel" aria-hidden="false">
+<!-- Sign In Modal -->
+<div class="modal fade show d-block" id="signInModal" tabindex="-1" aria-labelledby="signInModalLabel" aria-hidden="false" style="background: rgba(0, 0, 0, 0.5);">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content p-4">
             <div class="modal-header">
                 <h5 class="modal-title">Sign in to your account</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <!-- OAuth Sign In -->

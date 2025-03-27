@@ -2,81 +2,64 @@
 @model MedicalSearchingPlatform.Pages.ArticlesPage.IndexModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Latest News & Articles";
 }
 
-<h1>Index</h1>
+<h1 class="text-center my-4">Latest News & Articles</h1>
 
-<p>
-    <a class="btn btn-success" onclick="jQueryModalGet('/ArticlesPage/Create','Create Articles')">Create New</a>
-</p>
-<table class="table">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Articles[0].Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Articles[0].Content)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Articles[0].PublishedDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Articles[0].Status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Articles[0].Author)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Articles[0].Category)
-            </th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.ArticlePaginated)
+@if ((bool)ViewData["IsStaff"])
+{
+    <p class="text-end">
+        <a class="btn btn-success" onclick="jQueryModalGet('/ArticlesPage/Create','Create Articles')">
+            <i class="fa fa-plus"></i> Create New
+        </a>
+    </p>
+}
+
+<div class="container">
+    <div class="row">
+        @if (Model.Articles != null && Model.Articles.Any())
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Content)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PublishedDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Status)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Author.Id)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Category.Name)
-                </td>
-                <td class="d-flex align-items-center">
-                    <a class="text-warning" onclick="jQueryModalGet('/ArticlesPage/Edit?id=@item.ArticleId','Edit Article')"><i class="fa fa-pen"></i></a>
-                    <a class="text-info mx-2" onclick="jQueryModalGet('/ArticlesPage/Details?id=@item.ArticleId')"><i class="fa fa-eye"></i> </a>
-                    <form asp-page="/ArticlesPage/Delete" onsubmit="return jQueryModalDelete(this)" method="post" asp-route-id="@item.ArticleId">
-                        <button class="btn p-0 border-0 bg-transparent text-danger" type="submit"><i class="fa fa-trash"></i></button>
-                    </form>
-                </td>
-            </tr>
+            @foreach (var item in Model.Articles)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <a asp-page="./Detail" asp-route-id="@item.ArticleId" class="text-dark text-decoration-none">
+                                    @item.Title
+                                </a>
+                            </h5>
+                            <p class="text-muted small">
+                                By <strong>@item.Author?.FullName</strong> | Published on @item.PublishedDate.ToString("yyyy-MM-dd")
+                            </p>
+                            <p class="card-text text-truncate" style="max-height: 3em;">
+                                @item.Content
+                            </p>
+                            <span class="badge @(item.Status == "Published" ? "bg-success" : "bg-secondary")">
+                                @item.Status
+                            </span>
+                        </div>
+                        @if ((bool)ViewData["IsStaff"])
+                        {
+                            <div class="card-footer bg-white">
+                                <a class="btn btn-warning btn-sm" asp-page="./Edit" asp-route-id="@item.ArticleId">
+                                    <i class="fa fa-pen"></i> Edit
+                                </a>
+                                <a class="btn btn-danger btn-sm" asp-page="./Delete" asp-route-id="@item.ArticleId">
+                                    <i class="fa fa-trash"></i> Delete
+                                </a>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
         }
-    </tbody>
-</table>
-
-<div class="d-flex justify-content-center">
-    @if (Model.ArticlePaginated.HasPreviousPage)
-    {
-        <a class="me-1" asp-page="/ArticlesPage/Index" asp-route-pageIndex="@(Model.ArticlePaginated.PageIndex - 1)">Previous</a>
-    }
-    <span>Page @Model.ArticlePaginated.PageIndex of @Model.ArticlePaginated.TotalPages</span>
-    @if (Model.ArticlePaginated.HasNextPage)
-    {
-        <a class="ms-1" asp-page="/ArticlesPage/Index" asp-route-pageIndex="@(Model.ArticlePaginated.PageIndex + 1)">Next</a>
-    }
+        else
+        {
+            <div class="col-12 text-center text-muted">
+                <p>No articles available.</p>
+            </div>
+        }
+    </div>
 </div>

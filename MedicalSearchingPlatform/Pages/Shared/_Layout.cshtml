@@ -1,7 +1,7 @@
 ﻿@using MedicalSearchingPlatform.Data.DataContext
-@using MedicalSearchingPlatform.Data.Entities
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.EntityFrameworkCore;
+@using MedicalSearchingPlatform.Data.Entities;
 @inject UserManager<User> _userManager
 @inject ApplicationDbContext _dbContext
 @inject Microsoft.AspNetCore.Identity.SignInManager<User> SignInManager
@@ -40,7 +40,7 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-0" style="font-size: 1.2rem;">
                         <li class="nav-item"><a class="nav-link text-white active" asp-page="/Index">Home</a></li>
-                        <li class="nav-item"><a class="nav-link text-white" asp-page="/About">About</a></li>
+                        @* <li class="nav-item"><a class="nav-link text-white" asp-page="/About">About</a></li> *@
 
                         @if (SignInManager.IsSignedIn(User))
                         {
@@ -52,31 +52,33 @@
 
                             if (roles.Contains("Patient"))
                             {
-                                <li class="nav-item"><a class="nav-link text-white" asp-page="/Services">Services</a></li>
-                                <li class="nav-item"><a class="nav-link text-white" asp-page="/Facilities">Facilities</a></li>
+                                <li class="nav-item"><a class="nav-link text-white" asp-page="/MedicalServicePage/Index">Services</a></li>
+                                <li class="nav-item"><a class="nav-link text-white" asp-page="/MedicalFacilityPage/Index">Facilities</a></li>
                                 <li class="nav-item"><a class="nav-link text-white" asp-page="/DoctorPage/Index">Doctors</a></li>
                                 <li class="nav-item"><a class="nav-link text-white" asp-page="/ArticlesPage/Index">Articles</a></li>
+                                <li class="nav-item"><a class="nav-link text-white" asp-page="/AppointmentPage/History">History</a></li>
                                 <li class="nav-item"><a class="nav-link text-white" asp-page="/Contact">Contact</a></li>
                                 <li class="nav-item"><a class="nav-link text-white" asp-page="/Privacy">Privacy</a></li>
                             }
                             else if (roles.Contains("Admin"))
                             {
                                 <li class="nav-item"><a class="nav-link text-white" asp-page="/Account/Index">Accounts</a></li>
-                                <li class="nav-item"><a class="nav-link text-white" asp-page="/Dashboard">Dashboard</a></li>
+                                <li class="nav-item"><a class="nav-link text-white" asp-page="/Dashboard/Index">Dashboard</a></li>
                                 <li class="nav-item"><a class="nav-link text-white" asp-page="/Contact">Contact</a></li>
                             }
                             else if (roles.Contains("Staff"))
                             {
-                                <li class="nav-item"><a class="nav-link text-white" asp-page="/Services">Services</a></li>
-                                <li class="nav-item"><a class="nav-link text-white" asp-page="/Facilities">Facilities</a></li>
+                                <li class="nav-item"><a class="nav-link text-white" asp-page="/MedicalServicePage/Index">Services</a></li>
+                                <li class="nav-item"><a class="nav-link text-white" asp-page="/MedicalFacilityPage/Index">Facilities</a></li>
                                 <li class="nav-item"><a class="nav-link text-white" asp-page="/DoctorPage/Index">Doctors</a></li>
-                                <li class="nav-item"><a class="nav-link text-white" asp-page="/Appointments">Appointments</a></li>
+                                <li class="nav-item"><a class="nav-link text-white" asp-page="/AppointmentPage/Index">Appointments</a></li>
                                 <li class="nav-item"><a class="nav-link text-white" asp-page="/ArticlesPage/Index">Articles</a></li>
                                 <li class="nav-item"><a class="nav-link text-white" asp-page="/Contact">Contact</a></li>
                             }
                             else if (roles.Contains("Doctor"))
                             {
-                                <li class="nav-item"><a class="nav-link text-white" asp-page="/Appointments">Appointments</a></li>
+                                <li class="nav-item"><a class="nav-link text-white" asp-page="/AppointmentPage/Index">Appointments</a></li>
+                                <li class="nav-item"><a class="nav-link text-white" asp-page="/AppointmentPage/History">History</a></li>
                                 <li class="nav-item"><a class="nav-link text-white" asp-page="/Contact">Contact</a></li>
                                 <li class="nav-item"><a class="nav-link text-white" asp-page="/Privacy">Privacy</a></li>
                             }
@@ -84,7 +86,9 @@
                         else
                         {
                             <!-- Default links for non-authenticated users -->
-                            <li class="nav-item"><a class="nav-link text-white" asp-page="/Services">Services</a></li>
+                            <li class="nav-item"><a class="nav-link text-white" asp-page="/MedicalServicePage/Index">Services</a></li>
+                            <li class="nav-item"><a class="nav-link text-white" asp-page="/MedicalFacilityPage/Index">Medical Facility</a></li>
+                            <li class="nav-item"><a class="nav-link text-white" asp-page="/ArticlesPage/Index">Articles</a></li>
                             <li class="nav-item"><a class="nav-link text-white" asp-page="/Contact">Contact</a></li>
                             <li class="nav-item"><a class="nav-link text-white" asp-page="/Privacy">Privacy</a></li>
                         }
@@ -94,6 +98,8 @@
 
             @if (User.Identity.IsAuthenticated)
             {
+                var user = await _userManager.GetUserAsync(User);
+                bool isInactive = user != null && !user.IsActive;
                 <a href="/Account/Detail" class="btn btn-outline-light me-3">Profile</a>
                 <form method="post" asp-page="/Account/Signin" asp-page-handler="Logout" class="d-inline">
                     <button class="btn btn-danger text-white" type="submit">Logout</button>
@@ -101,26 +107,74 @@
             }
             else
             {
-                <a asp-page="/Account/SignIn" class="btn btn-outline-light ms-3">Sign in</a>
+                @* <a asp-page="/Account/SignIn" class="btn btn-outline-light ms-3">Sign in</a> *@
+                <button type="button" class="btn btn-outline-light ms-3" data-bs-toggle="modal" data-bs-target="#signInModal">
+                    Sign in
+                </button>
+
             }
 
 
             <!-- Make an Appointment Button -->
-            <a href="/Appointment/Create" class="btn btn-warning ms-3 text-dark fw-bold">Make an Appointment</a>
+            <a href="/AppointmentPage/Create" class="btn btn-warning ms-3 text-dark fw-bold">Make an Appointment</a>
         </div>
     </header>
 
 
+    <!-- Sign In Modal -->
+    <div class="modal fade" id="signInModal" tabindex="-1" aria-labelledby="signInModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content p-4">
+                <div class="modal-header">
+                    <h5 class="modal-title">Sign in to your account</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    @if (TempData["DeactivatedMessage"] != null)
+                    {
+                        <div id="inactiveAlert" class="alert alert-danger text-center">
+                            @TempData["DeactivatedMessage"]
+                        </div>
+                    }
+
+                    <!-- OAuth Sign In -->
+                    <form method="post" asp-page="/Account/SignIn" asp-page-handler="GoogleLogin">
+                        <input type="hidden" name="returnUrl" value="@Url.Page("/Index")" />
+                        <button type="submit" class="btn btn-dark w-100 mb-2">
+                            <i class="fab fa-google"></i> Sign in with Google
+                        </button>
+                    </form>
+                    <a asp-page="/Account/ExternalLogin" asp-route-provider="Apple" class="btn btn-dark w-100 mb-2">
+                        <i class="fab fa-apple"></i> Sign in with Apple
+                    </a>
+
+                    <div class="text-center my-3">or</div>
+
+                    <!-- Email & Password Sign In Form -->
+                    <form method="post" asp-page="/Account/SignIn">
+                        <div class="mb-3">
+                            <input type="email" class="form-control" placeholder="Email" name="Email" required>
+                        </div>
+                        <div class="mb-3">
+                            <input type="password" class="form-control" placeholder="Password" name="Password" required>
+                        </div>
+                        <div class="mb-2">
+                            <a asp-page="/Account/ForgotPassword">Forgot your password? <strong>Set a new one</strong></a>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Sign in</button>
+                    </form>
+
+                    <div class="text-center mt-3">
+                        <a asp-page="/Account/Register">Create new account</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <!-- ======= Hero Section ======= -->
-    <section id="hero" class="d-flex align-items-center">
-        <div class="container text-center">
-            <h1>Welcome to FUMedical</h1>
-            <h2>We are a team of talented healthcare professionals</h2>
-        </div>
-    </section>
-
-    <main id="main" class="container mt-5">
+    <main id="main" class="container mt-5" style="padding-top: 80px;">
         @RenderBody()
     </main>
 
@@ -173,3 +227,6 @@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+
+
+<script src="~/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

@@ -1,9 +1,13 @@
 ﻿using MedicalSearchingPlatform.Business.Interfaces;
 using MedicalSearchingPlatform.Data.Entities;
 using MedicalSearchingPlatform.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MedicalSearchingPlatform.Pages.ArticlesPage
 {
@@ -11,11 +15,13 @@ namespace MedicalSearchingPlatform.Pages.ArticlesPage
     {
         private readonly IArticleService _articleService;
         private readonly IArticleCategoryService _articleCategoryService;
+        private readonly UserManager<User> _userManager;
 
         public CreateModel(IArticleService articleService, IArticleCategoryService articleCategoryService)
         {
             _articleService = articleService;
             _articleCategoryService = articleCategoryService;
+            _userManager = userManager;
         }
 
         public SelectList ArticleCategories { get; set; }

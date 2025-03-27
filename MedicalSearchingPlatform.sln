@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.12.35728.132
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MedicalSearchingPlatform", "MedicalSearchingPlatform\MedicalSearchingPlatform.csproj", "{48CEFA4E-D455-414C-934B-7E6FEDE52577}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MedicalSearchingPlatform", "MedicalSearchingPlatform\MedicalSearchingPlatform.csproj", "{48CEFA4E-D455-414C-934B-7E6FEDE52577}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MedicalSearchingPlatform.Business", "MedicalSearchingPlatform.Business\MedicalSearchingPlatform.Business.csproj", "{B5A9F313-BE92-4D20-9765-0C1530B44A66}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MedicalSearchingPlatform.Business", "MedicalSearchingPlatform.Business\MedicalSearchingPlatform.Business.csproj", "{B5A9F313-BE92-4D20-9765-0C1530B44A66}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MedicalSearchingPlatform.Data", "MedicalSearchingPlatform.Data\MedicalSearchingPlatform.Data.csproj", "{545B2040-48F3-4667-A457-53A150BBEB7C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MedicalSearchingPlatform.Data", "MedicalSearchingPlatform.Data\MedicalSearchingPlatform.Data.csproj", "{545B2040-48F3-4667-A457-53A150BBEB7C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

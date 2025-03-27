@@ -16,5 +16,7 @@ namespace MedicalSearchingPlatform.Data.IRepositories
             string expertise,
             double? minRating,
             decimal? maxFee);
+
+        Task<IEnumerable<Doctor>> GetMostBookedDoctorsAsync(int top = 5);
     }
 }

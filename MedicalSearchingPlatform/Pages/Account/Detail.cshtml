@@ -1,0 +1,48 @@
+﻿@page
+@model MedicalSearchingPlatform.Pages.Account.DetailModel
+@{
+    ViewData["Title"] = "User Profile";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">User Profile</h2>
+
+    <div class="card shadow-lg p-4">
+        <div class="row align-items-center">
+            <!-- Profile Picture -->
+            <div class="col-md-4 text-center">
+                <img src="~/images/default-profile.png" class="rounded-circle img-fluid border"
+                     alt="Profile Picture" width="180" height="180">
+                <h4 class="mt-3">@Model.UserDetail.FullName</h4>
+                <span class="badge @(Model.UserDetail.IsActive ? "bg-success" : "bg-danger")">
+                    @(Model.UserDetail.IsActive ? "Active" : "Deactivated")
+                </span>
+            </div>
+
+            <!-- User Info -->
+            <div class="col-md-8">
+                <dl class="row">
+                    <dt class="col-sm-4 fw-bold">Email:</dt>
+                    <dd class="col-sm-8">@Model.UserDetail.Email</dd>
+
+                    <dt class="col-sm-4 fw-bold">Phone:</dt>
+                    <dd class="col-sm-8">@Model.UserDetail.PhoneNumber</dd>
+
+                    <dt class="col-sm-4 fw-bold">Role:</dt>
+                    <dd class="col-sm-8">
+                        <span class="badge bg-primary">@Model.Role</span>
+                    </dd>
+                </dl>
+
+                <div class="mt-3">
+                    <a asp-page="/Account/Edit" asp-route-id="@Model.UserDetail.Id" class="btn btn-primary">
+                        <i class="bi bi-pencil"></i> Edit Profile
+                    </a>
+                    <a asp-page="/Index" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left"></i> Back
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

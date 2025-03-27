@@ -41,5 +41,15 @@ namespace MedicalSearchingPlatform.Business.Services
         {
             await _facilityRepo.DeleteAsync(facilityId);
         }
+
+        public async Task<IEnumerable<MedicalFacility>> SearchFacilityAsync(
+          string name,
+          string address,
+          string information,
+          string phoneNumber)
+        {
+            var facilities = await _facilityRepo.SearchFacilityAsync(name, address, information, phoneNumber);
+            return facilities.OrderByDescending(d => d.CreatedAt);
+        }
     }
 }
