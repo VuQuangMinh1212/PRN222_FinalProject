@@ -100,6 +100,7 @@
                 var user = await _userManager.GetUserAsync(User);
                 bool isInactive = user != null && !user.IsActive;
                 <a href="/Account/Detail" class="btn btn-outline-light me-3">Profile</a>
+                <a href="/MedicalRecordPage/Detail" class="btn btn-outline-light me-3">Medical Record</a>
                 <form method="post" asp-page="/Account/Signin" asp-page-handler="Logout" class="d-inline">
                     <button class="btn btn-danger text-white" type="submit">Logout</button>
                 </form>

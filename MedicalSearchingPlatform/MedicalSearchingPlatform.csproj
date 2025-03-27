@@ -23,4 +23,8 @@
     <ProjectReference Include="..\MedicalSearchingPlatform.Business\MedicalSearchingPlatform.Business.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Pages\MedicalFilePage\" />
+  </ItemGroup>
+
 </Project>

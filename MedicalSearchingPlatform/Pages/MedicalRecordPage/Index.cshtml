@@ -1,0 +1,43 @@
+﻿@page
+@model MedicalSearchingPlatform.Pages.MedicalRecordPage.IndexModel
+
+<h2>Medical Records for Patient</h2>
+
+<p>
+    <a asp-page="Create" asp-route-patientId="@Model.PatientId">Add New Medical Record</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Diagnosis</th>
+            <th>Treatment</th>
+            <th>Record Date</th>
+            <th>Files</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var record in Model.MedicalRecords)
+        {
+            <tr>
+                <td>@record.Diagnosis</td>
+                <td>@record.Treatment</td>
+                <td>@record.RecordDate.ToString("yyyy-MM-dd")</td>
+                <td>
+                    @foreach (var file in record.MedicalFiles)
+                    {
+                        <a href="@file.FilePath" target="_blank">@file.FileType (@file.UploadDate.ToString("yyyy-MM-dd"))</a>
+
+                        <br />
+                    }
+                    <a asp-page="UploadFile" asp-route-medicalRecordId="@record.MedicalRecordId">Upload File</a>
+                </td>
+                <td>
+                    <a asp-page="Edit" asp-route-id="@record.MedicalRecordId">Edit</a> |
+                    <a asp-page="Share" asp-route-id="@record.MedicalRecordId">Share with Doctor</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
