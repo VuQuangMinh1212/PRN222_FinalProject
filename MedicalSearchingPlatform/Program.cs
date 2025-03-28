@@ -14,12 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 
-//builder.Services.AddAuthentication()
-//    .AddGoogle(options =>
-//    {
-//        options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
-//        options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
-//    });
+
 
 var configuration = new ConfigurationBuilder()
     .SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), "../MedicalSearchingPlatform.Data")) // Trỏ đến thư mục Data
@@ -33,6 +28,18 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddIdentity<User, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
+
+builder.Services.AddSession();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddAuthentication()
+    .AddGoogle(options =>
+    {
+        options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+        options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+        options.SignInScheme = IdentityConstants.ExternalScheme;
+        options.CallbackPath = "/signin-google";
+    });
+
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IMedicalFacilityRepository, MedicalFacilityRepository>();
@@ -79,4 +86,6 @@ app.UseAuthentication();
 app.UseRouting();
 app.UseAuthorization();
 app.MapRazorPages();
+app.UseSession();
 app.Run();
+

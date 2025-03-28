@@ -1,0 +1,49 @@
+﻿@page
+@using MedicalSearchingPlatform.Data.Entities
+@using Microsoft.AspNetCore.Identity
+@model MedicalSearchingPlatform.Pages.MedicalServicePage.DetailsModel
+@inject UserManager<User> _userManager
+
+@{
+    ViewData["Title"] = "Service Details";
+    var user = await _userManager.GetUserAsync(User);
+    string userRole = user != null ? (await _userManager.GetRolesAsync(user)).FirstOrDefault() ?? "Guest" : "Guest";
+    bool isStaff = userRole == "Staff";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Service Details</h2>
+
+    <div class="card shadow-lg p-4">
+        <div class="row">
+            <div class="col-md-8">
+                <dl class="row">
+                    <dt class="col-sm-4 fw-bold">Service Name:</dt>
+                    <dd class="col-sm-8">@Model.MedicalService.ServiceName</dd>
+
+                    <dt class="col-sm-4 fw-bold">Description:</dt>
+                    <dd class="col-sm-8">@Model.MedicalService.Description</dd>
+
+                    <dt class="col-sm-4 fw-bold">Status:</dt>
+                    <dd class="col-sm-8">
+                        <span class="badge @(Model.MedicalService.Status == "Active" ? "bg-success" : "bg-danger")">
+                            @Model.MedicalService.Status
+                        </span>
+                    </dd>
+                </dl>
+            </div>
+        </div>
+
+        <div class="text-center mt-3">
+            <a asp-page="./Index" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i> Back to List
+            </a>
+            @if (isStaff)
+            {
+                <a asp-page="./Edit" asp-route-id="@Model.MedicalService.ServiceId" class="btn btn-primary">
+                    <i class="bi bi-pencil"></i> Edit Service
+                </a>
+            }
+        </div>
+    </div>
+</div>

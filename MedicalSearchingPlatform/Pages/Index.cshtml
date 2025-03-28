@@ -59,13 +59,15 @@
             @foreach (var facility in Model.LatestFacilities)
             {
                 <div class="col-md-4">
-                    <div class="card shadow-sm">
-                        <img src="@facility.ImageUrl" class="card-img-top" alt="@facility.FacilityName">
-                        <div class="card-body">
-                            <h5 class="card-title">@facility.FacilityName</h5>
-                            <p class="card-text">@facility.Infor</p>
+                    <a asp-page="/MedicalFacilityPage/Details" asp-route-id="@facility.FacilityId" class="text-decoration-none">
+                        <div class="card shadow-sm">
+                            <img src="@facility.ImageUrl" class="card-img-top" alt="@facility.FacilityName">
+                            <div class="card-body">
+                                <h5 class="card-title">@facility.FacilityName</h5>
+                                <p class="card-text">@facility.Infor</p>
+                            </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
             }
         }
@@ -76,7 +78,6 @@
     </div>
 </section>
 
-
 <!-- Newest Doctors Section -->
 <section class="container mt-5">
     <h2 class="text-center">Our Newest Doctors</h2>
@@ -86,13 +87,15 @@
             @foreach (var doctor in Model.LatestDoctors)
             {
                 <div class="col-md-4">
-                    <div class="card shadow-sm">
-                        <img src="@doctor.ImageUrl" class="card-img-top" alt="@doctor.User.FullName">
-                        <div class="card-body">
-                            <h5 class="card-title">@doctor.User.FullName</h5>
-                            <p class="card-text">@doctor.Specialization</p>
+                    <a asp-page="/DoctorPage/Details" asp-route-id="@doctor.DoctorId" class="text-decoration-none">
+                        <div class="card shadow-sm">
+                            <img src="@doctor.ImageUrl" class="card-img-top" alt="@doctor.User.FullName">
+                            <div class="card-body">
+                                <h5 class="card-title">@doctor.User.FullName</h5>
+                                <p class="card-text">@doctor.Specialization</p>
+                            </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
             }
         }
@@ -102,3 +105,4 @@
         }
     </div>
 </section>
+

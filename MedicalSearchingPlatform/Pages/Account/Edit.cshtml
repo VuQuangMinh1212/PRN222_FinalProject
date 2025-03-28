@@ -1,0 +1,136 @@
+﻿@page
+@model MedicalSearchingPlatform.Pages.Account.EditModel
+@{
+    ViewData["Title"] = "Edit Account";
+    bool isAdmin = ViewData["IsAdmin"] as bool? ?? false;
+}
+
+<div class="container mt-5">
+    <h2 class="text-center">Edit Account</h2>
+
+    <form method="post">
+        <input type="hidden" asp-for="Input.Id" />
+
+        <div class="mb-3">
+            <label class="form-label">Full Name</label>
+            <input type="text" class="form-control" asp-for="Input.FullName" required />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-control" asp-for="Input.Email" required />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Phone Number</label>
+            <input type="email" class="form-control" asp-for="Input.PhoneNumber" required />
+        </div>
+
+        @if (isAdmin)
+        {
+            <div class="mb-3">
+                <label class="form-label">Role</label>
+                <select asp-for="Input.Role" class="form-control">
+                    @foreach (var role in new List<string> { "Doctor", "Admin", "Staff", "Patient" })
+                    {
+                        <option value="@role" selected="@(role == Model.Input.Role ? "selected" : null)">@role</option>
+                    }
+                </select>
+
+            </div>
+
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDeactivateModal">
+                @(Model.Input.IsActive ? "Deactivate" : "Activate") Account
+            </button>
+        }
+        else
+        {
+            <div class="mb-3">
+                <label class="form-label">Role</label>
+                <input type="text" class="form-control" asp-for="Input.Role" readonly />
+            </div>
+
+            <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">
+                Delete Account
+            </button>
+        }
+
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmSaveModal">
+            Save
+        </button>
+    </form>
+</div>
+
+<!-- Save Confirmation Modal -->
+<div class="modal fade" id="confirmSaveModal" tabindex="-1" aria-labelledby="confirmSaveLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content p-4">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmSaveLabel">Confirm Changes</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to save these changes?</p>
+            </div>
+            <div class="modal-footer">
+                <form method="post" asp-page-handler="SaveChanges">
+                    <input type="hidden" asp-for="Input.Id" />
+                    <button type="submit" class="btn btn-primary">Confirm</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Deactivate Confirmation Modal -->
+@if (isAdmin)
+{
+    <div class="modal fade" id="confirmDeactivateModal" tabindex="-1" aria-labelledby="confirmDeactivateLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content p-4">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmDeactivateLabel">Confirm Action</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to <strong>@(Model.Input.IsActive ? "deactivate" : "activate")</strong> this account?</p>
+                </div>
+                <div class="modal-footer">
+                    <form method="post" asp-page-handler="ToggleStatus">
+                        <input type="hidden" asp-for="Input.Id" />
+                        <button type="submit" class="btn btn-danger">Confirm</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<!-- Delete Confirmation Modal (For Non-Admins) -->
+@if (!isAdmin)
+{
+    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content p-4">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmDeleteLabel">Delete Account</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>To delete your account, enter your password:</p>
+                    <form method="post" asp-page-handler="DeleteAccount">
+                        <input type="hidden" asp-for="Input.Id" />
+                        <div class="mb-3">
+                            <input type="password" class="form-control" placeholder="Enter Password" name="Password" required />
+                        </div>
+                        <button type="submit" class="btn btn-danger">Confirm Delete</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+}

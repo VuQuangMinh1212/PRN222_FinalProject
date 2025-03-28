@@ -22,7 +22,9 @@ namespace MedicalSearchingPlatform.Data.Repositories
         public async Task<Appointment> GetAppointmentByIdAsync(string appointmentId)
         {
             return await _context.Appointments.Include(a => a.Patient)
+                                              .ThenInclude(p => p.User)
                                               .Include(a => a.Doctor)
+                                              .ThenInclude(d => d.User)
                                               .FirstOrDefaultAsync(a => a.AppointmentId == appointmentId);
         }
 

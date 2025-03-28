@@ -20,5 +20,5 @@ namespace MedicalSearchingPlatform.Business.Interfaces
         Task<IEnumerable<Doctor>> GetMostBookedDoctorsAsync(int top);
     }
 
-        
+
 }

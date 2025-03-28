@@ -1,9 +1,14 @@
-﻿using MedicalSearchingPlatform.Data.Entities;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using MedicalSearchingPlatform.Data.DataContext;
+using MedicalSearchingPlatform.Data.Entities;
 
-namespace MedicalSearchingPlatform.Pages.MedicalFacilityPage
+namespace MedicalSearchingPlatform.Pages.AppointmentPage
 {
     public class DeleteModel : PageModel
     {
@@ -15,7 +20,7 @@ namespace MedicalSearchingPlatform.Pages.MedicalFacilityPage
         }
 
         [BindProperty]
-        public MedicalFacility MedicalFacility { get; set; } = default!;
+        public Appointment Appointment { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(string id)
         {
@@ -24,15 +29,15 @@ namespace MedicalSearchingPlatform.Pages.MedicalFacilityPage
                 return NotFound();
             }
 
-            var medicalfacility = await _context.MedicalFacilities.FirstOrDefaultAsync(m => m.FacilityId == id);
+            var appointment = await _context.Appointments.FirstOrDefaultAsync(m => m.AppointmentId == id);
 
-            if (medicalfacility == null)
+            if (appointment == null)
             {
                 return NotFound();
             }
             else
             {
-                MedicalFacility = medicalfacility;
+                Appointment = appointment;
             }
             return Page();
         }
@@ -44,11 +49,11 @@ namespace MedicalSearchingPlatform.Pages.MedicalFacilityPage
                 return NotFound();
             }
 
-            var medicalfacility = await _context.MedicalFacilities.FindAsync(id);
-            if (medicalfacility != null)
+            var appointment = await _context.Appointments.FindAsync(id);
+            if (appointment != null)
             {
-                MedicalFacility = medicalfacility;
-                _context.MedicalFacilities.Remove(MedicalFacility);
+                Appointment = appointment;
+                _context.Appointments.Remove(Appointment);
                 await _context.SaveChangesAsync();
             }
 

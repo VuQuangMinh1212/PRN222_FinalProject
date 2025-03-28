@@ -4,9 +4,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace MedicalSearchingPlatform.Pages.Account
 {
@@ -18,7 +15,7 @@ namespace MedicalSearchingPlatform.Pages.Account
         public IndexModel(UserManager<User> userManager, ApplicationDbContext dbContext)
         {
             _userManager = userManager;
-            _dbContext = dbContext;  // ✅ Inject Database Context
+            _dbContext = dbContext;
         }
 
         public List<UserViewModel> Users { get; set; }

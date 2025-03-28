@@ -1,13 +1,16 @@
-﻿using MedicalSearchingPlatform.Data.Entities;
-using Microsoft.AspNetCore.Authorization;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using MedicalSearchingPlatform.Data.DataContext;
+using MedicalSearchingPlatform.Data.Entities;
 
-namespace MedicalSearchingPlatform.Pages.DoctorPage
+namespace MedicalSearchingPlatform.Pages.AppointmentPage
 {
-    [Authorize(Roles = "Admin,Doctor")]
     public class EditModel : PageModel
     {
         private readonly MedicalSearchingPlatform.Data.DataContext.ApplicationDbContext _context;
@@ -18,7 +21,7 @@ namespace MedicalSearchingPlatform.Pages.DoctorPage
         }
 
         [BindProperty]
-        public Doctor Doctor { get; set; } = default!;
+        public Appointment Appointment { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(string id)
         {
@@ -27,14 +30,14 @@ namespace MedicalSearchingPlatform.Pages.DoctorPage
                 return NotFound();
             }
 
-            var doctor = await _context.Doctors.FirstOrDefaultAsync(m => m.DoctorId == id);
-            if (doctor == null)
+            var appointment =  await _context.Appointments.FirstOrDefaultAsync(m => m.AppointmentId == id);
+            if (appointment == null)
             {
                 return NotFound();
             }
-            Doctor = doctor;
-            ViewData["FacilityId"] = new SelectList(_context.MedicalFacilities, "FacilityId", "FacilityId");
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserId");
+            Appointment = appointment;
+           ViewData["DoctorId"] = new SelectList(_context.Doctors, "DoctorId", "DoctorId");
+           ViewData["PatientId"] = new SelectList(_context.Patients, "PatientId", "PatientId");
             return Page();
         }
 
@@ -47,7 +50,7 @@ namespace MedicalSearchingPlatform.Pages.DoctorPage
                 return Page();
             }
 
-            _context.Attach(Doctor).State = EntityState.Modified;
+            _context.Attach(Appointment).State = EntityState.Modified;
 
             try
             {
@@ -55,7 +58,7 @@ namespace MedicalSearchingPlatform.Pages.DoctorPage
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!DoctorExists(Doctor.DoctorId))
+                if (!AppointmentExists(Appointment.AppointmentId))
                 {
                     return NotFound();
                 }
@@ -68,9 +71,9 @@ namespace MedicalSearchingPlatform.Pages.DoctorPage
             return RedirectToPage("./Index");
         }
 
-        private bool DoctorExists(string id)
+        private bool AppointmentExists(string id)
         {
-            return _context.Doctors.Any(e => e.DoctorId == id);
+            return _context.Appointments.Any(e => e.AppointmentId == id);
         }
     }
 }
