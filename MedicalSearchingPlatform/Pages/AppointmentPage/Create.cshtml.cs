@@ -22,7 +22,6 @@ namespace MedicalSearchingPlatform.Pages.AppointmentPage
         [BindProperty]
         public Appointment Appointment { get; set; } = new Appointment();
         public SelectList WorkingSchedules { get; set; }
-        public string UserId { get; set; }
 
         public CreateModel(IAppointmentService appointmentService,
             IDoctorService doctorService,
@@ -38,8 +37,6 @@ namespace MedicalSearchingPlatform.Pages.AppointmentPage
 
         public async Task<IActionResult> OnGet(string doctorId)
         {
-            UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
             var schedules = await _workingScheduleService.GetAvailableWorkingScheduleOfDoctor(doctorId);
             var selectedItem = schedules.Select(ws => new SelectListItem
             {
@@ -87,7 +84,9 @@ namespace MedicalSearchingPlatform.Pages.AppointmentPage
 
         public async Task<IActionResult> OnPostAsync()
         {
-           
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var patient = await _patientService.GetPatientByUserId(userId);
+            Appointment.PatientId = patient.PatientId;
             bool isBooked = await _appointmentService.BookAppointmentAsync(Appointment);
             if (!isBooked)
             {

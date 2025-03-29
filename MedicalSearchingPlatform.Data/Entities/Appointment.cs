@@ -23,7 +23,8 @@ namespace MedicalSearchingPlatform.Data.Entities
         public virtual WorkingSchedule WorkingSchedule { get; set; }
 
         [Required, Display(Name = " Appoiment Date")]
-        public DateTime AppointmentDate { get; set; }
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        public DateTime AppointmentDate { get; set; } = DateTime.Now;
 
         [Required, Display(Name = "Appointment Info")]
         [MaxLength(500)]
