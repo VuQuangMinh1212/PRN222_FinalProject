@@ -1,20 +1,13 @@
 ﻿@page
 @model MedicalSearchingPlatform.Pages.AppointmentPage.CreateModel
 
-@{
-    ViewData["Title"] = "Create";
-}
-
-<h1>Create</h1>
-
-<h4>Appointment</h4>
-<hr />
 <div class="row">
-    <div class="col-md-4">
-        <form method="post">
+    <div class="col-md-12 mx-auto">
+        <form method="post" asp-page="/ApopointmentPage/Create" onsubmit="return jQueryModalPost(event,this)">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input asp-for="Appointment.PatientId" value="@Model.UserId" />
             <div class="form-group">
-                <input asp-for="Appointment.AppointmentId" class="form-control" type="hidden"/>
+                <input asp-for="Appointment.AppointmentId" class="form-control" type="hidden" />
                 <span asp-validation-for="Appointment.AppointmentId" class="text-danger" type="hidden"></span>
             </div>
             <div class="form-group">
@@ -22,7 +15,7 @@
                 <label asp-for="Appointment.DoctorId" class="control-label"></label>
                 @if (ViewBag.DoctorId != null)
                 {
-                    <select asp-for="Appointment.DoctorId" class="form-control" asp-items="ViewBag.DoctorId"></select>
+                    <select id="DoctorId" asp-for="Appointment.DoctorId" class="form-control" asp-items="ViewBag.DoctorId"></select>
                 }
                 else
                 {
@@ -31,16 +24,23 @@
             </div>
             <div class="form-group">
                 <span class="text-danger">*</span>
-                <label asp-for="Appointment.PatientId" class="control-label"></label>
-                @if (ViewBag.PatientId != null)
-                {
-                    <select asp-for="Appointment.PatientId" class="form-control" asp-items="ViewBag.PatientId"></select>
-                }
-                else
-                {
-                    <select class="form-control" disabled><option>No patients available</option></select>
-                }
+                <label for="scheduleDropdown">Available Schedules</label>
+                <select id="scheduleDropdown" asp-for="Appointment.ScheduleId" class="form-control">
+                    <option value="">Select a schedule</option>
+                </select>
             </div>
+            @* <div class="form-group"> *@
+            @*     <span class="text-danger">*</span> *@
+            @*     <label asp-for="Appointment.PatientId" class="control-label"></label> *@
+            @*     @if (ViewBag.PatientId != null) *@
+            @*     { *@
+            @*         <select asp-for="Appointment.PatientId" class="form-control" asp-items="ViewBag.PatientId"></select> *@
+            @*     } *@
+            @*     else *@
+            @*     { *@
+            @*         <select class="form-control" disabled><option>No patients available</option></select> *@
+            @*     } *@
+            @* </div> *@
             <div class="form-group">
                 <span class="text-danger">*</span>
                 <label asp-for="Appointment.AppointmentDate" class="control-label"></label>
@@ -52,23 +52,69 @@
                 <input asp-for="Appointment.AppointmentInfo" class="form-control" />
                 <span asp-validation-for="Appointment.AppointmentInfo" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group" hidden>
                 <span class="text-danger">*</span>
                 <label asp-for="Appointment.Status" class="control-label"></label>
                 <input asp-for="Appointment.Status" class="form-control" />
                 <span asp-validation-for="Appointment.Status" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group d-flex justify-content-end mt-2">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-page="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        $(document).ready(function () {
+            $("#DoctorId").change(function () {
+                var doctorId = $(this).val();
+                if (doctorId) {
+                    $.ajax({
+                        url: "/AppointmentPage/Create?handler=Schedules&doctorId=" + doctorId,
+                        type: "GET",
+                        data: { doctorId: doctorId },
+                        success: function (data) {
+                            var scheduleDropdown = $("#scheduleDropdown");
+                            scheduleDropdown.empty();
+                            if (data.length > 0) {
+                                var groupedSchedules = {};
+
+                                // Nhóm lịch theo ngày
+                                data.forEach(item => {
+                                    let date = item.text.split(" | ")[1];
+                                    if (!groupedSchedules[date]) {
+                                        groupedSchedules[date] = [];
+                                    }
+                                    groupedSchedules[date].push(item);
+                                });
+
+                                // Render danh sách theo ngày
+                                scheduleDropdown.append('<option value="">Select a schedule</option>');
+                                Object.keys(groupedSchedules).forEach(date => {
+                                    scheduleDropdown.append(`<optgroup label="${date}">`);
+                                    groupedSchedules[date].forEach(item => {
+                                        scheduleDropdown.append(`<option value="${item.value}">${item.text.split(" | ")[0]}</option>`);
+                                    });
+                                    scheduleDropdown.append(`</optgroup>`);
+                                });
+                            } else {
+                                scheduleDropdown.append('<option value="">No available schedules</option>');
+                            }
+                        },
+                        error: function () {
+                            alert("Failed to load schedules. Please try again.");
+                        }
+                    });
+                } else {
+                    $("#scheduleDropdown").empty().append('<option value="">Select a schedule</option>');
+                }
+            });
+        });
+    </script>
 }

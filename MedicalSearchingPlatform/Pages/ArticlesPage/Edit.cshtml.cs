@@ -21,11 +21,18 @@ namespace MedicalSearchingPlatform.Pages.ArticlesPage
         [BindProperty]
         public Article Article { get; set; } = default!;
         public SelectList ArticleCategories { get; set; }
+        public SelectList ArticlesStatus { get; set; }
 
         public async Task<IActionResult> OnGetAsync(string id)
         {
             var categories = await _articleCategoryService.GetAllArticleCategoryAsync();
+            var status = new List<string>
+            {
+                "Draft",
+                "Published"
+            };
             ArticleCategories = new SelectList(categories, "CategoryId", "Name");
+            ArticlesStatus = new SelectList(status);
             Article = await _articleService.GetArticleByIdAsync(id);
             return Page();
         }

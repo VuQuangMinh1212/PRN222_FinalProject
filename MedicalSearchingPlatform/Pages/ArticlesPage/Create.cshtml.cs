@@ -23,11 +23,18 @@ namespace MedicalSearchingPlatform.Pages.ArticlesPage
         }
 
         public SelectList ArticleCategories { get; set; }
+        public SelectList ArticleStatus { get; set; }
 
         public async Task<IActionResult> OnGet()
         {
             var categories = await _articleCategoryService.GetAllArticleCategoryAsync();
+            var status = new List<String>
+            {
+                "Published",
+                "Draft"
+            };
             ArticleCategories = new SelectList(categories, "CategoryId", "Name");
+            ArticleStatus = new SelectList(status);
             return Page();
         }
 

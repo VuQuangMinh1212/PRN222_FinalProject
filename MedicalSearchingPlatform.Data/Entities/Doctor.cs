@@ -30,8 +30,11 @@ namespace MedicalSearchingPlatform.Data.Entities
         // New fields
         [Column(TypeName = "decimal(10,2)")]
         public decimal Fee { get; set; }
-        public ICollection<Review> Reviews { get; set; }
 
-        public ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
+        public virtual ICollection<Review> Reviews { get; set; }
+
+        public virtual ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
+        public virtual ICollection<WorkingSchedule> WorkingSchedules { get; set; } = new List<WorkingSchedule>();
+
     }
 }

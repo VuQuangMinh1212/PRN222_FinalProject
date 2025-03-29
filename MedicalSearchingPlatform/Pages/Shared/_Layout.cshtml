@@ -78,6 +78,7 @@
                             else if (roles.Contains("Doctor"))
                             {
                                 <li class="nav-item"><a class="nav-link text-white" asp-page="/AppointmentPage/Index">Appointments</a></li>
+                                <li class="nav-item"><a class="nav-link text-white" asp-page="/WorkingSchedulePage/Index">Schedule</a></li>
                                 <li class="nav-item"><a class="nav-link text-white" asp-page="/AppointmentPage/History">History</a></li>
                                 <li class="nav-item"><a class="nav-link text-white" asp-page="/Contact">Contact</a></li>
                                 <li class="nav-item"><a class="nav-link text-white" asp-page="/Privacy">Privacy</a></li>
@@ -114,9 +115,11 @@
 
             }
 
-
-            <!-- Make an Appointment Button -->
-            <a href="/AppointmentPage/Create" class="btn btn-warning ms-3 text-dark fw-bold">Make an Appointment</a>
+            @if (User.IsInRole("Patient"))
+            {
+                <!-- Make an Appointment Button -->
+                <a href="/AppointmentPage/Create" class="btn btn-warning ms-3 text-dark fw-bold">Make an Appointment</a>
+            }
         </div>
     </header>
 

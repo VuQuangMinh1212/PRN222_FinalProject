@@ -1,0 +1,75 @@
+﻿@page
+@model MedicalSearchingPlatform.Pages.WorkingSchedulePage.EditModel
+
+@{
+    Layout = null;
+
+    var timeSlots = new List<SelectListItem>();
+    for (int hour = 8; hour < 19; hour++)
+    {
+        string startTime = $"{hour:D2}:00";
+        string endTime = $"{hour + 1:D2}:00";
+        string timeRange = $"{startTime} - {endTime}";
+
+        timeSlots.Add(new SelectListItem { Value = startTime, Text = timeRange });
+    }
+
+    string selectedTimeRange = $"{Model.WorkingSchedule.StartTime}-{Model.WorkingSchedule.EndTime}";
+}
+
+<div class="row">
+    <div class="col-md-12 mx-auto">
+        <form method="post" asp-page="/WorkingSchedulePage/Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="WorkingSchedule.DoctorId" value="@Model.WorkingSchedule.DoctorId" />
+            <input type="hidden" asp-for="WorkingSchedule.ScheduleId" />
+
+            <div class="form-group">
+                <span class="text-danger">*</span>
+                <label asp-for="WorkingSchedule.WorkDate" class="control-label"></label>
+                <input asp-for="WorkingSchedule.WorkDate" class="form-control" type="date" id="workDate" min="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                <span asp-validation-for="WorkingSchedule.WorkDate" class="text-danger"></span>
+            </div>
+
+            <div class="form-group my-3">
+                <span class="text-danger">*</span>
+                <label class="control-label">Chọn khung giờ</label>
+                <select asp-for="WorkingSchedule.StartTime" class="form-control">
+                    @foreach (var slot in timeSlots)
+                    {
+                        <option value="@slot.Value" selected="@(selectedTimeRange == slot.Value ? "selected" : null)">
+                            @slot.Text
+                        </option>
+                    }
+                </select>
+                <span asp-validation-for="WorkingSchedule.StartTime" class="text-danger"></span>
+            </div>
+
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="WorkingSchedule.IsAvailable" /> Hoạt động
+                </label>
+            </div>
+
+            <div class="form-group d-flex justify-content-end">
+                <input type="submit" value="Edit" class="btn btn-primary" />
+
+                <!-- Nút Delete dùng JavaScript -->
+                <button type="button" class="btn btn-danger btn-sm text-white" onclick="submitDeleteForm('@Model.WorkingSchedule.ScheduleId')">
+                    <i class="fa fa-trash"></i> Delete
+                </button>
+
+            </div>
+        </form>
+        <form id="deleteForm" method="post" asp-page="/WorkingSchedulePage/Delete" onsubmit="return jQueryModalDelete(this)">
+            <input type="hidden" name="id" id="deleteScheduleId" />
+        </form>
+    </div>
+</div>
+
+<script>
+    function submitDeleteForm(scheduleId) {
+        document.getElementById("deleteScheduleId").value = scheduleId;
+        document.getElementById("deleteForm").submit();
+    }
+</script>

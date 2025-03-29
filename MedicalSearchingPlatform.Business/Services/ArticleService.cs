@@ -56,5 +56,10 @@ namespace MedicalSearchingPlatform.Services
         {
             return _articleRepository.GetAllQueryable();
         }
+
+        public IQueryable<Article> GetArticlesPublished()
+        {
+            return _articleRepository.GetAllArticlesPublish();
+        }
     }
 }

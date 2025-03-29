@@ -16,7 +16,7 @@ namespace MedicalSearchingPlatform.Pages.ArticlesPage
         }
 
         [BindProperty]
-        public IList<Article> Articles { get; set; } = default!;
+        //public IList<Article> Articles { get; set; } = default!;
 
         public PaginatedList<Article> ArticlePaginated { get; set; } = default!;
 
@@ -24,13 +24,24 @@ namespace MedicalSearchingPlatform.Pages.ArticlesPage
 
         public async Task<IActionResult> OnGetAsync(int? pageIndex)
         {
-            //var user = User.Identity;
-            int pageSize = 5;
-            PageIndex = pageIndex ?? 1;
-            var articles = _articleService.GetArticlesQueryable();
-            ArticlePaginated = await PaginatedList<Article>.CreateAsync(articles, PageIndex, pageSize);
-            Articles = (await _articleService.GetAllArticlesAsync()).ToList();
-            return Page();
+            if (User.IsInRole("Patient") || !User.Identity.IsAuthenticated)
+            {
+                int pageSize = 9;
+                PageIndex = pageIndex ?? 1;
+                var articles = _articleService.GetArticlesPublished();
+                ArticlePaginated = await PaginatedList<Article>.CreateAsync(articles, PageIndex, pageSize);
+                //Articles = (await _articleService.GetAllArticlesAsync()).ToList();
+                return Page();
+            }
+            else
+            {
+                int pageSize = 9;
+                PageIndex = pageIndex ?? 1;
+                var articles = _articleService.GetArticlesQueryable();
+                ArticlePaginated = await PaginatedList<Article>.CreateAsync(articles, PageIndex, pageSize);
+                //Articles = (await _articleService.GetAllArticlesAsync()).ToList();
+                return Page();
+            }
         }
     }
 }

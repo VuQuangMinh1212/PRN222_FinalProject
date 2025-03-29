@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using MedicalSearchingPlatform.Data.DataContext;
 using MedicalSearchingPlatform.Data.Entities;
 using MedicalSearchingPlatform.Business.Interfaces;
+using System.Security.Claims;
 
 namespace MedicalSearchingPlatform.Pages.AppointmentPage
 {
@@ -16,42 +17,77 @@ namespace MedicalSearchingPlatform.Pages.AppointmentPage
         private readonly IAppointmentService _appointmentService;
         private readonly IDoctorService _doctorService;
         private readonly IPatientService _patientService;
+        private IWorkingScheduleService _workingScheduleService;
+
         [BindProperty]
         public Appointment Appointment { get; set; } = new Appointment();
+        public SelectList WorkingSchedules { get; set; }
+        public string UserId { get; set; }
 
-        public CreateModel(IAppointmentService appointmentService, IDoctorService doctorService, IPatientService patientService)
+        public CreateModel(IAppointmentService appointmentService,
+            IDoctorService doctorService,
+            IPatientService patientService,
+            IWorkingScheduleService workingScheduleService)
         {
             _appointmentService = appointmentService;
             _doctorService = doctorService;
             _patientService = patientService;
+            _workingScheduleService = workingScheduleService;
         }
 
-        public async Task<IActionResult> OnGet()
+
+        public async Task<IActionResult> OnGet(string doctorId)
         {
+            UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var schedules = await _workingScheduleService.GetAvailableWorkingScheduleOfDoctor(doctorId);
+            var selectedItem = schedules.Select(ws => new SelectListItem
+            {
+                Value = ws.ScheduleId,
+                Text = $"{ws.StartTime:hh\\:mm} - {ws.EndTime:hh\\:mm} | {ws.WorkDate:yyyy-MM-dd}"
+            }).ToList();
+
+            WorkingSchedules = new SelectList(selectedItem, "Value", "Text");
+
             Appointment = new Appointment { Status = "Scheduled" };
             var doctors = await _doctorService.GetAllDoctorsAsync() ?? new List<Doctor>();
-            var patients = await _patientService.GetAllPatientsAsync() ?? new List<Patient>();
+            //var patients = await _patientService.GetAllPatientsAsync() ?? new List<Patient>();
+
+
 
             ViewData["DoctorId"] = new SelectList(doctors.Select(d => new
             {
                 d.DoctorId,
-                Name = d.User?.FullName ?? "Unnamed Doctor" 
+                Name = d.User?.FullName ?? "Unnamed Doctor"
             }), "DoctorId", "Name");
 
-            ViewData["PatientId"] = new SelectList(patients.Select(p => new
-            {
-                p.PatientId,
-                Name = p.User?.FullName ?? "Unnamed Patient" 
-            }), "PatientId", "Name");
+            //ViewData["PatientId"] = new SelectList(patients.Select(p => new
+            //{
+            //    p.PatientId,
+            //    Name = p.User?.FullName ?? "Unnamed Patient"
+            //}), "PatientId", "Name");
 
             return Page();
         }
 
 
+        public async Task<JsonResult> OnGetSchedulesAsync(string doctorId)
+        {
+            var schedules = await _workingScheduleService.GetAvailableWorkingScheduleOfDoctor(doctorId);
 
-        // For more information, see https://aka.ms/RazorPagesCRUD.
+            var scheduleList = schedules.Select(ws => new SelectListItem
+            {
+                Value = ws.ScheduleId,
+                Text = $"{ws.StartTime:hh\\:mm} - {ws.EndTime:hh\\:mm} | {ws.WorkDate:yyyy-MM-dd}"
+            }).ToList();
+
+            return new JsonResult(scheduleList);
+        }
+
+
         public async Task<IActionResult> OnPostAsync()
         {
+           
             bool isBooked = await _appointmentService.BookAppointmentAsync(Appointment);
             if (!isBooked)
             {

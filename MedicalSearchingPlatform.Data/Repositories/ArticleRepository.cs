@@ -15,7 +15,7 @@ namespace MedicalSearchingPlatform.Data.Repositories
 
         public async Task<IEnumerable<Article>> GetAllArticlesAsync()
         {
-            return await _context.Articles.Include(a => a.Author).Include(a => a.Category).OrderByDescending(x=>x.PublishedDate).ToListAsync();
+            return await _context.Articles.Include(a => a.Author).Include(a => a.Category).OrderByDescending(x => x.PublishedDate).ToListAsync();
         }
 
         public async Task<Article> GetArticleByIdAsync(string articleId)
@@ -54,6 +54,11 @@ namespace MedicalSearchingPlatform.Data.Repositories
         public IQueryable<Article> GetAllQueryable()
         {
             return _context.Articles.Include(a => a.Category).OrderByDescending(x => x.PublishedDate);
+        }
+
+        public IQueryable<Article> GetAllArticlesPublish()
+        {
+            return _context.Articles.Include(a => a.Category).Where(x => x.Status == "Published").OrderByDescending(x => x.PublishedDate);
         }
     }
 }

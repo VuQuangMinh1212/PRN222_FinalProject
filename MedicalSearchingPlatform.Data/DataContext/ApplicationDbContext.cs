@@ -21,6 +21,7 @@ namespace MedicalSearchingPlatform.Data.DataContext
         public DbSet<Payment> Payments { get; set; }
         public DbSet<ArticleLike> ArticleLikes { get; set; }
         public DbSet<ArticleCategory> ArticleCategories { get; set; }
+        public DbSet<WorkingSchedule> WorkingSchedules { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -71,6 +72,12 @@ namespace MedicalSearchingPlatform.Data.DataContext
                 .WithMany()
                 .HasForeignKey(d => d.FacilityId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Doctor>()
+                .HasMany(d => d.WorkingSchedules)
+                .WithOne(d => d.Doctor)
+                .HasForeignKey(d => d.DoctorId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             // Review Configuration
             modelBuilder.Entity<Review>()
@@ -124,6 +131,12 @@ namespace MedicalSearchingPlatform.Data.DataContext
                 .HasForeignKey(a => a.DoctorId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<Appointment>()
+               .HasOne(a => a.WorkingSchedule)
+               .WithMany(ws => ws.Appointments)
+               .HasForeignKey(a => a.ScheduleId)
+               .OnDelete(DeleteBehavior.NoAction);
+
 
             // Article Configuration
             modelBuilder.Entity<Article>()
@@ -171,6 +184,10 @@ namespace MedicalSearchingPlatform.Data.DataContext
                 .WithMany()
                 .HasForeignKey(al => al.UserId)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            // Working Schedule
+
+            modelBuilder.Entity<WorkingSchedule>().HasKey(ws => ws.ScheduleId);
         }
     }
 }

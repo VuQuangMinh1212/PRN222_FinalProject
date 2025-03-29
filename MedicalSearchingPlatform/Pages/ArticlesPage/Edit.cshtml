@@ -30,8 +30,7 @@
             <div class="form-group">
                 <span class="text-danger">*</span>
                 <label asp-for="Article.Status" class="control-label"></label>
-                <input asp-for="Article.Status" class="form-control" />
-                <span asp-validation-for="Article.Status" class="text-danger"></span>
+                <select asp-for="Article.Status" class="form-control" asp-items="Model.ArticlesStatus"></select>
             </div>
             <div class="form-group d-flex justify-content-end mt-2">
                 <input type="submit" value="Save" class="btn btn-primary" />

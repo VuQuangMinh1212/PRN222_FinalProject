@@ -22,7 +22,8 @@
         }
     }
 
-    jQueryModalPost = form => {
+    jQueryModalPost = (event, form) => {
+        event.preventDefault();
         try {
             $.ajax({
                 type: 'POST',
@@ -43,11 +44,11 @@
         } catch (ex) {
             console.log(ex)
         }
+        return false;
     }
 
     jQueryModalDelete = form => {
         if (confirm('Are you sure to delete this record ?')) {
-            console.log(form);
             try {
                 $.ajax({
                     type: 'POST',
