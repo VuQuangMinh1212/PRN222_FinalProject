@@ -85,16 +85,19 @@ namespace MedicalSearchingPlatform.Data.DataContext
             modelBuilder.Entity<Review>()
                 .Property(r => r.CreatedDate)
                 .HasDefaultValueSql("GETDATE()");
+
             modelBuilder.Entity<Review>()
                 .HasOne(r => r.Patient)
                 .WithMany()
                 .HasForeignKey(r => r.PatientId)
                 .OnDelete(DeleteBehavior.NoAction); // Prevents cascade cycles
+
             modelBuilder.Entity<Review>()
                 .HasOne(r => r.Doctor)
                 .WithMany()
                 .HasForeignKey(r => r.DoctorId)
                 .OnDelete(DeleteBehavior.Cascade);
+
             modelBuilder.Entity<Review>()
                 .HasOne(r => r.MedicalFacility)
                 .WithMany()
@@ -104,6 +107,7 @@ namespace MedicalSearchingPlatform.Data.DataContext
             // Patient Configuration
             modelBuilder.Entity<Patient>()
                 .HasKey(p => p.PatientId);
+
             modelBuilder.Entity<Patient>()
                 .HasOne(p => p.User)
                 .WithOne()

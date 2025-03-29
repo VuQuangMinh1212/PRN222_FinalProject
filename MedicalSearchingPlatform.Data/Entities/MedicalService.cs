@@ -7,6 +7,6 @@
         public string Description { get; set; }
         public string Status { get; set; }
 
-        public ICollection<MedicalFacilityService> FacilityServices { get; set; } = new List<MedicalFacilityService>();
+        public virtual ICollection<MedicalFacilityService> FacilityServices { get; set; } = new List<MedicalFacilityService>();
     }
 }

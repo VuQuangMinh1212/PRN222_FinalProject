@@ -35,7 +35,11 @@ namespace MedicalSearchingPlatform.Data.Repositories
 
         public async Task<IEnumerable<Appointment>> GetAppointmentsByDoctorIdAsync(string doctorId)
         {
-            return await _context.Appointments.Where(a => a.DoctorId == doctorId).ToListAsync();
+            return await _context.Appointments
+                .Include(x => x.Patient)
+                    .ThenInclude(p => p.User)
+                .Where(a => a.DoctorId == doctorId)
+                .ToListAsync();
         }
 
         public async Task AddAppointmentAsync(Appointment appointment)

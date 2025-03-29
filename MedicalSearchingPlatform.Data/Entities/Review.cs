@@ -11,15 +11,15 @@ namespace MedicalSearchingPlatform.Data.Entities
         [Required]
         [ForeignKey("Patient")]
         public string PatientId { get; set; }
-        public Patient Patient { get; set; }
+        public virtual Patient Patient { get; set; }
 
         [ForeignKey("Doctor")]
         public string? DoctorId { get; set; } // Nullable for facility reviews
-        public Doctor? Doctor { get; set; }
+        public virtual Doctor? Doctor { get; set; }
 
         [ForeignKey("MedicalFacility")]
         public string? FacilityId { get; set; } // Nullable for doctor reviews
-        public MedicalFacility? MedicalFacility { get; set; }
+        public virtual MedicalFacility? MedicalFacility { get; set; }
 
         [Required]
         [Range(1, 5)]

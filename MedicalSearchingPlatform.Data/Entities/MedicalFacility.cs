@@ -22,7 +22,7 @@ namespace MedicalSearchingPlatform.Data.Entities
         [MaxLength(15)]
         public string PhoneNumber { get; set; }
 
-        public ICollection<MedicalFacilityService> FacilityServices { get; set; } = new List<MedicalFacilityService>();
+        public virtual ICollection<MedicalFacilityService> FacilityServices { get; set; } = new List<MedicalFacilityService>();
 
         [MaxLength(255)]
         public string ImageUrl { get; set; } = "/img/testimonials/departments-2.jpg";

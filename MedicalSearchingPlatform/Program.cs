@@ -23,7 +23,7 @@ var configuration = new ConfigurationBuilder()
     .Build();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+    options.UseLazyLoadingProxies().UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
 
 builder.Services.AddIdentity<User, IdentityRole>()

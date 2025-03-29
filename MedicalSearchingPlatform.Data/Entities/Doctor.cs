@@ -10,11 +10,11 @@ namespace MedicalSearchingPlatform.Data.Entities
 
         [ForeignKey("User")]
         public string UserId { get; set; }
-        public User User { get; set; }
+        public virtual User User { get; set; }
 
         [ForeignKey("MedicalFacility")]
         public string FacilityId { get; set; }
-        public MedicalFacility Facility { get; set; }
+        public virtual MedicalFacility Facility { get; set; }
 
         public string Specialization { get; set; }
         public int ExperienceYears { get; set; }
