@@ -21,6 +21,7 @@ namespace MedicalSearchingPlatform.Data.DataContext
         public DbSet<Payment> Payments { get; set; }
         public DbSet<ArticleLike> ArticleLikes { get; set; }
         public DbSet<ArticleCategory> ArticleCategories { get; set; }
+        public DbSet<MedicalRecord> MedicalRecords { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -171,6 +172,25 @@ namespace MedicalSearchingPlatform.Data.DataContext
                 .WithMany()
                 .HasForeignKey(al => al.UserId)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<MedicalRecord>()
+                .HasKey(mr => mr.MedicalRecordId);
+            modelBuilder.Entity<MedicalRecord>()
+                .Property(mr => mr.RecordDate)
+                .HasDefaultValueSql("GETDATE()"); // Auto-set creation date
+            modelBuilder.Entity<MedicalRecord>()
+                .HasOne(mr => mr.Patient)
+                .WithMany(p => p.MedicalRecords)
+                .HasForeignKey(mr => mr.PatientId)
+                .OnDelete(DeleteBehavior.Cascade); // Delete records if patient is deleted
+            modelBuilder.Entity<MedicalRecord>()
+                .HasOne(mr => mr.Doctor)
+                .WithMany(d => d.MedicalRecords)
+                .HasForeignKey(mr => mr.DoctorId)
+                .OnDelete(DeleteBehavior.Restrict); // Prevent deletion of doctor if records exist
+            modelBuilder.Entity<MedicalRecord>()
+                .Property(mr => mr.IsShared)
+                .HasDefaultValue(false);
         }
     }
 }
