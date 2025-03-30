@@ -1,5 +1,6 @@
 ﻿using MedicalSearchingPlatform.Data.DataContext;
 using MedicalSearchingPlatform.Data.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace MedicalSearchingPlatform.Data.Repositories
 {
@@ -47,6 +48,22 @@ namespace MedicalSearchingPlatform.Data.Repositories
                 _context.Users.Remove(user);
                 _context.SaveChanges();
             }
+        }
+
+        public async Task<User> GetUserByDoctorIdAsync(string doctorId)
+        {
+            return await _context.Users
+                .Include(u => u.Doctor)
+                .Where(u => u.Doctor != null && u.Doctor.DoctorId == doctorId)
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task<User> GetUserByPatientIdAsync(string patientId)
+        {
+            return await _context.Users
+                .Include(u => u.Patient)
+                .Where(u => u.Patient != null && u.Patient.PatientId == patientId)
+                .FirstOrDefaultAsync();
         }
     }
 }

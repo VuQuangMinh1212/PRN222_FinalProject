@@ -10,5 +10,7 @@ namespace MedicalSearchingPlatform.Business.Interfaces
         void RegisterUser(User user);
         void UpdateUser(User user);
         void DeleteUser(int userId);
+        Task<User> GetUserByDoctorIdAsync(string doctorId);
+        Task<User> GetUserByPatientIdAsync(string patientId);
     }
 }
