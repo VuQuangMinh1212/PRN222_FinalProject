@@ -16,10 +16,12 @@ builder.Services.AddRazorPages();
 
 
 
-var configuration = new ConfigurationBuilder()
+/*var configuration = new ConfigurationBuilder()
     .SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), "../MedicalSearchingPlatform.Data")) // Trỏ đến thư mục Data
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-    .Build();
+    .Build();*/
+var configuration = builder.Configuration;
+
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));

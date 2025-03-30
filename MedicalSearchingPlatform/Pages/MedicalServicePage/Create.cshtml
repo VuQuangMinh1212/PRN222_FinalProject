@@ -5,7 +5,7 @@
     ViewData["Title"] = "Create Medical Service";
 }
 
-<div class="container mt-5">
+<div class="create-account container mt-5">
     <h2 class="text-center">Create Medical Service</h2>
 
     <div class="card shadow-lg p-4">
@@ -33,11 +33,11 @@
                 <span asp-validation-for="MedicalService.Status" class="text-danger"></span>
             </div>
 
-            <div class="text-center mt-4">
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmCreateModal">
+            <div class="text-center mt-4 d-flex justify-content-center gap-2">
+                <button type="button" class="btn-create-new-account " data-bs-toggle="modal" data-bs-target="#confirmCreateModal">
                     Create Service
                 </button>
-                <a asp-page="Index" class="btn btn-secondary">Back to List</a>
+                <a asp-page="Index" class="btn-back">Back to List</a>
             </div>
         </form>
     </div>

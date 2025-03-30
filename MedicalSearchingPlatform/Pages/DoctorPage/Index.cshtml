@@ -3,37 +3,36 @@
 @{
     ViewData["Title"] = "Doctors";
 }
+<div class="account container mt-5">
+<h2 class="text-center">Find a Doctor</h2>
 
-<h1>Find a Doctor</h1>
-
-<form method="get" class="mb-4">
-    <div class="row">
-        <div class="col-md-3">
-            <input type="text" class="form-control" asp-for="SearchName" placeholder="Doctor Name" />
-        </div>
-        <div class="col-md-3">
-            <input type="text" class="form-control" asp-for="SearchSpecialty" placeholder="Specialty" />
-        </div>
-        <div class="col-md-3">
-            <input type="text" class="form-control" asp-for="SearchFacility" placeholder="Facility" />
-        </div>
+    <form method="get" class="bg-light p-4 rounded">
+        <div class="row g-3">
+            <div class="col-md-4">
+                <input type="text" class="form-control" asp-for="SearchName" placeholder="Doctor Name" />
+            </div>
+            <div class="col-md-4">
+                <input type="text" class="form-control" asp-for="SearchSpecialty" placeholder="Specialty" />
+            </div>
+            <div class="col-md-4">
+                <input type="text" class="form-control" asp-for="SearchFacility" placeholder="Facility" />
+            </div>
+            <div class="col-md-4">
+                <input type="text" class="form-control" asp-for="SearchExpertise" placeholder="Expertise" />
+            </div>
+            <div class="col-md-4">
+                <input type="number" class="form-control" asp-for="SearchMinRating" placeholder="Min Rating" step="0.1" />
+            </div>
+            <div class="col-md-4">
+                <input type="number" class="form-control" asp-for="SearchMaxFee" placeholder="Max Fee" step="0.01" />
+            </div>
     </div>
-    <div class="row mt-2">
-        <div class="col-md-3">
-            <input type="text" class="form-control" asp-for="SearchExpertise" placeholder="Expertise" />
-        </div>
-        <div class="col-md-3">
-            <input type="number" class="form-control" asp-for="SearchMinRating" placeholder="Min Rating" step="0.1" />
-        </div>
-        <div class="col-md-3">
-            <input type="number" class="form-control" asp-for="SearchMaxFee" placeholder="Max Fee" step="0.01" />
-        </div>
-    </div>
-    <button type="submit" class="btn btn-primary mt-2">Search</button>
+        <button type="submit" class="btn-search mt-2">Search</button>
 </form>
 
-<table class="table">
-    <thead>
+    <div class="table-responsive mt-4">
+        <table class="table table-hover table-bordered text-center shadow">
+            <thead class="table-dark"">
         <tr>
             <th>Name</th>
             <th>Facility</th>
@@ -59,9 +58,11 @@
                 <td>@doctor.Fee.ToString("C")</td>
                 <td>@(doctor.Reviews.Any() ? doctor.Reviews.Average(r => r.Rating).ToString("F1") : "N/A")</td>
                 <td>
-                    <a asp-page="./Details" asp-route-id="@doctor.DoctorId">Details</a>
+                    <a asp-page="./Details" asp-route-id="@doctor.DoctorId" class="btn-save-medical">Details</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+    </div>
+</div>

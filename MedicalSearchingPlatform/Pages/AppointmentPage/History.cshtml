@@ -3,8 +3,8 @@
 @{
     ViewData["Title"] = "Appointment History";
 }
-
-<h1 class="text-center my-4">Appointment History</h1>
+<div class="account container mt-5">
+<h2 class="text-center my-4">Appointment History</h2>
 
 @if (Model.AppointmentHistory.Any())
 {
@@ -38,3 +38,4 @@ else
 {
     <p class="text-center text-muted">No past appointments found.</p>
 }
+</div>

@@ -6,16 +6,16 @@
     var isStaff = ViewData["IsStaff"] as bool? ?? false; // Ensure safe access
 }
 
-<div class="container my-5">
+<div class="medical-service-details container my-5">
     <div class="row">
         <div class="col-lg-8 mx-auto">
             @if (Model.Article != null)
             {
                 <!-- Article Title -->
-                <h1 class="fw-bold">@Model.Article.Title</h1>
+                <h2 class="text-center">@Model.Article.Title</h2>
 
                 <!-- Author & Date -->
-                <p class="text-muted">
+                <p class="text-center">
                     By <strong>@(Model.Article.Author?.FullName ?? "Unknown Author")</strong>
                     | Published on @(Model.Article.PublishedDate.ToString("MMMM dd, yyyy") ?? "Unknown Date")
                 </p>
@@ -37,14 +37,14 @@
                 </p>
 
                 <!-- Back & Edit Buttons -->
-                <div class="mt-3">
+                <div class="mt-3 d-flex gap-2 ">
                     @if (isStaff)
                     {
-                        <a asp-page="./Edit" asp-route-id="@Model.Article.ArticleId" class="btn btn-warning">
+                        <a asp-page="./Edit" asp-route-id="@Model.Article.ArticleId" class="btn-edit-profile">
                             <i class="fa fa-pen"></i> Edit
                         </a>
                     }
-                    <a asp-page="./Index" class="btn btn-secondary">
+                    <a asp-page="./Index" class="btn-back">
                         <i class="fa fa-arrow-left"></i> Back to Articles
                     </a>
                 </div>

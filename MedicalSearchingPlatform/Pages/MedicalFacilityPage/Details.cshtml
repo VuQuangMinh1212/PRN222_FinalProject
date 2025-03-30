@@ -4,52 +4,25 @@
 @{
     ViewData["Title"] = "Details";
 }
+<div class="medical-facility container mt-5">
+    <h2 class="text-center">Medical Facility Details</h2>
+    <div class="p-4">
+        <div class="text-center mb-4">
+            <img src="@Model.MedicalFacility.ImageUrl" class="img-fluid rounded" alt="Medical Facility Image" style="max-width: 100%; height: auto;">
+        </div>
+        <div class="d-flex justify-content-center">
+        <div class="medical-facility-infor">
+        <p><strong>@Html.DisplayNameFor(model => model.MedicalFacility.FacilityName):</strong> @Html.DisplayFor(model => model.MedicalFacility.FacilityName)</p>
+        <p><strong>@Html.DisplayNameFor(model => model.MedicalFacility.Address):</strong> @Html.DisplayFor(model => model.MedicalFacility.Address)</p>
+        <p><strong>@Html.DisplayNameFor(model => model.MedicalFacility.Infor):</strong> @Html.DisplayFor(model => model.MedicalFacility.Infor)</p>
+        <p><strong>@Html.DisplayNameFor(model => model.MedicalFacility.PhoneNumber):</strong> @Html.DisplayFor(model => model.MedicalFacility.PhoneNumber)</p>
+        <p><strong>@Html.DisplayNameFor(model => model.MedicalFacility.CreatedAt):</strong> @Html.DisplayFor(model => model.MedicalFacility.CreatedAt)</p>
+        </div>
+        </div>
+    </div>
 
-<h1>Details</h1>
-
-<div>
-    <h4>MedicalFacility</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.MedicalFacility.FacilityName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.MedicalFacility.FacilityName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.MedicalFacility.Address)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.MedicalFacility.Address)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.MedicalFacility.Infor)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.MedicalFacility.Infor)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.MedicalFacility.PhoneNumber)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.MedicalFacility.PhoneNumber)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.MedicalFacility.ImageUrl)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.MedicalFacility.ImageUrl)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.MedicalFacility.CreatedAt)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.MedicalFacility.CreatedAt)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-page="./Edit" asp-route-id="@Model.MedicalFacility.FacilityId">Edit</a> |
-    <a asp-page="./Index">Back to List</a>
+    <div class="mt-3 d-flex justify-content-center gap-2">
+        <a asp-page="./Edit" asp-route-id="@Model.MedicalFacility.FacilityId" class="btn-edit-medical">Edit</a>
+        <a asp-page="./Index" class="btn-back">Back to List</a>
+    </div>
 </div>

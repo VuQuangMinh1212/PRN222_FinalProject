@@ -5,11 +5,10 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<div class="create-appointment container">
 
-<h4>Appointment</h4>
-<hr />
-<div class="row">
+<h4>Create Appointment</h4>
+<div class="form-create row">
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -59,15 +58,13 @@
                 <span asp-validation-for="Appointment.Status" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn-create-appointment" />
             </div>
         </form>
     </div>
 </div>
-
-<div>
-    <a asp-page="Index">Back to List</a>
 </div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
