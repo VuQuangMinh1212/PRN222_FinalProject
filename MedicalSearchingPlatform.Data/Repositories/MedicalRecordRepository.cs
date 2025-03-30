@@ -18,15 +18,16 @@ namespace MedicalSearchingPlatform.Data.Repositories
         public async Task<MedicalRecord> GetByIdAsync(string medicalRecordId)
         {
             return await _context.MedicalRecords
-                .Include(m => m.Patient)
-                .Include(m => m.Doctor)
+                .Include(m => m.Patient).ThenInclude(p => p.User)
+                .Include(m => m.Doctor).ThenInclude(p => p.User)
                 .FirstOrDefaultAsync(m => m.MedicalRecordId == medicalRecordId);
         }
 
         public async Task<IEnumerable<MedicalRecord>> GetByPatientIdAsync(string patientId)
         {
             return await _context.MedicalRecords
-                .Include(m => m.Doctor)
+                .Include(m => m.Doctor).ThenInclude(d => d.User) 
+                .Include(m => m.Patient).ThenInclude(p => p.User)
                 .Where(m => m.PatientId == patientId)
                 .ToListAsync();
         }
@@ -34,7 +35,8 @@ namespace MedicalSearchingPlatform.Data.Repositories
         public async Task<IEnumerable<MedicalRecord>> GetByDoctorIdAsync(string doctorId)
         {
             return await _context.MedicalRecords
-                .Include(m => m.Patient)
+                .Include(m => m.Doctor).ThenInclude(d => d.User) 
+                .Include(m => m.Patient).ThenInclude(p => p.User)
                 .Where(m => m.DoctorId == doctorId)
                 .ToListAsync();
         }
@@ -42,6 +44,8 @@ namespace MedicalSearchingPlatform.Data.Repositories
         public async Task<IEnumerable<MedicalRecord>> GetSharedRecordsAsync(string patientId)
         {
             return await _context.MedicalRecords
+                .Include(m => m.Doctor).ThenInclude(d => d.User) 
+                .Include(m => m.Patient).ThenInclude(p => p.User)
                 .Where(m => m.PatientId == patientId && m.IsShared)
                 .ToListAsync();
         }
@@ -76,14 +80,15 @@ namespace MedicalSearchingPlatform.Data.Repositories
             }
 
             return await _context.Patients
+                .Include(p => p.User)
                 .FirstOrDefaultAsync(p => p.UserId == userId);
         }
 
         public async Task<IEnumerable<MedicalRecord>> GetAllRecordsAsync()
         {
             return await _context.MedicalRecords
-                .Include(m => m.Doctor)
-                .Include(m => m.Patient)
+                .Include(m => m.Doctor).ThenInclude(d => d.User) 
+                .Include(m => m.Patient).ThenInclude(p => p.User)
                 .ToListAsync();
         }
         public async Task<IEnumerable<MedicalRecord>> GetAllMedicalRecordByDoctorIdAsync(string doctorId)
@@ -94,8 +99,8 @@ namespace MedicalSearchingPlatform.Data.Repositories
             }
 
             return await _context.MedicalRecords
-                .Include(m => m.Patient)
-                .Include(m => m.Doctor) 
+                .Include(m => m.Patient).ThenInclude(p => p.User)
+                .Include(m => m.Doctor).ThenInclude(d => d.User)
                 .Where(m => m.DoctorId == doctorId)
                 .ToListAsync();
         }
@@ -108,6 +113,7 @@ namespace MedicalSearchingPlatform.Data.Repositories
             }
 
             return await _context.Doctors
+                 .Include(p => p.User)
                 .FirstOrDefaultAsync(p => p.UserId == userId);
         }
 
