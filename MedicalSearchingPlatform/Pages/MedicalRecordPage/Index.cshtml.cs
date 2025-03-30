@@ -29,16 +29,28 @@ namespace MedicalSearchingPlatform.Pages.MedicalRecordPage
             }
             else
             {
-                var patient = await _medicalRecordService.GetPatientByUserIdAsync(UserId);
-                if (patient != null)
+                if (User.IsInRole("Patient"))
                 {
-                    MedicalRecord = (await _medicalRecordService.GetPatientRecordsAsync(patient.PatientId)).ToList();
+                    var patient = await _medicalRecordService.GetPatientByUserIdAsync(UserId);
+                    if (patient != null)
+                    {
+                        MedicalRecord = (await _medicalRecordService.GetPatientRecordsAsync(patient.PatientId)).ToList();
+                        return;
+                    }
                 }
-                else
+                else if (User.IsInRole("Doctor"))
                 {
-                    MedicalRecord = new List<MedicalRecord>();
+                    var doctor = await _medicalRecordService.GetDoctorByUserIdAsync(UserId);
+                    if (doctor != null)
+                    {
+                        MedicalRecord = (await _medicalRecordService.GetAllMedicalRecordByDoctorIdAsync(doctor.DoctorId)).ToList();
+                        return;
+                    }
                 }
+
+                MedicalRecord = new List<MedicalRecord>();
             }
         }
+
     }
 }

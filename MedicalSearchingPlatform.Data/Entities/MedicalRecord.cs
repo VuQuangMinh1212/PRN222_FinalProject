@@ -8,12 +8,10 @@ namespace MedicalSearchingPlatform.Data.Entities
         [Key]
         public string MedicalRecordId { get; set; } = Guid.NewGuid().ToString();
 
-        [Required]
         [ForeignKey("Patient")]
         public string PatientId { get; set; }
         public Patient Patient { get; set; }
 
-        [Required]
         [ForeignKey("Doctor")]
         public string DoctorId { get; set; }
         public Doctor Doctor { get; set; }

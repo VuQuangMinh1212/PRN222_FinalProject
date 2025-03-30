@@ -31,6 +31,11 @@ namespace MedicalSearchingPlatform.Services
 
         public async Task<MedicalRecord> CreateMedicalRecordAsync(MedicalRecord medicalRecord)
         {
+            var existing = await _medicalRecordRepository.GetByIdAsync(medicalRecord.MedicalRecordId);
+            if (existing != null)
+            {
+                medicalRecord.MedicalRecordId = Guid.NewGuid().ToString();
+            }
             return await _medicalRecordRepository.AddAsync(medicalRecord);
         }
 
