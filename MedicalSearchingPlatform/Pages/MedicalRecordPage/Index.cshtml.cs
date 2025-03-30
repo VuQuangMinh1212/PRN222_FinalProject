@@ -1,31 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using MedicalSearchingPlatform.Data.Entities;
+using MedicalSearchingPlatform.Services;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using MedicalSearchingPlatform.Data.DataContext;
-using MedicalSearchingPlatform.Data.Entities;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MedicalSearchingPlatform.Pages.MedicalRecordPage
 {
     public class IndexModel : PageModel
     {
-        private readonly MedicalSearchingPlatform.Data.DataContext.ApplicationDbContext _context;
+        private readonly IMedicalRecordService _medicalRecordService;
 
-        public IndexModel(MedicalSearchingPlatform.Data.DataContext.ApplicationDbContext context)
+        public IndexModel(IMedicalRecordService medicalRecordService)
         {
-            _context = context;
+            _medicalRecordService = medicalRecordService;
         }
 
-        public IList<MedicalRecord> MedicalRecord { get;set; } = default!;
+        public IList<MedicalRecord> MedicalRecord { get; set; } = default!;
 
         public async Task OnGetAsync()
         {
-            MedicalRecord = await _context.MedicalRecords
-                .Include(m => m.Doctor)
-                .Include(m => m.Patient).ToListAsync();
+            MedicalRecord = (await _medicalRecordService.GetAllRecordsAsync()).ToList();
         }
     }
 }

@@ -15,5 +15,6 @@ namespace MedicalSearchingPlatform.Services
         Task ShareRecordWithDoctorAsync(string medicalRecordId, bool isShared);
         Task UploadAttachmentAsync(string medicalRecordId, string attachmentUrl);
         Task<Patient> GetPatientByUserIdAsync(string userId);
+        Task<IEnumerable<MedicalRecord>> GetAllRecordsAsync();
     }
 }

@@ -79,5 +79,13 @@ namespace MedicalSearchingPlatform.Data.Repositories
                 .FirstOrDefaultAsync(p => p.UserId == userId);
         }
 
+        public async Task<IEnumerable<MedicalRecord>> GetAllRecordsAsync()
+        {
+            return await _context.MedicalRecords
+                .Include(m => m.Doctor)
+                .Include(m => m.Patient)
+                .ToListAsync();
+        }
+
     }
 }

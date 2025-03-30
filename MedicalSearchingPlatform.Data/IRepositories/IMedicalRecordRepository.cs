@@ -14,5 +14,6 @@ namespace MedicalSearchingPlatform.Data.Repositories
         Task DeleteAsync(string medicalRecordId);
         Task<IEnumerable<MedicalRecord>> GetSharedRecordsAsync(string patientId);
         Task<Patient> GetPatientByUserIdAsync(string userId);
+        Task<IEnumerable<MedicalRecord>> GetAllRecordsAsync();
     }
 }

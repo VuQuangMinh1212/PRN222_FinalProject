@@ -67,5 +67,9 @@ namespace MedicalSearchingPlatform.Services
         {
             return await _medicalRecordRepository.GetPatientByUserIdAsync(userId);
         }
+        public async Task<IEnumerable<MedicalRecord>> GetAllRecordsAsync()
+        {
+            return await _medicalRecordRepository.GetAllRecordsAsync();
+        }
     }
 }
