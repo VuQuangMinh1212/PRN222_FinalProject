@@ -86,6 +86,30 @@ namespace MedicalSearchingPlatform.Data.Repositories
                 .Include(m => m.Patient)
                 .ToListAsync();
         }
+        public async Task<IEnumerable<MedicalRecord>> GetAllMedicalRecordByDoctorIdAsync(string doctorId)
+        {
+            if (string.IsNullOrEmpty(doctorId))
+            {
+                throw new ArgumentNullException(nameof(doctorId));
+            }
+
+            return await _context.MedicalRecords
+                .Include(m => m.Patient)
+                .Include(m => m.Doctor) 
+                .Where(m => m.DoctorId == doctorId)
+                .ToListAsync();
+        }
+
+        public async Task<Doctor> GetDoctorByUserIdAsync(string userId)
+        {
+            if (string.IsNullOrEmpty(userId))
+            {
+                throw new ArgumentNullException(nameof(userId));
+            }
+
+            return await _context.Doctors
+                .FirstOrDefaultAsync(p => p.UserId == userId);
+        }
 
     }
 }

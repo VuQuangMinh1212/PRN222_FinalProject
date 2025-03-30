@@ -15,5 +15,7 @@ namespace MedicalSearchingPlatform.Data.Repositories
         Task<IEnumerable<MedicalRecord>> GetSharedRecordsAsync(string patientId);
         Task<Patient> GetPatientByUserIdAsync(string userId);
         Task<IEnumerable<MedicalRecord>> GetAllRecordsAsync();
+        Task<IEnumerable<MedicalRecord>> GetAllMedicalRecordByDoctorIdAsync(string doctorId);
+        Task<Doctor> GetDoctorByUserIdAsync(string userId);
     }
 }

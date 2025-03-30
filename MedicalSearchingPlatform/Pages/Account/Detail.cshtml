@@ -44,6 +44,12 @@
                     <!-- Button for Patients to View Medical Records -->
                     @if (Model.Role == "Patient")
                     {
+                        <a asp-page="/MedicalRecordPage/Details" asp-route-id="@Model.UserDetail.Id" class="btn btn-info">
+                            <i class="bi bi-file-medical"></i> View Medical Records
+                        </a>
+                    }
+                    @if (Model.Role == "Doctor")
+                    {
                         <a asp-page="/MedicalRecordPage/Index" asp-route-id="@Model.UserDetail.Id" class="btn btn-info">
                             <i class="bi bi-file-medical"></i> View Medical Records
                         </a>

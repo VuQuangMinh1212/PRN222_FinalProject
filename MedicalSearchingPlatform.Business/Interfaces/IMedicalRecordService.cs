@@ -16,5 +16,7 @@ namespace MedicalSearchingPlatform.Services
         Task UploadAttachmentAsync(string medicalRecordId, string attachmentUrl);
         Task<Patient> GetPatientByUserIdAsync(string userId);
         Task<IEnumerable<MedicalRecord>> GetAllRecordsAsync();
+        Task<IEnumerable<MedicalRecord>> GetAllMedicalRecordByDoctorIdAsync(string doctorId);
+        Task<Doctor> GetDoctorByUserIdAsync(string userId);
     }
 }

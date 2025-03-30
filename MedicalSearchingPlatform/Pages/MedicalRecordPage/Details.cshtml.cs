@@ -1,25 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using MedicalSearchingPlatform.Data.Entities;
+using MedicalSearchingPlatform.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using MedicalSearchingPlatform.Data.DataContext;
-using MedicalSearchingPlatform.Data.Entities;
+using System.Diagnostics;
 
 namespace MedicalSearchingPlatform.Pages.MedicalRecordPage
 {
     public class DetailsModel : PageModel
     {
-        private readonly MedicalSearchingPlatform.Data.DataContext.ApplicationDbContext _context;
+        private readonly IMedicalRecordService _medicalRecordService;
 
-        public DetailsModel(MedicalSearchingPlatform.Data.DataContext.ApplicationDbContext context)
+        public DetailsModel(IMedicalRecordService medicalRecordService)
         {
-            _context = context;
+            _medicalRecordService = medicalRecordService;
         }
 
-        public MedicalRecord MedicalRecord { get; set; } = default!;
+        public MedicalRecord MedicalRecord { get; set; }
+        public Patient Patient { get; set; }
 
         public async Task<IActionResult> OnGetAsync(string id)
         {
@@ -27,15 +24,13 @@ namespace MedicalSearchingPlatform.Pages.MedicalRecordPage
             {
                 return NotFound();
             }
+            Debug.Write(id);
+            Patient = await _medicalRecordService.GetPatientByUserIdAsync(id);
 
-            var medicalrecord = await _context.MedicalRecords.FirstOrDefaultAsync(m => m.MedicalRecordId == id);
-            if (medicalrecord == null)
+            MedicalRecord = await _medicalRecordService.GetMedicalRecordAsync(Patient.PatientId);
+            if (MedicalRecord == null)
             {
                 return NotFound();
-            }
-            else
-            {
-                MedicalRecord = medicalrecord;
             }
             return Page();
         }
