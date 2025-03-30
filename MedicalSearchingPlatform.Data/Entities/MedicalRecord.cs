@@ -22,17 +22,16 @@ namespace MedicalSearchingPlatform.Data.Entities
         public DateTime RecordDate { get; set; } = DateTime.UtcNow;
 
         [MaxLength(1000)]
-        public string Diagnosis { get; set; } // Chẩn đoán của bác sĩ
+        public string Diagnosis { get; set; } 
 
         [MaxLength(1000)]
-        public string Treatment { get; set; } // Phương pháp điều trị
+        public string Treatment { get; set; } 
 
         [MaxLength(1000)]
-        public string Notes { get; set; } // Ghi chú bổ sung
+        public string Notes { get; set; }
 
-        // Quản lý tệp đính kèm (kết quả xét nghiệm, hình ảnh chẩn đoán)
-        public string AttachmentUrl { get; set; } // Đường dẫn tới file (có thể lưu trên cloud như AWS S3)
+        public string AttachmentUrl { get; set; } 
 
-        public bool IsShared { get; set; } = false; // Trạng thái chia sẻ với bác sĩ
+        public bool IsShared { get; set; } = false;
     }
 }
