@@ -10,6 +10,7 @@ using MedicalSearchingPlatform.Data.Entities;
 using MedicalSearchingPlatform.Business.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using Microsoft.IdentityModel.Tokens;
 
 namespace MedicalSearchingPlatform.Pages.WorkingSchedulePage
 {
@@ -65,10 +66,10 @@ namespace MedicalSearchingPlatform.Pages.WorkingSchedulePage
                 DoctorId = doctor.DoctorId;
             }
 
-            if (string.IsNullOrEmpty(SelectedWeek) || SelectedTimeSlots == null || SelectedTimeSlots.Count == 0)
+            if (string.IsNullOrEmpty(SelectedWeek) || SelectedTimeSlots == null || SelectedTimeSlots.Count == 0 || SelectedDays.IsNullOrEmpty())
             {
-                ModelState.AddModelError("Error", "Vui lòng chọn tuần và ít nhất một khung giờ.");
-                return RedirectToPage("./Index");
+                //ModelState.AddModelError("Error", "Vui lòng chọn tuần và ít nhất một khung giờ và ngày.");
+                return new JsonResult(new { isValid = false, errorMessage = "Vui lòng chọn tuần và ít nhất một khung giờ và ngày." });
             }
 
             DateTime firstDayOfWeek = GetStartDateOfWeek(SelectedWeek);

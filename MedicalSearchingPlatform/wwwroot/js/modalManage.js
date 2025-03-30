@@ -32,6 +32,7 @@
                 contentType: false,
                 processData: false,
                 success: function (res) {
+                    console.log(res)
                     if (res.isValid) {
                         $('#viewAll').html(res)
                         $('#form-modal').modal('hide');
