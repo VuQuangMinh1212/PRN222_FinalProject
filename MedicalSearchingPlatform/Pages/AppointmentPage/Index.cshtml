@@ -24,41 +24,41 @@
             <th class="text-center">Actions</th>
         </tr>
     </thead>
-    <tbody>
-        @if (Model.Appointment.Any())
-        {
-            @foreach (var item in Model.Appointment)
+        <tbody>
+            @if (Model.Appointments.Any())
+            {
+                
+                @foreach (var item in Model.Appointments)
+                {
+                    <tr>
+                        <td>@item.AppointmentDate.ToString("yyyy-MM-dd HH:mm")</td>
+                        <td>@item.AppointmentInfo</td>
+                        <td>
+                            <span class="badge @(item.Status == "Completed" ? "bg-success" : "bg-warning")">
+                                @item.Status
+                            </span>
+                        </td>
+                        <td class="text-center">
+                            <a asp-page="./Edit" asp-route-id="@item.AppointmentId" class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-pencil-square"></i>
+                            </a>
+                            <a asp-page="./Details" asp-route-id="@item.AppointmentId" class="btn btn-sm btn-outline-info">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                            <a asp-page="./Delete" asp-route-id="@item.AppointmentId" class="btn btn-sm btn-outline-danger">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
             {
                 <tr>
-                    <td>@item.Patient?.User?.FullName</td>
-                    <td>@item.Doctor?.User?.FullName</td>
-                    <td>@item.AppointmentDate.ToString("yyyy-MM-dd HH:mm")</td>
-                    <td>@item.AppointmentInfo</td>
-                    <td>
-                        <span class="badge @(item.Status == "Completed" ? "bg-success" : "bg-warning")">
-                            @item.Status
-                        </span>
-                    </td>
-                    <td class="text-center">
-                        <a asp-page="./Edit" asp-route-id="@item.AppointmentId" class="btn btn-sm btn-outline-primary">
-                            <i class="bi bi-pencil-square"></i>
-                        </a>
-                        <a asp-page="./Details" asp-route-id="@item.AppointmentId" class="btn btn-sm btn-outline-info">
-                            <i class="bi bi-eye"></i>
-                        </a>
-                        <a asp-page="./Delete" asp-route-id="@item.AppointmentId" class="btn btn-sm btn-outline-danger">
-                            <i class="bi bi-trash"></i>
-                        </a>
-                    </td>
+                    <td colspan="6" class="text-center text-muted">No appointments found.</td>
                 </tr>
             }
-        }
-        else
-        {
-            <tr>
-                <td colspan="6" class="text-center text-muted">No appointments found.</td>
-            </tr>
-        }
-    </tbody>
+        </tbody>
+
 </table>
 </div>
