@@ -218,6 +218,64 @@ namespace MedicalSearchingPlatform.Data
                 context.ArticleLikes.AddRange(articlesLike);
                 context.SaveChanges();
             }
+
+            if (!context.MedicalRecords.Any())
+            {
+                var medicalRecords = new List<MedicalRecord>
+                {
+                    new MedicalRecord
+                    {
+                        MedicalRecordId = "MR1",
+                        PatientId = "P1",
+                        DoctorId = "D1",
+                        RecordDate = DateTime.UtcNow.AddDays(-5),
+                        Diagnosis = "Mild chest pain",
+                        Treatment = "Prescribed aspirin and follow-up in 1 month",
+                        Notes = "Patient advised to reduce stress",
+                        AttachmentUrl = "/attachments/p1_cardio_report.pdf",
+                        IsShared = true
+                    },
+                    new MedicalRecord
+                    {
+                        MedicalRecordId = "MR2",
+                        PatientId = "P2",
+                        DoctorId = "D2",
+                        RecordDate = DateTime.UtcNow.AddDays(-3),
+                        Diagnosis = "Seasonal allergies",
+                        Treatment = "Antihistamine medication prescribed",
+                        Notes = "Avoid outdoor activities during high pollen days",
+                        AttachmentUrl = "/attachments/p2_allergy_test.jpg",
+                        IsShared = false
+                    },
+                    new MedicalRecord
+                    {
+                        MedicalRecordId = "MR3",
+                        PatientId = "P3",
+                        DoctorId = "D3",
+                        RecordDate = DateTime.UtcNow.AddDays(-2),
+                        Diagnosis = "Asthma flare-up",
+                        Treatment = "Increased inhaler dosage",
+                        Notes = "Monitor symptoms for next 48 hours",
+                        AttachmentUrl = "/attachments/p3_lung_scan.png",
+                        IsShared = true
+                    },
+                    new MedicalRecord
+                    {
+                        MedicalRecordId = "MR4",
+                        PatientId = "P1",
+                        DoctorId = "D3",
+                        RecordDate = DateTime.UtcNow.AddDays(-1),
+                        Diagnosis = "Routine checkup",
+                        Treatment = "No treatment needed",
+                        Notes = "Blood pressure normal, continue current lifestyle",
+                        AttachmentUrl = null,
+                        IsShared = false
+                    }
+                };
+
+                context.MedicalRecords.AddRange(medicalRecords);
+                context.SaveChanges();
+            }
         }
     }
 }
