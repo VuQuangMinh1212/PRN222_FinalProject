@@ -247,30 +247,6 @@ namespace MedicalSearchingPlatform.Data
                         AttachmentUrl = "/attachments/p2_allergy_test.jpg",
                         IsShared = false
                     },
-                    new MedicalRecord
-                    {
-                        MedicalRecordId = "MR3",
-                        PatientId = "P3",
-                        DoctorId = "D3",
-                        RecordDate = DateTime.UtcNow.AddDays(-2),
-                        Diagnosis = "Asthma flare-up",
-                        Treatment = "Increased inhaler dosage",
-                        Notes = "Monitor symptoms for next 48 hours",
-                        AttachmentUrl = "/attachments/p3_lung_scan.png",
-                        IsShared = true
-                    },
-                    new MedicalRecord
-                    {
-                        MedicalRecordId = "MR4",
-                        PatientId = "P1",
-                        DoctorId = "D3",
-                        RecordDate = DateTime.UtcNow.AddDays(-1),
-                        Diagnosis = "Routine checkup",
-                        Treatment = "No treatment needed",
-                        Notes = "Blood pressure normal, continue current lifestyle",
-                        AttachmentUrl = null,
-                        IsShared = false
-                    }
                 };
 
                 context.MedicalRecords.AddRange(medicalRecords);
