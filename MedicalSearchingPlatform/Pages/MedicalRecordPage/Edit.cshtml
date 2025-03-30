@@ -1,0 +1,73 @@
+﻿@page
+@model MedicalSearchingPlatform.Pages.MedicalRecordPage.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>MedicalRecord</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="MedicalRecord.MedicalRecordId" />
+            <div class="form-group">
+                <span class="text-danger">*</span>
+                <label asp-for="MedicalRecord.PatientId" class="control-label"></label>
+                <select asp-for="MedicalRecord.PatientId" class="form-control" asp-items="ViewBag.PatientId"></select>
+                <span asp-validation-for="MedicalRecord.PatientId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <span class="text-danger">*</span>
+                <label asp-for="MedicalRecord.DoctorId" class="control-label"></label>
+                <select asp-for="MedicalRecord.DoctorId" class="form-control" asp-items="ViewBag.DoctorId"></select>
+                <span asp-validation-for="MedicalRecord.DoctorId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <span class="text-danger">*</span>
+                <label asp-for="MedicalRecord.RecordDate" class="control-label"></label>
+                <input asp-for="MedicalRecord.RecordDate" class="form-control" />
+                <span asp-validation-for="MedicalRecord.RecordDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MedicalRecord.Diagnosis" class="control-label"></label>
+                <input asp-for="MedicalRecord.Diagnosis" class="form-control" />
+                <span asp-validation-for="MedicalRecord.Diagnosis" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MedicalRecord.Treatment" class="control-label"></label>
+                <input asp-for="MedicalRecord.Treatment" class="form-control" />
+                <span asp-validation-for="MedicalRecord.Treatment" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MedicalRecord.Notes" class="control-label"></label>
+                <input asp-for="MedicalRecord.Notes" class="form-control" />
+                <span asp-validation-for="MedicalRecord.Notes" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MedicalRecord.AttachmentUrl" class="control-label"></label>
+                <input asp-for="MedicalRecord.AttachmentUrl" class="form-control" />
+                <span asp-validation-for="MedicalRecord.AttachmentUrl" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="MedicalRecord.IsShared" /> @Html.DisplayNameFor(model => model.MedicalRecord.IsShared)
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

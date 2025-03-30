@@ -1,0 +1,67 @@
+﻿@page
+@model MedicalSearchingPlatform.Pages.MedicalRecordPage.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>MedicalRecord</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.MedicalRecord.Patient)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MedicalRecord.Patient.PatientId)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.MedicalRecord.Doctor)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MedicalRecord.Doctor.DoctorId)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.MedicalRecord.RecordDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MedicalRecord.RecordDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.MedicalRecord.Diagnosis)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MedicalRecord.Diagnosis)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.MedicalRecord.Treatment)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MedicalRecord.Treatment)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.MedicalRecord.Notes)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MedicalRecord.Notes)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.MedicalRecord.AttachmentUrl)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MedicalRecord.AttachmentUrl)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.MedicalRecord.IsShared)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MedicalRecord.IsShared)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.MedicalRecord.MedicalRecordId">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>

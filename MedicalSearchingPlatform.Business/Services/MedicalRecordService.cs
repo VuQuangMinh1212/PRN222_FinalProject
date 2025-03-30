@@ -63,5 +63,9 @@ namespace MedicalSearchingPlatform.Services
                 await _medicalRecordRepository.UpdateAsync(record);
             }
         }
+        public async Task<Patient> GetPatientByUserIdAsync(string userId)
+        {
+            return await _medicalRecordRepository.GetPatientByUserIdAsync(userId);
+        }
     }
 }

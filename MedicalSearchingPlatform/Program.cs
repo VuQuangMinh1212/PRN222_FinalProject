@@ -53,6 +53,8 @@ builder.Services.AddScoped<IArticleRepository, ArticleRepository>();
 builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
 builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
 builder.Services.AddScoped<IArticleCategoryRepository, ArticleCategoryRepository>();
+builder.Services.AddScoped<IMedicalRecordRepository, MedicalRecordRepository>();
+
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IMedicalFacilityService, MedicalSearchingPlatform.Business.Services.MedicalFacilityService>();
@@ -64,6 +66,7 @@ builder.Services.AddScoped<IArticleService, ArticleService>();
 builder.Services.AddScoped<IReviewService, ReviewService>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
 builder.Services.AddScoped<IArticleCategoryService, ArticleCategoryService>();
+builder.Services.AddScoped<IMedicalRecordService, MedicalRecordService>();
 
 var app = builder.Build();
 
