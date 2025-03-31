@@ -85,6 +85,14 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Error");
+    app.UseHsts();
+}
+
+app.UseStatusCodePagesWithReExecute("/Error", "?errorMessage=Error {0}");
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseAuthentication();
