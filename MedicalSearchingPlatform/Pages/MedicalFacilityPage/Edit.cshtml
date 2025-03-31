@@ -5,12 +5,10 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
-
-<h4>MedicalFacility</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
+<div class="edit-medical container mt-5">
+<h2 class="text-center">Edit MedicalFacility</h2>
+    <div class="d-flex justify-content-center">
+    <div class="form-edit col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="MedicalFacility.FacilityId" />
@@ -48,15 +46,19 @@
                 <input asp-for="MedicalFacility.CreatedAt" class="form-control" />
                 <span asp-validation-for="MedicalFacility.CreatedAt" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+            <div class="d-flex gap-2 justify-content-center form-group">
+                    <input type="submit" value="Save" class="btn-save-medical " />
+                    <div>
+                        <a asp-page="./Index" class="btn-back">Back to List</a>
+                    </div>
             </div>
+
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-page="./Index">Back to List</a>
+
+
 </div>
 
 @section Scripts {

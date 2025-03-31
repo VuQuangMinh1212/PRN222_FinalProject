@@ -11,5 +11,7 @@ namespace MedicalSearchingPlatform.Business.Interfaces
         Task<bool> BookAppointmentAsync(Appointment appointment);
         Task<bool> UpdateAppointmentAsync(Appointment appointment);
         Task<bool> CancelAppointmentAsync(string appointmentId);
+        Task<IEnumerable<(string MonthName, int Count)>> GetAppointmentCountByMonthAsync();
+
     }
 }

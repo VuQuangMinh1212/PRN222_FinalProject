@@ -218,6 +218,40 @@ namespace MedicalSearchingPlatform.Data
                 context.ArticleLikes.AddRange(articlesLike);
                 context.SaveChanges();
             }
+
+            if (!context.MedicalRecords.Any())
+            {
+                var medicalRecords = new List<MedicalRecord>
+                {
+                    new MedicalRecord
+                    {
+                        MedicalRecordId = "MR1",
+                        PatientId = "P1",
+                        DoctorId = "D1",
+                        RecordDate = DateTime.UtcNow.AddDays(-5),
+                        Diagnosis = "Mild chest pain",
+                        Treatment = "Prescribed aspirin and follow-up in 1 month",
+                        Notes = "Patient advised to reduce stress",
+                        AttachmentUrl = "/attachments/p1_cardio_report.pdf",
+                        IsShared = true
+                    },
+                    new MedicalRecord
+                    {
+                        MedicalRecordId = "MR2",
+                        PatientId = "P2",
+                        DoctorId = "D2",
+                        RecordDate = DateTime.UtcNow.AddDays(-3),
+                        Diagnosis = "Seasonal allergies",
+                        Treatment = "Antihistamine medication prescribed",
+                        Notes = "Avoid outdoor activities during high pollen days",
+                        AttachmentUrl = "/attachments/p2_allergy_test.jpg",
+                        IsShared = false
+                    },
+                };
+
+                context.MedicalRecords.AddRange(medicalRecords);
+                context.SaveChanges();
+            }
         }
     }
 }

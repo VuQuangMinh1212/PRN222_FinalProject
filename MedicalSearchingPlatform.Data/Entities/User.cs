@@ -12,6 +12,9 @@ namespace MedicalSearchingPlatform.Data.Entities
         public string Role { get; set; } = "Patient";
 
         public bool IsActive { get; set; } = true;
+
+        public Doctor? Doctor { get; set; }
+        public Patient? Patient { get; set; }
         public User()
         {
 

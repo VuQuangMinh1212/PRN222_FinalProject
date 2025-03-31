@@ -17,10 +17,12 @@ builder.Services.AddRazorPages();
 
 
 
-var configuration = new ConfigurationBuilder()
+/*var configuration = new ConfigurationBuilder()
     .SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), "../MedicalSearchingPlatform.Data")) // Trỏ đến thư mục Data
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-    .Build();
+    .Build();*/
+var configuration = builder.Configuration;
+
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseLazyLoadingProxies().UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
@@ -53,6 +55,8 @@ builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
 builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
 builder.Services.AddScoped<IArticleCategoryRepository, ArticleCategoryRepository>();
 builder.Services.AddScoped<IWorkingScheduleRepository, WorkingScheduleRepository>();
+builder.Services.AddScoped<IMedicalRecordRepository, MedicalRecordRepository>();
+
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IMedicalFacilityService, MedicalSearchingPlatform.Business.Services.MedicalFacilityService>();
@@ -65,6 +69,7 @@ builder.Services.AddScoped<IReviewService, ReviewService>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
 builder.Services.AddScoped<IArticleCategoryService, ArticleCategoryService>();
 builder.Services.AddScoped<IWorkingScheduleService, WorkingScheduleService>();
+builder.Services.AddScoped<IMedicalRecordService, MedicalRecordService>();
 
 //SignalR
 builder.Services.AddSignalR();

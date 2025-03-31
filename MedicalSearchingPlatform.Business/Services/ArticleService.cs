@@ -61,5 +61,16 @@ namespace MedicalSearchingPlatform.Services
         {
             return _articleRepository.GetAllArticlesPublish();
         }
+
+        public async Task<IEnumerable<Article>> GetMostLikedArticlesAsync(int top)
+        {
+            return await _articleRepository.GetMostLikedArticlesAsync(top);
+        }
+
+        public async Task<int> GetArticleLikeCountAsync(string articleId)
+        {
+            return await _articleRepository.GetArticleLikeCountAsync(articleId);
+        }
+
     }
 }

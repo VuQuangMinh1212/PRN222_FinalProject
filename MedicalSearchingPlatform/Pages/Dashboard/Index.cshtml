@@ -7,7 +7,6 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            // Dữ liệu mẫu - cần thay bằng dữ liệu từ backend
             var doctorData = {
                 labels: @Json.Serialize(Model.DoctorNames),
                 datasets: [{
@@ -16,22 +15,29 @@
                     backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF"]
                 }]
             };
-
+            
             var blogData = {
-                labels: ["Bài viết 1", "Bài viết 2", "Bài viết 3"],
+                labels: @Json.Serialize(Model.ArticleTitles),
                 datasets: [{
-                    data: [50, 75, 30],
-                    backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"]
+                   
+                    data: @Json.Serialize(Model.ArticleLikes),
+                    backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF"]
                 }]
             };
+           @* var month = @Json.Serialize(Model.Months);
+            var appointment = @Json.Serialize(Model.AppointmentCounts);
+            console.log("Month:", month);
+            console.log("Appointments:", appointment);*@
 
             var appointmentData = {
-                labels: ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5"],
+                labels: @Json.Serialize(Model.Months),
                 datasets: [{
                     label: "Số lượng lịch hẹn",
-                    data: [15, 25, 30, 20, 35],
+                    data: @Json.Serialize(Model.AppointmentCounts),
                     borderColor: "#36A2EB",
-                    fill: false
+                    backgroundColor: "rgba(54, 162, 235, 0.5)",
+                    fill: true
+            
                 }]
             };
 
@@ -50,30 +56,30 @@
     }
 </style>
 
-<div class="container mt-5">
-    <h2 class="mb-4">Dashboard</h2>
+<div class="dashboard container mt-5 d-flex flex-column gap-3">
+    <h2 class="text-center">Dashboard</h2>
 
-    <div class="row mb-4" style="margin-bottom: 20px;">
+    <div class="row mb-4 card shadow p-4" style="margin-bottom: 20px;">
         <div class="col-12 text-center">
-            <h4>Bác sĩ được đặt lịch nhiều nhất</h4>
+            <h4 class="fw-bold text-dark">Bác sĩ được đặt lịch nhiều nhất</h4>
             <div class="chart-container">
                 <canvas id="doctorChart"></canvas>
             </div>
         </div>
     </div>
 
-    <div class="row mb-4" style="margin-bottom: 20px;">
+    <div class="row mb-4 card shadow p-4" style="margin-bottom: 20px;">
         <div class="col-12 text-center">
-            <h4>Bài viết được nhiều lượt thích nhất</h4>
+            <h4 class="fw-bold text-dark">Bài viết được nhiều lượt thích nhất</h4>
             <div class="chart-container">
                 <canvas id="blogChart"></canvas>
             </div>
         </div>
     </div>
 
-    <div class="row" style="margin-bottom: 20px;">
+    <div class="row card shadow p-4" style="margin-bottom: 20px;">
         <div class="col-12 text-center">
-            <h4>Bảng báo cáo số lượng lịch hẹn</h4>
+            <h4 class="fw-bold text-dark">Bảng báo cáo số lượng lịch hẹn</h4>
             <div class="chart-container">
                 <canvas id="appointmentChart"></canvas>
             </div>

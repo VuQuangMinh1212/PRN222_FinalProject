@@ -42,5 +42,14 @@ namespace MedicalSearchingPlatform.Business.Services
         {
             _userRepository.DeleteUser(userId);
         }
+        public async Task<User> GetUserByDoctorIdAsync(string doctorId)
+        {
+            return await _userRepository.GetUserByDoctorIdAsync(doctorId);
+        }
+
+        public async Task<User> GetUserByPatientIdAsync(string patientId)
+        {
+            return await _userRepository.GetUserByPatientIdAsync(patientId);
+        }
     }
 }

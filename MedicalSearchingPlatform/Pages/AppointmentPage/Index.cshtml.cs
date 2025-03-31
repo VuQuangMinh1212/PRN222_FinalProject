@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using MedicalSearchingPlatform.Business.Interfaces;
@@ -18,13 +19,21 @@ namespace MedicalSearchingPlatform.Pages.AppointmentPage
             _doctorService = doctorService;
         }
 
-        public IList<Appointment> Appointment { get; private set; } = new List<Appointment>();
-
         public async Task OnGetAsync()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var appointments = await _appointmentService.GetAllAppointmentsAsync();
-            Appointment = new List<Appointment>(appointments);
+
+            var appointmentViewModels = appointments.Select(appointment => new AppointmentViewModel
+            {
+                AppointmentId = appointment.AppointmentId,
+                AppointmentDate = appointment.AppointmentDate,
+                AppointmentInfo = appointment.AppointmentInfo,
+                Status = appointment.Status
+            }).ToList();
+
+            Appointments = appointmentViewModels;
         }
+
     }
 }

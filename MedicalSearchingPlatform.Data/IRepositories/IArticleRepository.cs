@@ -12,5 +12,10 @@ namespace MedicalSearchingPlatform.Data.Repositories
         Task AddArticleAsync(Article article);
         Task UpdateArticleAsync(Article article);
         Task DeleteArticleAsync(string articleId);
+
+        Task<IEnumerable<Article>> GetMostLikedArticlesAsync(int top);
+
+        Task<int> GetArticleLikeCountAsync(string articleId);
+
     }
 }

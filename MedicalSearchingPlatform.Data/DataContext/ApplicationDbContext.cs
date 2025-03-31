@@ -22,6 +22,7 @@ namespace MedicalSearchingPlatform.Data.DataContext
         public DbSet<ArticleLike> ArticleLikes { get; set; }
         public DbSet<ArticleCategory> ArticleCategories { get; set; }
         public DbSet<WorkingSchedule> WorkingSchedules { get; set; }
+        public DbSet<MedicalRecord> MedicalRecords { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -192,6 +193,25 @@ namespace MedicalSearchingPlatform.Data.DataContext
             // Working Schedule
 
             modelBuilder.Entity<WorkingSchedule>().HasKey(ws => ws.ScheduleId);
+
+            modelBuilder.Entity<MedicalRecord>()
+                .HasKey(mr => mr.MedicalRecordId);
+            modelBuilder.Entity<MedicalRecord>()
+                .Property(mr => mr.RecordDate)
+                .HasDefaultValueSql("GETDATE()"); // Auto-set creation date
+            modelBuilder.Entity<MedicalRecord>()
+                .HasOne(mr => mr.Patient)
+                .WithMany(p => p.MedicalRecords)
+                .HasForeignKey(mr => mr.PatientId)
+                .OnDelete(DeleteBehavior.Cascade); // Delete records if patient is deleted
+            modelBuilder.Entity<MedicalRecord>()
+                .HasOne(mr => mr.Doctor)
+                .WithMany(d => d.MedicalRecords)
+                .HasForeignKey(mr => mr.DoctorId)
+                .OnDelete(DeleteBehavior.Restrict); // Prevent deletion of doctor if records exist
+            modelBuilder.Entity<MedicalRecord>()
+                .Property(mr => mr.IsShared)
+                .HasDefaultValue(false);
         }
     }
 }

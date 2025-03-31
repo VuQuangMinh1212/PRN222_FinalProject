@@ -1,0 +1,50 @@
+﻿@page
+@model MedicalSearchingPlatform.Pages.MedicalRecordPage.IndexModel
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.MedicalRecord[0].Patient)</th>
+            <th>@Html.DisplayNameFor(model => model.MedicalRecord[0].Doctor)</th>
+            <th>@Html.DisplayNameFor(model => model.MedicalRecord[0].RecordDate)</th>
+            <th>@Html.DisplayNameFor(model => model.MedicalRecord[0].Diagnosis)</th>
+            <th>@Html.DisplayNameFor(model => model.MedicalRecord[0].Treatment)</th>
+            <th>@Html.DisplayNameFor(model => model.MedicalRecord[0].Notes)</th>
+            <th>@Html.DisplayNameFor(model => model.MedicalRecord[0].AttachmentUrl)</th>
+            <th>@Html.DisplayNameFor(model => model.MedicalRecord[0].IsShared)</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.MedicalRecord)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Patient.User.FullName)</td>
+                <td>@Html.DisplayFor(modelItem => item.Doctor.User.FullName)</td>
+                <td>@Html.DisplayFor(modelItem => item.RecordDate)</td>
+                <td>@Html.DisplayFor(modelItem => item.Diagnosis)</td>
+                <td>@Html.DisplayFor(modelItem => item.Treatment)</td>
+                <td>@Html.DisplayFor(modelItem => item.Notes)</td>
+                <td>@Html.DisplayFor(modelItem => item.AttachmentUrl)</td>
+                <td>@Html.DisplayFor(modelItem => item.IsShared)</td>
+                <td>
+                    <a asp-page="./Details" asp-route-id="@item.MedicalRecordId">Details</a>
+                    @if (User.IsInRole("Doctor"))
+                    {
+                        <a asp-page="./Edit" asp-route-id="@item.MedicalRecordId">Edit</a> 
+                        <a asp-page="./Delete" asp-route-id="@item.MedicalRecordId">Delete</a>
+                    }
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

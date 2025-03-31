@@ -13,5 +13,6 @@ namespace MedicalSearchingPlatform.Data.Entities
         public virtual User User { get; set; }
         public string MedicalHistory { get; set; }
         public string ConditionsToNote { get; set; }
+        public ICollection<MedicalRecord> MedicalRecords { get; set; } = new List<MedicalRecord>();
     }
 }

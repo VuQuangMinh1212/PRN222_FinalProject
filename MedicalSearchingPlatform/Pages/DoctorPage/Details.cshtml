@@ -4,64 +4,48 @@
 @{
     ViewData["Title"] = "Details";
 }
+<div class="medical-service-details container mt-5">
+    <h2 class="text-center mb-4">Details Doctor</h2>
+    <div class="row">
+        <div class="col-md-4 text-center">
+            @if (!string.IsNullOrEmpty(Model.Doctor.ImageUrl))
+            {
+                <img src="@Model.Doctor.ImageUrl" class="img-fluid rounded-circle border" alt="Doctor Image" style="width: 200px; height: 200px; object-fit: cover;">
+            }
+            else
+            {
+                <img src="/images/default-doctor.png" class="img-fluid rounded-circle border" alt="Default Image" style="width: 200px; height: 200px; object-fit: cover;">
+            }
+        </div>
+        <div class="col-md-8">
+            <dl class="row">
 
-<h1>Details</h1>
+                <dt class="col-sm-4">Facility:</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.Doctor.Facility.FacilityName)</dd>
+
+                <dt class="col-sm-4">Specialization:</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.Doctor.Specialization)</dd>
+
+                <dt class="col-sm-4">Experience Years:</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.Doctor.ExperienceYears)</dd>
+
+                <dt class="col-sm-4">Qualifications:</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.Doctor.Qualifications)</dd>
+
+                <dt class="col-sm-4">Experience:</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.Doctor.Experience)</dd>
+
+                <dt class="col-sm-4">Created At:</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.Doctor.CreatedAt)</dd>
+            </dl>
+        </div>
+    </div>
+    <div class="d-flex justify-content-center gap-2 mt-4">
+        <a asp-page="./Edit" asp-route-id="@Model.Doctor.DoctorId" class="btn-edit-profile">Edit</a>
+        <a asp-page="./Index" class="btn-back">Back to List</a>
+    </div>
+</div>
+</div>
 
 <div>
-    <h4>Doctor</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Doctor.User)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Doctor.User.Id)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Doctor.Facility)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Doctor.Facility.FacilityId)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Doctor.Specialization)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Doctor.Specialization)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Doctor.ExperienceYears)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Doctor.ExperienceYears)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Doctor.Qualifications)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Doctor.Qualifications)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Doctor.Experience)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Doctor.Experience)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Doctor.ImageUrl)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Doctor.ImageUrl)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Doctor.CreatedAt)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Doctor.CreatedAt)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-page="./Edit" asp-route-id="@Model.Doctor.DoctorId">Edit</a> |
-    <a asp-page="./Index">Back to List</a>
-</div>
+

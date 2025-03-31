@@ -10,24 +10,25 @@
     var userRole = HttpContextAccessor.HttpContext?.Session.GetString("UserRole") ?? "No Role";
 }
 
-@if (userRole == "Admin")
-{
-    <p>You have permission to edit doctor details.</p>
-}
-else
-{
-    <p class="text-danger">You do not have permission to edit this page.</p>
-}
 
-<div class="container mt-5">
+
+<div class="account container mt-5">
+    @if (userRole == "Admin")
+    {
+        <p>You have permission to edit doctor details.</p>
+    }
+    else
+    {
+        <p class="text-danger">You do not have permission to edit this page.</p>
+    }
     <h2 class="text-center">User Accounts</h2>
 
     <div class="d-flex justify-content-between mb-3">
-        <a asp-page="Create" class="btn btn-success">Create New Account</a>
+        <a asp-page="Create" class="btn-create-new-account">Create New Account</a>
 
         <form method="get" class="d-flex">
             <input type="text" name="SearchTerm" value="@Model.SearchTerm" class="form-control me-2" placeholder="Search by email or name">
-            <button type="submit" class="btn btn-primary">Search</button>
+            <button type="submit" class="btn-search-account">Search</button>
         </form>
     </div>
 

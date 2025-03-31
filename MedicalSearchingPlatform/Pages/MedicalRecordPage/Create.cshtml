@@ -1,0 +1,59 @@
+﻿@page
+@model MedicalSearchingPlatform.Pages.MedicalRecordPage.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>MedicalRecord</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <span class="text-danger">*</span>
+                <label asp-for="MedicalRecord.PatientId" class="control-label"></label>
+                <select asp-for="MedicalRecord.PatientId" class ="form-control" asp-items="ViewBag.PatientId"></select>
+            </div>
+            <div class="form-group">
+                <span class="text-danger">*</span>
+                <label asp-for="MedicalRecord.DoctorId" class="control-label"></label>
+                <select asp-for="MedicalRecord.DoctorId" class ="form-control" asp-items="ViewBag.DoctorId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="MedicalRecord.Diagnosis" class="control-label"></label>
+                <input asp-for="MedicalRecord.Diagnosis" class="form-control" />
+                <span asp-validation-for="MedicalRecord.Diagnosis" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MedicalRecord.Treatment" class="control-label"></label>
+                <input asp-for="MedicalRecord.Treatment" class="form-control" />
+                <span asp-validation-for="MedicalRecord.Treatment" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MedicalRecord.Notes" class="control-label"></label>
+                <input asp-for="MedicalRecord.Notes" class="form-control" />
+                <span asp-validation-for="MedicalRecord.Notes" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MedicalRecord.AttachmentUrl" class="control-label"></label>
+                <input asp-for="MedicalRecord.AttachmentUrl" class="form-control" />
+                <span asp-validation-for="MedicalRecord.AttachmentUrl" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

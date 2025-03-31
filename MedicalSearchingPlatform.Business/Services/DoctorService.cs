@@ -54,7 +54,7 @@ namespace MedicalSearchingPlatform.Business.Services
             return doctors.OrderByDescending(d => d.CreatedAt);
         }
 
-        public async Task<IEnumerable<Doctor>> GetMostBookedDoctorsAsync(int top = 5)
+        public async Task<IEnumerable<Doctor>> GetMostBookedDoctorsAsync(int top)
         {
             return await _doctorRepository.GetMostBookedDoctorsAsync(top);
         }
