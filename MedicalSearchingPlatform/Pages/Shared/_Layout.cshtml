@@ -26,7 +26,7 @@
 <body>
 
     <!-- ======= Header/Navbar ======= -->
-    <header id="header" class="fixed-top ">
+    <header id="header" class="fixed-top">
         <div class="container d-flex align-items-center justify-content-between">
             <h1 class="logo me-auto">
                 <a asp-page="/Index" class="text-white">FUMedical</a>
@@ -58,7 +58,7 @@
                                 <li class="nav-item"><a class="nav-link text-white @(ViewData["Title"] == "Medical Services" ? "active" : "")" asp-page="/MedicalServicePage/Index">Services</a></li>
                                 <li class="nav-item"><a class="nav-link text-white @(ViewData["Title"] == "Medical Facilities" ? "active" : "")" asp-page="/MedicalFacilityPage/Index">Facilities</a></li>
                                 <li class="nav-item"><a class="nav-link text-white @(ViewData["Title"] == "Doctors" ? "active" : "")" asp-page="/DoctorPage/Index">Doctors</a></li>
-                                <li class="nav-item"><a class="nav-link text-white @(ViewData["Title"] == "Latest News & Articles" ? "active" : "")" asp-page="/ArticlePage/Index">Articles</a></li>
+                                <li class="nav-item"><a class="nav-link text-white @(ViewData["Title"] == "Latest News & Articles" ? "active" : "")" asp-page="/ArticlesPage/Index">Articles</a></li>
                                 <li class="nav-item"><a class="nav-link text-white @(ViewData["Title"] == "Appointment History" ? "active" : "")" asp-page="/AppointmentPage/History">History</a></li>
                                 <li class="nav-item"><a class="nav-link text-white @(ViewData["Title"] == "Contact Us" ? "active" : "")" asp-page="/Contact">Contact</a></li>
                                 <li class="nav-item"><a class="nav-link text-white @(ViewData["Title"] == "Privacy Policy" ? "active" : "")" asp-page="/Privacy">Privacy</a></li>
@@ -75,12 +75,13 @@
                                 <li class="nav-item"><a class="nav-link text-white @(ViewData["Title"] == "Medical Facilities" ? "active" : "")" asp-page="/MedicalFacilityPage/Index">Facilities</a></li>
                                 <li class="nav-item"><a class="nav-link text-white @(ViewData["Title"] == "Doctors" ? "active" : "")" asp-page="/DoctorPage/Index">Doctors</a></li>
                                 <li class="nav-item"><a class="nav-link text-white @(ViewData["Title"] == "Appointments" ? "active" : "")" asp-page="/AppointmentPage/Index">Appointments</a></li>
-                                <li class="nav-item"><a class="nav-link text-white @(ViewData["Title"] == "Latest News & Articles" ? "active" : "")" asp-page="/ArticlePage/Index">Articles</a></li>
+                                <li class="nav-item"><a class="nav-link text-white @(ViewData["Title"] == "Latest News & Articles" ? "active" : "")" asp-page="/ArticlesPage/Index">Articles</a></li>
                                 <li class="nav-item"><a class="nav-link text-white @(ViewData["Title"] == "Contact Us" ? "active" : "")" asp-page="/Contact">Contact</a></li>
                             }
                             else if (roles.Contains("Doctor"))
                             {
                                 <li class="nav-item"><a class="nav-link text-white @(ViewData["Title"] == "Appointments" ? "active" : "")" asp-page="/AppointmentPage/Index">Appointments</a></li>
+                                <li class="nav-item"><a class="nav-link text-white @(ViewData["Title"] == "Schedules" ? "active" : "")" asp-page="/WorkingSchedulePage/Index">Schedule</a></li>
                                 <li class="nav-item"><a class="nav-link text-white @(ViewData["Title"] == "Appointment History" ? "active" : "")" asp-page="/AppointmentPage/History">History</a></li>
                                 <li class="nav-item"><a class="nav-link text-white @(ViewData["Title"] == "Contact Us" ? "active" : "")" asp-page="/Contact">Contact</a></li>
                                 <li class="nav-item"><a class="nav-link text-white @(ViewData["Title"] == "Medical Record" ? "active" : "")" asp-page="/MedicalRecordPage/Index">Medical Record</a></li>
@@ -92,7 +93,7 @@
                             <!-- Default links for non-authenticated users -->
                             <li class="nav-item"><a class="nav-link text-white @(ViewData["Title"] == "Medical Services" ? "active" : "")" asp-page="/MedicalServicePage/Index">Services</a></li>
                             <li class="nav-item"><a class="nav-link text-white @(ViewData["Title"] == "Medical Facilities" ? "active" : "")" asp-page="/MedicalFacilityPage/Index">Medical Facility</a></li>
-                            <li class="nav-item"><a class="nav-link text-white @(ViewData["Title"] == "Latest News & Articles" ? "active" : "")" asp-page="/ArticlePage/Index">Articles</a></li>
+                            <li class="nav-item"><a class="nav-link text-white @(ViewData["Title"] == "Latest News & Articles" ? "active" : "")" asp-page="/ArticlesPage/Index">Articles</a></li>
                             <li class="nav-item"><a class="nav-link text-white @(ViewData["Title"] == "Contact Us" ? "active" : "")" asp-page="/Contact">Contact</a></li>
                             <li class="nav-item"><a class="nav-link text-white @(ViewData["Title"] == "Privacy Policy" ? "active" : "")" asp-page="/Privacy">Privacy</a></li>
                         }
@@ -183,7 +184,7 @@
 
 
     <!-- ======= Hero Section ======= -->
-    <main id="main" class="mt-5">
+    <main id="main" class="mt-5 vh-100" style="margin-top:7rem!important">
         @RenderBody()
     </main>
 

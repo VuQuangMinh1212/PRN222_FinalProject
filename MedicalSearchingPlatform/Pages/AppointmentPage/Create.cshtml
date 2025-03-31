@@ -1,51 +1,53 @@
 ﻿@page
 @using System.Security.Claims
 @model MedicalSearchingPlatform.Pages.AppointmentPage.CreateModel
+<div class="account container mt-5">
+    <h2 class="text-center my-4">Making Appointment</h2>
 
-<div class="row">
-    <div class="col-md-12 mx-auto">
-        <form method="post" asp-page="/ApopointmentPage/Create" onsubmit="return jQueryModalPost(event,this)">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <input asp-for="Appointment.AppointmentId" class="form-control" type="hidden" />
-                <span asp-validation-for="Appointment.AppointmentId" class="text-danger" type="hidden"></span>
-            </div>
-            <div class="form-group">
-                <span class="text-danger">*</span>
-                <label asp-for="Appointment.DoctorId" class="control-label"></label>
-                @if (ViewBag.DoctorId != null)
-                {
-                    <select id="DoctorId" asp-for="Appointment.DoctorId" class="form-control" asp-items="ViewBag.DoctorId"></select>
-                }
-                else
-                {
-                    <select class="form-control" disabled><option>No doctors available</option></select>
-                }
-            </div>
-            <div class="form-group">
-                <span class="text-danger">*</span>
-                <label for="scheduleDropdown">Available Schedules</label>
-                <select id="scheduleDropdown" asp-for="Appointment.ScheduleId" class="form-control">
-                    <option value="">Select a schedule</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label asp-for="Appointment.AppointmentInfo" class="control-label"></label>
-                <input asp-for="Appointment.AppointmentInfo" class="form-control" />
-                <span asp-validation-for="Appointment.AppointmentInfo" class="text-danger"></span>
-            </div>
-            <div class="form-group" hidden>
-                <span class="text-danger">*</span>
-                <label asp-for="Appointment.Status" class="control-label"></label>
-                <input asp-for="Appointment.Status" class="form-control" />
-                <span asp-validation-for="Appointment.Status" class="text-danger"></span>
-            </div>
-            <div class="form-group d-flex justify-content-end mt-2">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+    <div class="row">
+        <div class="col-md-12 mx-auto">
+            <form method="post" asp-page="/ApopointmentPage/Create" onsubmit="return jQueryModalPost(event,this)">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <input asp-for="Appointment.AppointmentId" class="form-control" type="hidden" />
+                    <span asp-validation-for="Appointment.AppointmentId" class="text-danger" type="hidden"></span>
+                </div>
+                <div class="form-group">
+                    <span class="text-danger">*</span>
+                    <label asp-for="Appointment.DoctorId" class="control-label"></label>
+                    @if (ViewBag.DoctorId != null)
+                    {
+                        <select id="DoctorId" asp-for="Appointment.DoctorId" class="form-control" asp-items="ViewBag.DoctorId"></select>
+                    }
+                    else
+                    {
+                        <select class="form-control" disabled><option>No doctors available</option></select>
+                    }
+                </div>
+                <div class="form-group my-3">
+                    <span class="text-danger">*</span>
+                    <label for="scheduleDropdown">Available Schedules</label>
+                    <select id="scheduleDropdown" asp-for="Appointment.ScheduleId" class="form-control">
+                        <option value="">Select a schedule</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Appointment.AppointmentInfo" class="control-label"></label>
+                    <input asp-for="Appointment.AppointmentInfo" class="form-control" />
+                    <span asp-validation-for="Appointment.AppointmentInfo" class="text-danger"></span>
+                </div>
+                <div class="form-group" hidden>
+                    <span class="text-danger">*</span>
+                    <label asp-for="Appointment.Status" class="control-label"></label>
+                    <input asp-for="Appointment.Status" class="form-control" />
+                    <span asp-validation-for="Appointment.Status" class="text-danger"></span>
+                </div>
+                <div class="form-group d-flex justify-content-end mt-2">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 </div>
 
 @section Scripts {

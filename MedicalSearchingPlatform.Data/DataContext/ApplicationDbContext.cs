@@ -101,7 +101,7 @@ namespace MedicalSearchingPlatform.Data.DataContext
 
             modelBuilder.Entity<Review>()
                 .HasOne(r => r.MedicalFacility)
-                .WithMany()
+                .WithMany(f => f.Reviews)
                 .HasForeignKey(r => r.FacilityId)
                 .OnDelete(DeleteBehavior.NoAction);
 

@@ -6,7 +6,7 @@ namespace MedicalSearchingPlatform.Data.Entities
     public class Review
     {
         [Key]
-        public string ReviewId { get; set; } = Guid.NewGuid().ToString();
+        public string ReviewId { get; set; } = Guid.NewGuid().ToString("N");
 
         [Required]
         [ForeignKey("Patient")]
@@ -14,11 +14,11 @@ namespace MedicalSearchingPlatform.Data.Entities
         public virtual Patient Patient { get; set; }
 
         [ForeignKey("Doctor")]
-        public string? DoctorId { get; set; } // Nullable for facility reviews
+        public string? DoctorId { get; set; }
         public virtual Doctor? Doctor { get; set; }
 
         [ForeignKey("MedicalFacility")]
-        public string? FacilityId { get; set; } // Nullable for doctor reviews
+        public string? FacilityId { get; set; }
         public virtual MedicalFacility? MedicalFacility { get; set; }
 
         [Required]
@@ -26,6 +26,7 @@ namespace MedicalSearchingPlatform.Data.Entities
         public int Rating { get; set; }
 
         [MaxLength(500)]
+        [Required]
         public string Comment { get; set; }
 
         [Required]

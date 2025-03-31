@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MedicalSearchingPlatform.Data.Entities
 {
@@ -22,12 +23,16 @@ namespace MedicalSearchingPlatform.Data.Entities
         [MaxLength(15)]
         public string PhoneNumber { get; set; }
 
-        public virtual ICollection<MedicalFacilityService> FacilityServices { get; set; } = new List<MedicalFacilityService>();
-
         [MaxLength(255)]
         public string ImageUrl { get; set; } = "/img/testimonials/departments-2.jpg";
 
+        [NotMapped]
+        public double AverageRating => Reviews?.Any() == true ? Reviews.Average(r => r.Rating) : 0;
+
         [Required]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public virtual ICollection<MedicalFacilityService> FacilityServices { get; set; } = new List<MedicalFacilityService>();
+
+        public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();
     }
 }

@@ -53,12 +53,27 @@
                         <p class="card-text"><i class="bi bi-info-circle"></i> @item.Infor</p>
                         <p class="card-text"><i class="bi bi-telephone"></i> @item.PhoneNumber</p>
                     </div>
+                    <div class="rating d-flex justify-content-end">
+                        @for (int i = 1; i <= 5; i++)
+                        {
+                            <i class="bi @(i <= item.AverageRating ? "bi-star-fill text-warning" : i - 0.5 <= item.AverageRating ? "bi-star-half text-warning" : "bi-star text-muted")"></i>
+                        }
+                        <span class="mx-2">@item.Reviews.Count()</span>
+                    </div>
                     <div class="card-footer text-center">
                         <div class="btn-view-details">
-                        <a asp-page="./Details" asp-route-id="@item.FacilityId" >
-                            <i class="bi bi-eye"></i> View Details
+                            <a asp-page="./Details" asp-route-id="@item.FacilityId">
+                                <i class="bi bi-eye"></i> View Details
                             </a>
                         </div>
+                        @if (User.IsInRole("Patient"))
+                        {
+                            <a onclick="jQueryModalGet('/ReviewPage/ReviewFacility?facilityId=@item.FacilityId','Review')">
+                                <div class="btn-view-details">
+                                    <span class="text-white">Review</span>
+                                </div>
+                            </a>
+                        }
                         @if (isStaff)
                         {
                             <a asp-page="./Edit" asp-route-id="@item.FacilityId" class="btn btn-warning btn-sm">

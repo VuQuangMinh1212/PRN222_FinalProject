@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using MedicalSearchingPlatform.Business.Interfaces;
 using MedicalSearchingPlatform.Data.Entities;
 using System.Security.Claims;
+using MedicalSearchingPlatform.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace MedicalSearchingPlatform.Pages.AppointmentPage
 {
@@ -13,7 +15,10 @@ namespace MedicalSearchingPlatform.Pages.AppointmentPage
         private readonly IAppointmentService _appointmentService;
         private readonly IDoctorService _doctorService;
 
-        public IndexModel(IAppointmentService appointmentService,IDoctorService doctorService)
+        [BindProperty]
+        public List<AppointmentViewModel> Appointments { get; set; }
+
+        public IndexModel(IAppointmentService appointmentService, IDoctorService doctorService)
         {
             _appointmentService = appointmentService;
             _doctorService = doctorService;
