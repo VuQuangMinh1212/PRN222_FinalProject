@@ -24,6 +24,11 @@ namespace MedicalSearchingPlatform.Business.Services
             return await _doctorRepository.GetDoctorByIdAsync(doctorId);
         }
 
+        public async Task<Doctor> GetDoctorByUserIdAsync(string doctorId)
+        {
+            return await _doctorRepository.GetDoctorByUserIdAsync(doctorId);
+        }
+
         public async Task AddDoctorAsync(Doctor doctor)
         {
             doctor.CreatedAt = DateTime.UtcNow;

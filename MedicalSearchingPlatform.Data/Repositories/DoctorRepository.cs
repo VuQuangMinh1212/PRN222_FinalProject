@@ -31,6 +31,14 @@ namespace MedicalSearchingPlatform.Data.Repositories
                 .FirstOrDefaultAsync(d => d.DoctorId == doctorId);
         }
 
+        public async Task<Doctor> GetDoctorByUserIdAsync(string userId)
+        {
+            return await _context.Doctors
+                .Include(d => d.User)
+                .Include(d => d.Facility)
+                .FirstOrDefaultAsync(d => d.UserId == userId);
+        }
+
         public async Task AddDoctorAsync(Doctor doctor)
         {
             doctor.CreatedAt = DateTime.UtcNow;

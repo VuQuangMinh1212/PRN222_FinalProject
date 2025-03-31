@@ -18,6 +18,7 @@ namespace MedicalSearchingPlatform.Business.Interfaces
         decimal? maxFee);
 
         Task<IEnumerable<Doctor>> GetMostBookedDoctorsAsync(int top);
+        Task<Doctor> GetDoctorByUserIdAsync(string userId);
     }
 
 
