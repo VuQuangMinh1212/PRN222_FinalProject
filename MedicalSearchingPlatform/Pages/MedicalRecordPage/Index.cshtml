@@ -36,9 +36,13 @@
                 <td>@Html.DisplayFor(modelItem => item.AttachmentUrl)</td>
                 <td>@Html.DisplayFor(modelItem => item.IsShared)</td>
                 <td>
-                    <a asp-page="./Edit" asp-route-id="@item.MedicalRecordId">Edit</a> |
-                    <a asp-page="./Details" asp-route-id="@item.MedicalRecordId">Details</a> |
-                    <a asp-page="./Delete" asp-route-id="@item.MedicalRecordId">Delete</a>
+                    <a asp-page="./Details" asp-route-id="@item.MedicalRecordId">Details</a>
+                    @if (User.IsInRole("Doctor"))
+                    {
+                        <a asp-page="./Edit" asp-route-id="@item.MedicalRecordId">Edit</a> 
+                        <a asp-page="./Delete" asp-route-id="@item.MedicalRecordId">Delete</a>
+                    }
+
                 </td>
             </tr>
         }

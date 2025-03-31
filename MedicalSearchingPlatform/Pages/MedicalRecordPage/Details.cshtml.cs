@@ -1,8 +1,8 @@
-﻿using MedicalSearchingPlatform.Data.Entities;
-using MedicalSearchingPlatform.Services;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Diagnostics;
+using MedicalSearchingPlatform.Data.Entities;
+using MedicalSearchingPlatform.Services;
 
 namespace MedicalSearchingPlatform.Pages.MedicalRecordPage
 {
@@ -15,23 +15,22 @@ namespace MedicalSearchingPlatform.Pages.MedicalRecordPage
             _medicalRecordService = medicalRecordService;
         }
 
-        public MedicalRecord MedicalRecord { get; set; }
-        public Patient Patient { get; set; }
+        public MedicalRecord MedicalRecord { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(string id)
         {
-            if (id == null)
+            if (string.IsNullOrEmpty(id))
             {
                 return NotFound();
             }
-            Debug.Write(id);
-            Patient = await _medicalRecordService.GetPatientByUserIdAsync(id);
 
-            MedicalRecord = await _medicalRecordService.GetMedicalRecordAsync(Patient.PatientId);
+            MedicalRecord = await _medicalRecordService.GetMedicalRecordAsync(id);
+
             if (MedicalRecord == null)
             {
                 return NotFound();
             }
+
             return Page();
         }
     }
