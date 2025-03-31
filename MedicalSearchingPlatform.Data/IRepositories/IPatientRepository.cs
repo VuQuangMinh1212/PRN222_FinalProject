@@ -6,6 +6,7 @@ namespace MedicalSearchingPlatform.Data.IRepositories
     {
         Task<IEnumerable<Patient>> GetAllPatientsAsync();
         Task<Patient> GetPatientByIdAsync(string patientId);
+        Task<Patient> GetPatientByUserIdAsync(string userId);
         Task AddPatientAsync(Patient patient);
         Task UpdatePatientAsync(Patient patient);
         Task DeletePatientAsync(string patientId);

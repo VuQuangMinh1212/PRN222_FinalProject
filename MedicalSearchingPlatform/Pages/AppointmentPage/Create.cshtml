@@ -6,66 +6,71 @@
 }
 
 <div class="create-appointment container">
-
-<h4>Create Appointment</h4>
-<div class="form-create row">
-    <div class="col-md-4">
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <input asp-for="Appointment.AppointmentId" class="form-control" type="hidden"/>
-                <span asp-validation-for="Appointment.AppointmentId" class="text-danger" type="hidden"></span>
-            </div>
-            <div class="form-group">
-                <span class="text-danger">*</span>
-                <label asp-for="Appointment.DoctorId" class="control-label"></label>
-                @if (ViewBag.DoctorId != null)
-                {
-                    <select asp-for="Appointment.DoctorId" class="form-control" asp-items="ViewBag.DoctorId"></select>
-                }
-                else
-                {
-                    <select class="form-control" disabled><option>No doctors available</option></select>
-                }
-            </div>
-            <div class="form-group">
-                <span class="text-danger">*</span>
-                <label asp-for="Appointment.PatientId" class="control-label"></label>
-                @if (ViewBag.PatientId != null)
-                {
-                    <select asp-for="Appointment.PatientId" class="form-control" asp-items="ViewBag.PatientId"></select>
-                }
-                else
-                {
-                    <select class="form-control" disabled><option>No patients available</option></select>
-                }
-            </div>
-            <div class="form-group">
-                <span class="text-danger">*</span>
-                <label asp-for="Appointment.AppointmentDate" class="control-label"></label>
-                <input asp-for="Appointment.AppointmentDate" class="form-control" />
-                <span asp-validation-for="Appointment.AppointmentDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Appointment.AppointmentInfo" class="control-label"></label>
-                <input asp-for="Appointment.AppointmentInfo" class="form-control" />
-                <span asp-validation-for="Appointment.AppointmentInfo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <span class="text-danger">*</span>
-                <label asp-for="Appointment.Status" class="control-label"></label>
-                <input asp-for="Appointment.Status" class="form-control" />
-                <span asp-validation-for="Appointment.Status" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn-create-appointment" />
-            </div>
-        </form>
+    <h4>Create Appointment</h4>
+    <div class="form-create row">
+        <div class="col-md-4">
+            <form method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <input asp-for="Appointment.AppointmentId" class="form-control" type="hidden" />
+                    <span asp-validation-for="Appointment.AppointmentId" class="text-danger" type="hidden"></span>
+                </div>
+                <div class="form-group">
+                    <span class="text-danger">*</span>
+                    <label asp-for="Appointment.DoctorId" class="control-label"></label>
+                    @if (ViewBag.DoctorId != null)
+                    {
+                        <select asp-for="Appointment.DoctorId" class="form-control" asp-items="ViewBag.DoctorId"></select>
+                    }
+                    else
+                    {
+                        <select class="form-control" disabled><option>No doctors available</option></select>
+                    }
+                </div>
+                <div class="form-group">
+                    <span class="text-danger">*</span>
+                    <label asp-for="Appointment.PatientId" class="control-label">Patient</label>
+                    @if (HttpContext.Session.GetString("UserRole") == "Patient")
+                    {
+                        <input type="text" class="form-control" value="@Model.CurrentPatientName" readonly />
+                        <input asp-for="Appointment.PatientId" type="hidden" />
+                    }
+                    else if (ViewBag.PatientId != null)
+                    {
+                        <select asp-for="Appointment.PatientId" class="form-control" asp-items="ViewBag.PatientId"></select>
+                    }
+                    else
+                    {
+                        <select class="form-control" disabled><option>No patients available</option></select>
+                    }
+                </div>
+                <div class="form-group">
+                    <span class="text-danger">*</span>
+                    <label asp-for="Appointment.AppointmentDate" class="control-label"></label>
+                    <input asp-for="Appointment.AppointmentDate" class="form-control" />
+                    <span asp-validation-for="Appointment.AppointmentDate" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Appointment.AppointmentInfo" class="control-label"></label>
+                    <input asp-for="Appointment.AppointmentInfo" class="form-control" />
+                    <span asp-validation-for="Appointment.AppointmentInfo" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <span class="text-danger">*</span>
+                    <label asp-for="Appointment.Status" class="control-label"></label>
+                    <input asp-for="Appointment.Status" class="form-control" />
+                    <span asp-validation-for="Appointment.Status" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn-create-appointment" />
+                </div>
+            </form>
+        </div>
     </div>
 </div>
-</div>
-
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

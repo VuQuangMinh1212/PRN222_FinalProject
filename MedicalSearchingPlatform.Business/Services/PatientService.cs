@@ -23,6 +23,11 @@ namespace MedicalSearchingPlatform.Business.Services
             return await _patientRepository.GetPatientByIdAsync(patientId);
         }
 
+        public async Task<Patient> GetPatientByUserIdAsync(string patientId)
+        {
+            return await _patientRepository.GetPatientByUserIdAsync(patientId);
+        }
+
         public async Task AddPatientAsync(Patient patient)
         {
             await _patientRepository.AddPatientAsync(patient);

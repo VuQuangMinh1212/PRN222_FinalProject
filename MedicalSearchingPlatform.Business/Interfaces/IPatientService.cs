@@ -9,5 +9,6 @@ namespace MedicalSearchingPlatform.Business.Interfaces
         Task AddPatientAsync(Patient patient);
         Task UpdatePatientAsync(Patient patient);
         Task DeletePatientAsync(string patientId);
+        Task<Patient> GetPatientByUserIdAsync(string userId);
     }
 }
