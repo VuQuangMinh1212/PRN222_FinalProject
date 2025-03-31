@@ -20,6 +20,7 @@ namespace MedicalSearchingPlatform.Pages.MedicalRecordPage
 
         [BindProperty(SupportsGet = true)]
         public string UserId { get; set; }
+        public string UserRole => HttpContext.Session.GetString("UserRole");
 
         public async Task OnGetAsync()
         {
@@ -29,7 +30,7 @@ namespace MedicalSearchingPlatform.Pages.MedicalRecordPage
             }
             else
             {
-                if (User.IsInRole("Patient"))
+                if (UserRole == "Patient")
                 {
                     var patient = await _medicalRecordService.GetPatientByUserIdAsync(UserId);
                     if (patient != null)
@@ -38,7 +39,7 @@ namespace MedicalSearchingPlatform.Pages.MedicalRecordPage
                         return;
                     }
                 }
-                else if (User.IsInRole("Doctor"))
+                else if (UserRole == "Doctor")
                 {
                     var doctor = await _medicalRecordService.GetDoctorByUserIdAsync(UserId);
                     if (doctor != null)

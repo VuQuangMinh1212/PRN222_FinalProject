@@ -16,7 +16,7 @@ namespace MedicalSearchingPlatform.Data.Repositories
 
         public async Task<IEnumerable<Appointment>> GetAllAppointmentsAsync()
         {
-            return await _context.Appointments.Include(a => a.Patient).Include(a => a.Doctor).ToListAsync();
+            return await _context.Appointments.Include(a => a.Patient).Include(a => a.Doctor).ThenInclude(a => a.User).ToListAsync();
         }
 
         public async Task<Appointment> GetAppointmentByIdAsync(string appointmentId)

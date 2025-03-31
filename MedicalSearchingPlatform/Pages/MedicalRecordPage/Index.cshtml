@@ -37,7 +37,7 @@
                 <td>@Html.DisplayFor(modelItem => item.IsShared)</td>
                 <td>
                     <a asp-page="./Details" asp-route-id="@item.MedicalRecordId">Details</a>
-                    @if (User.IsInRole("Doctor"))
+                    @if (HttpContext.Session.GetString("UserRole") == "Doctor")
                     {
                         <a asp-page="./Edit" asp-route-id="@item.MedicalRecordId">Edit</a> 
                         <a asp-page="./Delete" asp-route-id="@item.MedicalRecordId">Delete</a>
