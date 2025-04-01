@@ -5,6 +5,7 @@ namespace MedicalSearchingPlatform.Services
     public interface IReviewService
     {
         Task<IEnumerable<Review>> GetAllReviewsAsync();
+        Task<List<Review>> GetReviewByPatientId(string patientId);
         Task<Review> GetReviewByIdAsync(string reviewId);
         Task<IEnumerable<Review>> GetReviewsByDoctorIdAsync(string doctorId);
         Task<IEnumerable<Review>> GetReviewsByFacilityIdAsync(string facilityId);

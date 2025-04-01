@@ -31,5 +31,10 @@ namespace MedicalSearchingPlatform.Services
             await _reviewRepository.DeleteReviewAsync(reviewId);
             return true;
         }
+
+        public Task<List<Review>> GetReviewByPatientId(string patientId)
+        {
+            return _reviewRepository.GetReviewByPatientId(patientId);
+        }
     }
 }

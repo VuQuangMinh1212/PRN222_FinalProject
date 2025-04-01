@@ -53,7 +53,7 @@
                         <p class="card-text"><i class="bi bi-info-circle"></i> @item.Infor</p>
                         <p class="card-text"><i class="bi bi-telephone"></i> @item.PhoneNumber</p>
                     </div>
-                    <div class="rating d-flex justify-content-end">
+                    <div class="rating d-flex justify-content-center">
                         @for (int i = 1; i <= 5; i++)
                         {
                             <i class="bi @(i <= item.AverageRating ? "bi-star-fill text-warning" : i - 0.5 <= item.AverageRating ? "bi-star-half text-warning" : "bi-star text-muted")"></i>
@@ -66,7 +66,7 @@
                                 <i class="bi bi-eye"></i> View Details
                             </a>
                         </div>
-                        @if (User.IsInRole("Patient"))
+                        @if (User.IsInRole("Patient") && !Model.ReviewFacility.Contains(item.FacilityId))
                         {
                             <a onclick="jQueryModalGet('/ReviewPage/ReviewFacility?facilityId=@item.FacilityId','Review')">
                                 <div class="btn-view-details">
