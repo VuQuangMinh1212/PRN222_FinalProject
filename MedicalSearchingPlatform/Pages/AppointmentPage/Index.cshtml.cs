@@ -33,6 +33,7 @@ namespace MedicalSearchingPlatform.Pages.AppointmentPage
             {
                 AppointmentId = appointment.AppointmentId,
                 AppointmentDate = appointment.AppointmentDate,
+                PatientName = appointment.Patient.User.FullName,
                 AppointmentInfo = appointment.AppointmentInfo,
                 Status = appointment.Status
             }).ToList();
