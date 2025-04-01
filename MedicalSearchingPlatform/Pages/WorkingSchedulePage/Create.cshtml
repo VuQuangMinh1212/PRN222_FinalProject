@@ -17,6 +17,12 @@
         timeSlots.Add(new SelectListItem { Value = startTime, Text = timeRange });
     }
 
+    var currentCulture = System.Globalization.CultureInfo.CurrentCulture;
+    var calendar = currentCulture.Calendar;
+    var currentDate = DateTime.Now;
+    var week = calendar.GetWeekOfYear(currentDate, currentCulture.DateTimeFormat.CalendarWeekRule, currentCulture.DateTimeFormat.FirstDayOfWeek);
+    var minWeek = $"{currentDate:yyyy}-W{week:D2}";
+
     var weekDays = new List<string> { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
 }
 <div class="row">
@@ -30,7 +36,7 @@
             <div class="form-group mb-2">
                 <label class="control-label">Chọn tuần</label>
                 <input type="week" id="selectedWeek" onchange="updateCheckboxes(this.value)" name="SelectedWeek" class="form-control" required
-                       min="@DateTime.Now.AddDays(-((int)DateTime.Now.DayOfWeek)).ToString("yyyy")-W@((DateTime.Now.DayOfYear - 1) / 7 + 1)" />
+                       min="@minWeek" />
             </div>
 
             <!-- Chọn ngày làm việc -->
@@ -39,8 +45,8 @@
                 <div class="row">
                     @foreach (var day in weekDays)
                     {
-                        int dayIndex = weekDays.IndexOf(day) + 1; // Chuyển thành số thứ tự (Monday = 1, ..., Sunday = 7)
-                        bool isPastDay = dayIndex < (int)today.DayOfWeek; // Disable ngày trong quá khứ
+                        int dayIndex = weekDays.IndexOf(day);
+                        bool isPastDay = dayIndex < (int)today.DayOfWeek;
 
                         <div class="col-md-3">
                             <input type="checkbox" name="SelectedDays" value="@day" id="day-@day"
@@ -96,14 +102,16 @@
         document.querySelectorAll("input[name='SelectedDays']").forEach((checkbox) => {
             let dayIndex = getDayIndex(checkbox.value);
 
+            console.log(selectedWeek, currentWeek, todayIndex, dayIndex); // Debug xem giá trị
+
             if (selectedWeek === currentWeek) {
-                if (todayIndex === 0) {
-                    checkbox.disabled = true;
+                if (todayIndex === 0) { // Nếu hôm nay là Chủ Nhật
+                    checkbox.disabled = (dayIndex >= 0 && dayIndex <= 6); // Disable từ Thứ 2 -> Chủ Nhật
                 } else {
-                    checkbox.disabled = (dayIndex <= todayIndex);
+                    checkbox.disabled = ((dayIndex <= todayIndex) && dayIndex != 0); // Disable các ngày trước hôm nay
                 }
             } else {
-                checkbox.disabled = false;
+                checkbox.disabled = false; // Nếu chọn tuần khác thì không disable ngày nào
             }
         });
     }
@@ -111,16 +119,30 @@
     function getCurrentWeekString() {
         let now = new Date();
         let year = now.getFullYear();
-        let week = getWeekNumber(now);
+        let week = getISOWeekNumber(now);
         return `${year}-W${week.toString().padStart(2, '0')}`;
     }
 
-    function getWeekNumber(date) {
-        let start = new Date(date.getFullYear(), 0, 1);
-        let diff = date - start + ((start.getTimezoneOffset() - date.getTimezoneOffset()) * 60000);
-        let oneWeek = 604800000; // 7 ngày
-        return Math.floor(diff / oneWeek) + 1;
+    function getISOWeekNumber(date) {
+        let target = new Date(date.valueOf());
+        let dayNumber = (target.getDay() + 6) % 7; // Chuyển Chủ Nhật thành 6, Thứ Hai thành 0
+        target.setDate(target.getDate() - dayNumber + 3); // Lùi về thứ Năm trong tuần
+
+        let firstThursday = new Date(target.getFullYear(), 0, 4); // Ngày Thứ Năm đầu tiên của năm
+        let yearStart = new Date(firstThursday.getFullYear(), 0, 1);
+
+        // Nếu ngày đầu năm không phải thứ Năm, thì nó thuộc tuần cuối của năm trước
+        if (firstThursday.getDay() !== 4) {
+            yearStart.setDate(yearStart.getDate() - (yearStart.getDay() - 1));
+        }
+
+        let diff = target - yearStart;
+        let oneWeek = 604800000; // 7 ngày tính bằng mili giây
+
+        return Math.round(diff / oneWeek);
     }
+
+
 
     function getDayIndex(day) {
         const weekDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];

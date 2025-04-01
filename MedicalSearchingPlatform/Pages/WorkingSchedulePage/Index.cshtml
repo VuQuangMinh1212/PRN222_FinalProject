@@ -70,7 +70,7 @@
                                 @if (schedule != null)
                                 {
                                     <a style="cursor:pointer" onclick="jQueryModalGet('/WorkingSchedulePage/Edit?id=@schedule.ScheduleId','Edit schedule')">
-                                        <span>@(schedule.IsAvailable ? "Còn trống" : "Có lịch")</span>
+                                        <span>@(schedule.IsAvailable ? "Available" : "Unavailable")</span>
                                     </a>
                                 }
                                 else
@@ -84,7 +84,7 @@
                             <td class="@GetStatusClass(schedule)">
                                 @if (schedule != null)
                                 {
-                                    <span>@(schedule.IsAvailable ? "Còn trống" : "Có lịch")</span>
+                                    <span>@(schedule.IsAvailable ? "Available" : "Unavailable")</span>
                                 }
                                 else
                                 {
