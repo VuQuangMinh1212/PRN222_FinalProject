@@ -13,6 +13,8 @@
                 <th>Patient Name</th>
                 @* <th>Doctor Name</th> *@
                 <th>Appointment Date</th>
+                <th>Schedule Date</th>
+                <th>Schedule Time</th>
                 <th>Details</th>
                 <th>Status</th>
                 <th class="text-center">Actions</th>
@@ -27,6 +29,8 @@
                         <td>@item.PatientName</td>
                         @* <td>@item.Doctor?.User?.FullName</td> *@
                         <td>@item.AppointmentDate.ToString("yyyy-MM-dd HH:mm")</td>
+                        <td>@item.ScheduleDate</td>
+                        <td>@item.ScheduleTime</td>
                         <td>@item.AppointmentInfo</td>
                         <td>
                             <span class="badge @(item.Status == "Completed" ? "bg-success" : "bg-warning")">

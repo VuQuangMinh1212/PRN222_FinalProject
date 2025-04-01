@@ -34,6 +34,8 @@ namespace MedicalSearchingPlatform.Pages.AppointmentPage
                 AppointmentId = appointment.AppointmentId,
                 AppointmentDate = appointment.AppointmentDate,
                 PatientName = appointment.Patient.User.FullName,
+                ScheduleDate = appointment.WorkingSchedule.WorkDate.ToString("yyyy-MM-dd"),
+                ScheduleTime = $"{appointment.WorkingSchedule.StartTime.ToString(@"hh\:mm")} - {appointment.WorkingSchedule.EndTime.ToString(@"hh\:mm")}",
                 AppointmentInfo = appointment.AppointmentInfo,
                 Status = appointment.Status
             }).ToList();
