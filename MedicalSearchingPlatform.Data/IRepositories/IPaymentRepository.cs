@@ -1,6 +1,8 @@
-﻿using MedicalSearchingPlatform.Data.Entities;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using MedicalSearchingPlatform.Data.Entities;
 
-namespace MedicalSearchingPlatform.Data.Repositories
+namespace MedicalSearchingPlatform.Data.IRepositories
 {
     public interface IPaymentRepository
     {
@@ -9,6 +11,5 @@ namespace MedicalSearchingPlatform.Data.Repositories
         Task<IEnumerable<Payment>> GetPaymentsByPatientIdAsync(string patientId);
         Task AddPaymentAsync(Payment payment);
         Task UpdatePaymentAsync(Payment payment);
-        Task DeletePaymentAsync(string paymentId);
     }
 }

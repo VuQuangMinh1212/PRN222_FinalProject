@@ -1,15 +1,28 @@
 ﻿using MedicalSearchingPlatform.Data.Entities;
 using MedicalSearchingPlatform.Data.Repositories;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
+using MedicalSearchingPlatform.Business.Interfaces;
+using MedicalSearchingPlatform.Data.IRepositories;
 
 namespace MedicalSearchingPlatform.Services
 {
     public class PaymentService : IPaymentService
     {
         private readonly IPaymentRepository _paymentRepository;
+        private readonly HttpClient _httpClient;
+        private readonly IConfiguration _configuration;
 
-        public PaymentService(IPaymentRepository paymentRepository)
+        public PaymentService(IPaymentRepository paymentRepository, HttpClient httpClient, IConfiguration configuration)
         {
             _paymentRepository = paymentRepository;
+            _httpClient = httpClient;
+            _configuration = configuration;
         }
 
         public async Task<IEnumerable<Payment>> GetAllPaymentsAsync()
@@ -27,25 +40,65 @@ namespace MedicalSearchingPlatform.Services
             return await _paymentRepository.GetPaymentsByPatientIdAsync(patientId);
         }
 
-        public async Task<bool> ProcessPaymentAsync(Payment payment)
+        public async Task<string> ProcessPaymentAsync(Payment payment)
         {
-            try
+            var apiUrl = _configuration["PayOS:ApiUrl"] + "create-payment";
+            var apiKey = _configuration["PayOS:ApiKey"];
+            var secretKey = _configuration["PayOS:SecretKey"];
+            var returnUrl = _configuration["PayOS:ReturnUrl"];
+            var cancelUrl = _configuration["PayOS:CancelUrl"];
+
+            var payload = new
             {
-                payment.PaymentDate = DateTime.UtcNow;
-                payment.Status = "Completed";
-                await _paymentRepository.AddPaymentAsync(payment);
-                return true;
-            }
-            catch
+                amount = payment.Amount,
+                orderId = payment.PaymentId,
+                returnUrl = returnUrl,
+                cancelUrl = cancelUrl,
+                apiKey = apiKey,
+                signature = secretKey
+            };
+
+            var content = new StringContent(JsonConvert.SerializeObject(payload), Encoding.UTF8, "application/json");
+            var response = await _httpClient.PostAsync(apiUrl, content);
+
+            if (!response.IsSuccessStatusCode)
             {
-                return false;
+                return "Error: Payment request failed.";
             }
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            dynamic jsonResponse = JsonConvert.DeserializeObject(responseContent);
+
+            payment.PaymentDate = DateTime.UtcNow;
+            payment.Status = "Pending";
+            await _paymentRepository.AddPaymentAsync(payment);
+
+            return jsonResponse?.paymentUrl;
         }
 
         public async Task<bool> RefundPaymentAsync(string paymentId)
         {
             var payment = await _paymentRepository.GetPaymentByIdAsync(paymentId);
             if (payment == null || payment.Status == "Refunded")
+            {
+                return false;
+            }
+
+            var refundApiUrl = _configuration["PayOS:ApiUrl"] + "refund-payment";
+            var apiKey = _configuration["PayOS:ApiKey"];
+            var secretKey = _configuration["PayOS:SecretKey"];
+
+            var payload = new
+            {
+                paymentId = payment.PaymentId,
+                apiKey = apiKey,
+                signature = secretKey
+            };
+
+            var content = new StringContent(JsonConvert.SerializeObject(payload), Encoding.UTF8, "application/json");
+            var response = await _httpClient.PostAsync(refundApiUrl, content);
+
+            if (!response.IsSuccessStatusCode)
             {
                 return false;
             }

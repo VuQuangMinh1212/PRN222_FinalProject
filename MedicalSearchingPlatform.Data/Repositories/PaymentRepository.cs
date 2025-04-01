@@ -1,6 +1,9 @@
-﻿using MedicalSearchingPlatform.Data.DataContext;
-using MedicalSearchingPlatform.Data.Entities;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using MedicalSearchingPlatform.Data.Entities;
+using MedicalSearchingPlatform.Data.DataContext;
+using MedicalSearchingPlatform.Data.IRepositories;
 
 namespace MedicalSearchingPlatform.Data.Repositories
 {
@@ -15,22 +18,18 @@ namespace MedicalSearchingPlatform.Data.Repositories
 
         public async Task<IEnumerable<Payment>> GetAllPaymentsAsync()
         {
-            return await _context.Payments.Include(p => p.Patient).Include(p => p.Appointment).ToListAsync();
+            return await _context.Payments.ToListAsync();
         }
 
         public async Task<Payment> GetPaymentByIdAsync(string paymentId)
         {
-            return await _context.Payments
-                .Include(p => p.Patient)
-                .Include(p => p.Appointment)
-                .FirstOrDefaultAsync(p => p.PaymentId == paymentId);
+            return await _context.Payments.FindAsync(paymentId);
         }
 
         public async Task<IEnumerable<Payment>> GetPaymentsByPatientIdAsync(string patientId)
         {
             return await _context.Payments
                 .Where(p => p.PatientId == patientId)
-                .Include(p => p.Appointment)
                 .ToListAsync();
         }
 
@@ -44,16 +43,6 @@ namespace MedicalSearchingPlatform.Data.Repositories
         {
             _context.Payments.Update(payment);
             await _context.SaveChangesAsync();
-        }
-
-        public async Task DeletePaymentAsync(string paymentId)
-        {
-            var payment = await _context.Payments.FindAsync(paymentId);
-            if (payment != null)
-            {
-                _context.Payments.Remove(payment);
-                await _context.SaveChangesAsync();
-            }
         }
     }
 }

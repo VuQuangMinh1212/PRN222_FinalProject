@@ -1,0 +1,17 @@
+﻿@page
+@model MedicalSearchingPlatform.Pages.Payments.IndexModel
+@{
+    ViewData["Title"] = "Make a Payment";
+}
+
+<h2>Make a Payment</h2>
+
+<form method="post">
+    <label>Amount:</label>
+    <input type="number" asp-for="Amount" required />
+
+    <label>Patient ID:</label>
+    <input type="text" asp-for="PatientId" required />
+
+    <button type="submit">Pay Now</button>
+</form>
