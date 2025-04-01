@@ -132,11 +132,11 @@ namespace MedicalSearchingPlatform.Data
             {
                 var services = new List<MedicalService>
                 {
-                    new MedicalService { ServiceId = "S1", ServiceName = "General Checkup", Description = "Routine health examination.", Status = "Active" },
-                    new MedicalService { ServiceId = "S2", ServiceName = "Pediatrics", Description = "Healthcare services for children.", Status = "Active" },
-                    new MedicalService { ServiceId = "S3", ServiceName = "Cardiology", Description = "Heart health and diagnostics.", Status = "Active" },
-                    new MedicalService { ServiceId = "S4", ServiceName = "Dermatology", Description = "Skin care and treatment services.", Status = "Active" },
-                    new MedicalService { ServiceId = "S5", ServiceName = "Physical Therapy", Description = "Rehabilitation for injuries and mobility.", Status = "Active" }
+                    new MedicalService { ServiceId = "S1", ServiceName = "General Checkup", Description = "Routine health examination.", Price = 25000, Status = "Active" },
+                    new MedicalService { ServiceId = "S2", ServiceName = "Pediatrics", Description = "Healthcare services for children.", Price = 25000, Status = "Active" },
+                    new MedicalService { ServiceId = "S3", ServiceName = "Cardiology", Description = "Heart health and diagnostics.", Price = 25000, Status = "Active" },
+                    new MedicalService { ServiceId = "S4", ServiceName = "Dermatology", Description = "Skin care and treatment services.", Price = 25000, Status = "Active" },
+                    new MedicalService { ServiceId = "S5", ServiceName = "Physical Therapy", Description = "Rehabilitation for injuries and mobility.", Price = 25000, Status = "Active" }
                 };
 
                 context.MedicalServices.AddRange(services);
