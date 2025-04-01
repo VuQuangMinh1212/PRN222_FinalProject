@@ -1,0 +1,108 @@
+﻿@page
+@using System.Globalization
+@using MedicalSearchingPlatform.Data.Entities
+@using System.Security.Claims
+@model MedicalSearchingPlatform.Pages.WorkingSchedulePage.IndexModel
+
+@{
+    ViewData["Title"] = "Lịch làm việc bác sĩ";
+
+    DateTime startOfWeek;
+    if (!string.IsNullOrEmpty(Model.FilterScheduleViewModel.SelectedWeek))
+    {
+        startOfWeek = DateTime.Parse(Model.FilterScheduleViewModel.SelectedWeek);
+    }
+    else
+    {
+        startOfWeek = DateTime.Today;
+    }
+
+    var endOfWeek = startOfWeek.AddDays(6);
+    var workDates = Enumerable.Range(0, 7).Select(d => startOfWeek.AddDays(d)).ToList();
+}
+<div class="container" style="margin-top:7rem!important">
+    <h1 class="text-center">Doctor Schedule</h1>
+    <form method="get" class="mb-3 row">
+        <div class="col-md-6">
+            <label for="selectedWeek">Chọn tuần:</label>
+            <select name="selectedWeek" id="selectedWeek" class="form-select" onchange="this.form.submit()">
+                @foreach (var week in Model.FilterScheduleViewModel.Weeks)
+                {
+                    var weekEnd = week.AddDays(6);
+                    string displayText = $"{week:dd/MM/yyyy} - {weekEnd:dd/MM/yyyy}";
+                    <option value="@week.ToString("yyyy-MM-dd")" selected="@(week == startOfWeek ? "selected" : null)">
+                        @displayText
+                    </option>
+                }
+            </select>
+        </div>
+    </form>
+
+    <a onclick="jQueryModalGet('/WorkingSchedulePage/Create', 'Create Schedule')" class="btn btn-success mb-2">Add Schedule</a>
+
+    <table class="table table-bordered text-center">
+        <thead class="table-dark">
+            <tr>
+                <th>Giờ</th>
+                @foreach (var date in workDates)
+                {
+                    <th>@CultureInfo.CurrentCulture.DateTimeFormat.GetDayName(date.DayOfWeek) <br> @date.ToString("dd/MM")</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @for (int hour = 8; hour <= 18; hour++)
+            {
+                <tr>
+                    <td class="fw-bold">@hour:00 - @(hour + 1):00</td>
+                    @foreach (var date in workDates)
+                    {
+                        var schedule = Model.WorkingSchedule?.Where(s =>
+                        s.DoctorId == Model.DoctorId && s.WorkDate.Date == date)
+                        .FirstOrDefault(s => s.StartTime.Hours <= hour && s.EndTime.Hours > hour);
+
+                        // Kiểm tra nếu slot này là quá khứ
+                        bool isFutureSlot = date > DateTime.Now.Date || (date == DateTime.Now.Date && hour >= DateTime.Now.Hour);
+
+                        @if (isFutureSlot)
+                        {
+                            <td class="@GetStatusClass(schedule)">
+                                @if (schedule != null)
+                                {
+                                    <a style="cursor:pointer" onclick="jQueryModalGet('/WorkingSchedulePage/Edit?id=@schedule.ScheduleId','Edit schedule')">
+                                        <span>@(schedule.IsAvailable ? "Available" : "Unavailable")</span>
+                                    </a>
+                                }
+                                else
+                                {
+                                    <span>...</span>
+                                }
+                            </td>
+                        }
+                        else
+                        {
+                            <td class="@GetStatusClass(schedule)">
+                                @if (schedule != null)
+                                {
+                                    <span>@(schedule.IsAvailable ? "Available" : "Unavailable")</span>
+                                }
+                                else
+                                {
+                                    <span>...</span>
+                                }
+                            </td>
+                        }
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@functions {
+    string GetStatusClass(WorkingSchedule schedule)
+    {
+        if (schedule == null) return "bg-light";
+        return schedule.IsAvailable ? "bg-success text-white" : "bg-danger text-white";
+    }
+}

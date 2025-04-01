@@ -60,6 +60,14 @@ public class SignInModel : PageModel
             return RedirectToPage("/Index");
         }
 
+        var existingClaims = await _userManager.GetClaimsAsync(user);
+        var roleClaim = existingClaims.FirstOrDefault(c => c.Type == ClaimTypes.Role && c.Value == user.Role);
+
+        if (roleClaim == null)
+        {
+            await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Role, user.Role));
+        }
+
         var result = await _signInManager.PasswordSignInAsync(user.UserName, Input.Password, false, false);
 
         if (result.Succeeded)
@@ -68,7 +76,6 @@ public class SignInModel : PageModel
             var roles = await _userManager.GetRolesAsync(user);
             var userRole = user.Role;
             Debug.WriteLine("------------------------------------------------" + userRole);
-
             HttpContext.Session.SetString("UserName", userName);
             HttpContext.Session.SetString("UserRole", userRole);
 

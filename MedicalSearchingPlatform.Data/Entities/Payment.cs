@@ -11,12 +11,12 @@ namespace MedicalSearchingPlatform.Data.Entities
         [Required]
         [ForeignKey("Appointment")]
         public string AppointmentId { get; set; }
-        public Appointment Appointment { get; set; }
+        public virtual Appointment Appointment { get; set; }
 
         [Required]
         [ForeignKey("Patient")]
         public string PatientId { get; set; }
-        public Patient Patient { get; set; }
+        public virtual Patient Patient { get; set; }
 
         [Required]
         [Column(TypeName = "decimal(10,2)")]

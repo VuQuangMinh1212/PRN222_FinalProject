@@ -13,8 +13,8 @@ namespace MedicalSearchingPlatform.Data.Entities
 
         public bool IsActive { get; set; } = true;
 
-        public Doctor? Doctor { get; set; }
-        public Patient? Patient { get; set; }
+        public virtual Doctor? Doctor { get; set; }
+        public virtual Patient? Patient { get; set; }
         public User()
         {
 

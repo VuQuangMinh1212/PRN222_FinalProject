@@ -18,6 +18,7 @@ namespace MedicalSearchingPlatform.Data.Repositories
         {
             return await _context.MedicalFacilities
                 .Include(f => f.FacilityServices)
+                .Include(f=>f.Reviews)
                 .OrderByDescending(f => f.CreatedAt)
                 .ToListAsync();
         }

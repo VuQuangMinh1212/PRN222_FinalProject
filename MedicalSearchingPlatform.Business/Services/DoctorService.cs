@@ -63,5 +63,10 @@ namespace MedicalSearchingPlatform.Business.Services
         {
             return await _doctorRepository.GetMostBookedDoctorsAsync(top);
         }
+
+        public async Task<Doctor> GetDoctorByUserId(string userId)
+        {
+            return await _doctorRepository.GetDoctorByUserId(userId);
+        }
     }
 }

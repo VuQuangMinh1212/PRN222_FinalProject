@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MedicalSearchingPlatform.Data.Entities;
 using MedicalSearchingPlatform.Business.Interfaces;
+using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
 
 namespace MedicalSearchingPlatform.Pages.AppointmentPage
 {
@@ -15,57 +17,92 @@ namespace MedicalSearchingPlatform.Pages.AppointmentPage
     {
         private readonly IAppointmentService _appointmentService;
         private readonly IDoctorService _doctorService;
+        private readonly IMedicalFacilityService _facilityService;
         private readonly IPatientService _patientService;
+        private IWorkingScheduleService _workingScheduleService;
 
         [BindProperty]
         public Appointment Appointment { get; set; } = new Appointment();
+        public SelectList WorkingSchedules { get; set; }
 
-        public string CurrentPatientName { get; set; } // New property for patient's name
-
-        public CreateModel(IAppointmentService appointmentService, IDoctorService doctorService, IPatientService patientService)
+        public CreateModel(IAppointmentService appointmentService,
+            IDoctorService doctorService,
+            IPatientService patientService,
+            IWorkingScheduleService workingScheduleService,
+            IMedicalFacilityService facilityService)
         {
             _appointmentService = appointmentService;
             _doctorService = doctorService;
             _patientService = patientService;
+            _workingScheduleService = workingScheduleService;
+            _facilityService = facilityService;
         }
 
-        public async Task<IActionResult> OnGet()
+
+        public async Task<IActionResult> OnGet(string doctorId, string facilityId)
         {
+            var schedules = await _workingScheduleService.GetAvailableWorkingScheduleOfDoctor(doctorId);
+            var selectedItem = schedules.Select(ws => new SelectListItem
+            {
+                Value = ws.ScheduleId,
+                Text = $"{ws.StartTime:hh\\:mm} - {ws.EndTime:hh\\:mm} | {ws.WorkDate:yyyy-MM-dd}"
+            }).ToList();
+
+            WorkingSchedules = new SelectList(selectedItem, "Value", "Text");
+
             Appointment = new Appointment { Status = "Scheduled" };
 
-            // Get current user's ID from authentication
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (!string.IsNullOrEmpty(userId))
+            var facilities = await _facilityService.GetAllFacilitiesAsync();
+            ViewData["Facilities"] = new SelectList(facilities, "FacilityId", "FacilityName");
+
+            // Chỉ lấy bác sĩ thuộc cơ sở đã chọn
+            if (!string.IsNullOrEmpty(facilityId))
             {
-                var patient = await _patientService.GetPatientByUserIdAsync(userId);
-                if (patient != null && HttpContext.Session.GetString("UserRole") == "Patient")
-                {
-                    Appointment.PatientId = patient.PatientId; // Set PatientId
-                    CurrentPatientName = patient.User?.FullName ?? "Unnamed Patient"; // Set patient's name
-                }
+                var doctors = (await _doctorService.GetAllDoctorsAsync())
+                    .Where(d => d.FacilityId == facilityId)
+                    .Select(d => new
+                    {
+                        d.DoctorId,
+                        Name = d.User?.FullName ?? "Unnamed Doctor"
+                    }).ToList();
+
+                ViewData["DoctorId"] = new SelectList(doctors, "DoctorId", "Name");
             }
-
-            // Populate dropdowns
-            var doctors = await _doctorService.GetAllDoctorsAsync() ?? new List<Doctor>();
-            var patients = await _patientService.GetAllPatientsAsync() ?? new List<Patient>();
-
-            ViewData["DoctorId"] = new SelectList(doctors.Select(d => new
+            else
             {
-                d.DoctorId,
-                Name = d.User?.FullName ?? "Unnamed Doctor"
-            }), "DoctorId", "Name");
-
-            ViewData["PatientId"] = new SelectList(patients.Select(p => new
-            {
-                p.PatientId,
-                Name = p.User?.FullName ?? "Unnamed Patient"
-            }), "PatientId", "Name");
+                ViewData["DoctorId"] = new SelectList(new List<SelectListItem>());
+            }
 
             return Page();
         }
 
+
+        public async Task<JsonResult> OnGetSchedulesAsync(string doctorId)
+        {
+            var schedules = await _workingScheduleService.GetAvailableWorkingScheduleOfDoctor(doctorId);
+
+            var groupedSchedules = schedules
+                .GroupBy(ws => ws.WorkDate.ToString("yyyy-MM-dd")) // Nhóm theo ngày
+                .Select(g => new
+                {
+                    Date = g.Key,
+                    Schedules = g.Select(ws => new
+                    {
+                        Value = ws.ScheduleId,
+                        Text = $"{ws.StartTime:hh\\:mm} - {ws.EndTime:hh\\:mm}"
+                    }).ToList()
+                })
+                .ToList();
+
+            return new JsonResult(groupedSchedules);
+        }
+
+
         public async Task<IActionResult> OnPostAsync()
         {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var patient = await _patientService.GetPatientByUserId(userId);
+            Appointment.PatientId = patient.PatientId;
             bool isBooked = await _appointmentService.BookAppointmentAsync(Appointment);
             if (!isBooked)
             {
@@ -74,6 +111,22 @@ namespace MedicalSearchingPlatform.Pages.AppointmentPage
             }
 
             return RedirectToPage("./Index");
+        }
+
+        public async Task<IActionResult> OnGetDoctorsAsync(string facilityId)
+        {
+            if (string.IsNullOrEmpty(facilityId))
+            {
+                return new JsonResult(new List<SelectListItem>());
+            }
+
+            var doctor = (await _doctorService.GetAllDoctorsAsync());
+
+            var doctors = doctor
+                .Where(d => d.FacilityId == facilityId)
+                .Select(d => new SelectListItem { Value = d.DoctorId, Text = d.User.FullName }).ToList();
+
+            return new JsonResult(doctors);
         }
     }
 }

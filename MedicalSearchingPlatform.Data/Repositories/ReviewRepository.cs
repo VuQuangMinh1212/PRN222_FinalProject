@@ -55,5 +55,10 @@ namespace MedicalSearchingPlatform.Data.Repositories
                 await _context.SaveChangesAsync();
             }
         }
+
+        public async Task<List<Review>> GetReviewByPatientId(string patientId)
+        {
+            return await _context.Reviews.Where(x => x.PatientId == patientId).ToListAsync();
+        }
     }
 }

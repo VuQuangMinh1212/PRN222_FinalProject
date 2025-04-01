@@ -1,4 +1,5 @@
-﻿using MedicalSearchingPlatform.Business.Interfaces;
+﻿using MedicalSearchingPlatform.Business.Hubs;
+using MedicalSearchingPlatform.Business.Interfaces;
 using MedicalSearchingPlatform.Business.Services;
 using MedicalSearchingPlatform.Data;
 using MedicalSearchingPlatform.Data.DataContext;
@@ -24,7 +25,7 @@ var configuration = builder.Configuration;
 
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+    options.UseLazyLoadingProxies().UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
 
 builder.Services.AddIdentity<User, IdentityRole>()
@@ -33,14 +34,14 @@ builder.Services.AddIdentity<User, IdentityRole>()
 
 builder.Services.AddSession();
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddAuthentication()
-    .AddGoogle(options =>
-    {
-        options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
-        options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
-        options.SignInScheme = IdentityConstants.ExternalScheme;
-        options.CallbackPath = "/signin-google";
-    });
+//builder.Services.AddAuthentication()
+//    .AddGoogle(options =>
+//    {
+//        options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+//        options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+//        options.SignInScheme = IdentityConstants.ExternalScheme;
+//        options.CallbackPath = "/signin-google";
+//    });
 
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -53,6 +54,7 @@ builder.Services.AddScoped<IArticleRepository, ArticleRepository>();
 builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
 builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
 builder.Services.AddScoped<IArticleCategoryRepository, ArticleCategoryRepository>();
+builder.Services.AddScoped<IWorkingScheduleRepository, WorkingScheduleRepository>();
 builder.Services.AddScoped<IMedicalRecordRepository, MedicalRecordRepository>();
 
 
@@ -66,7 +68,11 @@ builder.Services.AddScoped<IArticleService, ArticleService>();
 builder.Services.AddScoped<IReviewService, ReviewService>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
 builder.Services.AddScoped<IArticleCategoryService, ArticleCategoryService>();
+builder.Services.AddScoped<IWorkingScheduleService, WorkingScheduleService>();
 builder.Services.AddScoped<IMedicalRecordService, MedicalRecordService>();
+
+//SignalR
+builder.Services.AddSignalR();
 
 var app = builder.Build();
 
@@ -95,8 +101,9 @@ app.UseStatusCodePagesWithReExecute("/Error", "?errorMessage=Error {0}");
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-app.UseAuthentication();
 app.UseRouting();
+app.MapHub<SignalRServer>("/signalRServer");
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapRazorPages();
 app.UseSession();

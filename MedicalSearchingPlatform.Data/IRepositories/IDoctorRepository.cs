@@ -4,6 +4,7 @@ namespace MedicalSearchingPlatform.Data.IRepositories
 {
     public interface IDoctorRepository
     {
+        Task<Doctor> GetDoctorByUserId(string userId);
         Task<IEnumerable<Doctor>> GetAllDoctorsAsync();
         Task<Doctor> GetDoctorByIdAsync(string doctorId);
         Task AddDoctorAsync(Doctor doctor);

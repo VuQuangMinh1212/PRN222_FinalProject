@@ -21,18 +21,20 @@ namespace MedicalSearchingPlatform.Data.Entities
 
 
         [Required, ForeignKey("ArticleCategory")]
+        [Display(Name = "Article Category")]
         public string ArticleCategoryId { get; set; }
 
         [Required]
+        [Display(Name = "Publish Date")]
         public DateTime PublishedDate { get; set; } = DateTime.UtcNow;
 
         [Required]
         [MaxLength(50)]
         public string Status { get; set; } = "Draft"; // Draft, Published, Archived
 
-        public virtual User Author { get; set; }
+        public virtual User? Author { get; set; }
 
-        public virtual ArticleCategory Category { get; set; }
+        public virtual ArticleCategory? Category { get; set; }
 
         public virtual ICollection<ArticleLike> Likes { get; set; } = new List<ArticleLike>();
     }

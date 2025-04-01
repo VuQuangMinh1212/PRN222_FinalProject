@@ -10,11 +10,11 @@ namespace MedicalSearchingPlatform.Data.Entities
 
         [ForeignKey("Patient")]
         public string PatientId { get; set; }
-        public Patient Patient { get; set; }
+        public virtual Patient Patient { get; set; }
 
         [ForeignKey("Doctor")]
         public string DoctorId { get; set; }
-        public Doctor Doctor { get; set; }
+        public virtual Doctor Doctor { get; set; }
 
         [Required]
         public DateTime RecordDate { get; set; } = DateTime.UtcNow;
