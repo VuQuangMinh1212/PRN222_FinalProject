@@ -2,12 +2,16 @@
 @using System.Security.Claims
 @model MedicalSearchingPlatform.Pages.AppointmentPage.CreateModel
 
-<div class="account container mt-5">
+@{
+    Layout = null;
+}
+
+<div class="account container">
     <h2 class="text-center my-4">Making Appointment</h2>
 
     <div class="row">
         <div class="col-md-12 mx-auto">
-            <form method="post" asp-page="/AppointmentPage/Create">
+            <form method="post" asp-page="/AppointmentPage/Create" onsubmit="return jQueryModalPost(event,this)">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
                     <input asp-for="Appointment.AppointmentId" class="form-control" type="hidden" />
@@ -76,94 +80,68 @@
     </div>
 </div>
 
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+<script>
+    $(document).ready(function () {
+        $("#FacilityId").change(function () {
+            var facilityId = $(this).val();
+            var doctorDropdown = $("#DoctorId");
+            if (facilityId) {
+                $.ajax({
+                    url: "/AppointmentPage/Create?handler=Doctors&facilityId=" + facilityId,
+                    type: "GET",
+                    success: function (data) {
+                        doctorDropdown.empty();
+                        if (data.length > 0) {
+                            doctorDropdown.append('<option value="">Select a doctor</option>');
+                            $.each(data, function (index, item) {
+                                doctorDropdown.append('<option value="' + item.value + '">' + item.text + '</option>');
+                            });
+                        } else {
+                            doctorDropdown.append('<option value="">No doctors available</option>');
+                        }
+                        doctorDropdown.trigger("change"); // Gọi sự kiện thay đổi để cập nhật lịch làm việc
+                    },
+                    error: function () {
+                        alert("Failed to load doctors. Please try again.");
+                    }
+                });
+            } else {
+                doctorDropdown.empty().append('<option value="">Select a doctor</option>');
+                $("#scheduleDropdown").empty().append('<option value="">Select a schedule</option>');
+            }
+        });
 
-    <script>
-        function jQueryModalPost(event, form) {
-            event.preventDefault();
+        $("#DoctorId").change(function () {
+        var doctorId = $(this).val();
+        var scheduleDropdown = $("#scheduleDropdown");
+        if (doctorId) {
             $.ajax({
-                url: $(form).attr('action'),
-                type: $(form).attr('method'),
-                data: $(form).serialize(),
-                success: function (response, status, xhr) {
-                    var redirectUrl = xhr.getResponseHeader('Location');
-                    if (redirectUrl) {
-                        window.location.href = redirectUrl; // Follow the redirect
+                url: "/AppointmentPage/Create?handler=Schedules&doctorId=" + doctorId,
+                type: "GET",
+                success: function (data) {
+                    scheduleDropdown.empty();
+                    if (data.length > 0) {
+                        scheduleDropdown.append('<option value="">Select a schedule</option>');
+
+                        data.forEach(group => {
+                            var optgroup = $('<optgroup>', { label: group.date });
+                            group.schedules.forEach(schedule => {
+                                optgroup.append('<option value="' + schedule.value + '">' + schedule.text + '</option>');
+                            });
+                            scheduleDropdown.append(optgroup);
+                        });
                     } else {
-                        console.log("No redirect, response:", response);
+                        scheduleDropdown.append('<option value="">No available schedules</option>');
                     }
                 },
-                error: function (xhr, status, error) {
-                    alert("Error submitting form: " + error);
+                error: function () {
+                    alert("Failed to load schedules. Please try again.");
                 }
             });
-            return false;
+        } else {
+            scheduleDropdown.empty().append('<option value="">Select a schedule</option>');
         }
+    });
+    });
+</script>
 
-        $(document).ready(function () {
-            $("#FacilityId").change(function () {
-                var facilityId = $(this).val();
-                var doctorDropdown = $("#DoctorId");
-
-                if (facilityId) {
-                    $.ajax({
-                        url: "/AppointmentPage/Create?handler=Doctors&facilityId=" + facilityId,
-                        type: "GET",
-                        success: function (data) {
-                            doctorDropdown.empty();
-                            if (data.length > 0) {
-                                doctorDropdown.append('<option value="">Select a doctor</option>');
-                                $.each(data, function (index, item) {
-                                    doctorDropdown.append('<option value="' + item.value + '">' + item.text + '</option>');
-                                });
-                            } else {
-                                doctorDropdown.append('<option value="">No doctors available</option>');
-                            }
-                            doctorDropdown.trigger("change");
-                        },
-                        error: function () {
-                            alert("Failed to load doctors. Please try again.");
-                        }
-                    });
-                } else {
-                    doctorDropdown.empty().append('<option value="">Select a doctor</option>');
-                    $("#scheduleDropdown").empty().append('<option value="">Select a schedule</option>');
-                }
-            });
-
-            $("#DoctorId").change(function () {
-                var doctorId = $(this).val();
-                var scheduleDropdown = $("#scheduleDropdown");
-                if (doctorId) {
-                    $.ajax({
-                        url: "/AppointmentPage/Create?handler=Schedules&doctorId=" + doctorId,
-                        type: "GET",
-                        success: function (data) {
-                            scheduleDropdown.empty();
-                            if (data.length > 0) {
-                                scheduleDropdown.append('<option value="">Select a schedule</option>');
-                                data.forEach(group => {
-                                    var optgroup = $('<optgroup>', { label: group.date });
-                                    group.schedules.forEach(schedule => {
-                                        optgroup.append('<option value="' + schedule.value + '">' + schedule.text + '</option>');
-                                    });
-                                    scheduleDropdown.append(optgroup);
-                                });
-                            } else {
-                                scheduleDropdown.append('<option value="">No available schedules</option>');
-                            }
-                        },
-                        error: function () {
-                            alert("Failed to load schedules. Please try again.");
-                        }
-                    });
-                } else {
-                    scheduleDropdown.empty().append('<option value="">Select a schedule</option>');
-                }
-            });
-        });
-    </script>
-}
