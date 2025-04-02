@@ -67,6 +67,7 @@ builder.Services.AddScoped<IPatientService, PatientService>();
 builder.Services.AddScoped<IAppointmentService, AppointmentService>();
 builder.Services.AddScoped<IArticleService, ArticleService>();
 builder.Services.AddScoped<IReviewService, ReviewService>();
+builder.Services.AddScoped<IPaymentService, PaymentService>();
 builder.Services.AddScoped<IArticleCategoryService, ArticleCategoryService>();
 builder.Services.AddScoped<IWorkingScheduleService, WorkingScheduleService>();
 builder.Services.AddScoped<IMedicalRecordService, MedicalRecordService>();

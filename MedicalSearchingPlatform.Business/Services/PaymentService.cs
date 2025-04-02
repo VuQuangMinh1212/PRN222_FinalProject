@@ -9,15 +9,15 @@ namespace MedicalSearchingPlatform.Services
 {
     public class PaymentService : IPaymentService
     {
-        private readonly string _clientId = "YOUR_CLIENT_ID";
-        private readonly string _apiKey = "YOUR_API_KEY";
-        private readonly string _checksumKey = "YOUR_CHECKSUM_KEY";
-        private readonly MedicalServiceService _medicalServiceService;
+        private readonly string _clientId = "3aad716e-ebb0-4299-88b6-256ab7964869";
+        private readonly string _apiKey = "1fd27fed-6cbc-4fd5-abf3-fd37363b54d1";
+        private readonly string _checksumKey = "dabaf5da137520f2f61e26b104b964dd7feec23eec6461080b13652424943524";
+        private readonly IMedicalServiceService _medicalServiceService;
 
         private readonly PayOS _payOS;
         private readonly string _domain = "http://localhost:7290";
 
-        public PaymentService(MedicalServiceService medicalServiceService)
+        public PaymentService(IMedicalServiceService medicalServiceService)
         {
             _medicalServiceService = medicalServiceService;
             _payOS = new PayOS(_clientId, _apiKey, _checksumKey);

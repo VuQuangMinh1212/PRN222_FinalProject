@@ -155,6 +155,9 @@ namespace MedicalSearchingPlatform.Pages.AppointmentPage
             {
                 listAppointmentService.Add(new AppointmentsServices { AppointmentId = Appointment.AppointmentId, ServiceId = item });
             }
+            List<string> serviceIds = SelectedServices.ToList();
+
+             totalPrice = await _paymentService.CalculateTotalPriceAsync(serviceIds);
 
             await _appoimentMedicalService.CreateAppointmentService(listAppointmentService);
 
@@ -184,7 +187,7 @@ namespace MedicalSearchingPlatform.Pages.AppointmentPage
                 return new JsonResult(new { isValid = false, message = "No services selected for checkout." });
             }
 
-            var totalPrice = await _paymentService.CalculateTotalPriceAsync(request.Services);
+            totalPrice = await _paymentService.CalculateTotalPriceAsync(request.Services);
 
             // Create a payment request and redirect to the payment page
             var paymentUrl = await _paymentService.CreatePaymentLink(totalPrice);
