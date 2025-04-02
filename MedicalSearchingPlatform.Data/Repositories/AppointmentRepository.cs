@@ -93,5 +93,10 @@ namespace MedicalSearchingPlatform.Data.Repositories
                     && a.ScheduleId == scheduleId)
                 .FirstOrDefaultAsync();
         }
+
+        public async Task<Appointment> GetAppointmentByScheduleIdAsync(string scheduleId)
+        {
+            return await _context.Appointments.Where(a => a.ScheduleId == scheduleId).FirstOrDefaultAsync();
+        }
     }
 }

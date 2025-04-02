@@ -19,7 +19,7 @@
 
 <div class="row">
     <div class="col-md-12 mx-auto">
-        <form method="post" asp-page="/WorkingSchedulePage/Edit">
+        <form method="post" asp-page="/WorkingSchedulePage/Edit" onsubmit="return jQueryModalPost(event,this)">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="WorkingSchedule.DoctorId" value="@Model.WorkingSchedule.DoctorId" />
             <input type="hidden" asp-for="WorkingSchedule.ScheduleId" />
@@ -61,15 +61,8 @@
 
             </div>
         </form>
-        <form id="deleteForm" method="post" asp-page="/WorkingSchedulePage/Delete" onsubmit="return jQueryModalDelete(this)">
+        <form id="deleteForm" method="post" asp-page="/WorkingSchedulePage/Delete" onsubmit="return jQueryModalDelete(event,this)">
             <input type="hidden" name="id" id="deleteScheduleId" />
         </form>
     </div>
 </div>
-
-<script>
-    function submitDeleteForm(scheduleId) {
-        document.getElementById("deleteScheduleId").value = scheduleId;
-        document.getElementById("deleteForm").submit();
-    }
-</script>
