@@ -19,6 +19,7 @@ namespace MedicalSearchingPlatform.Data.Repositories
             return await _context.Doctors
                 .Include(d => d.User)
                 .Include(d => d.Facility)
+                .Include(d => d.WorkingSchedules)
                 .OrderByDescending(d => d.CreatedAt)
                 .ToListAsync();
         }
@@ -28,7 +29,16 @@ namespace MedicalSearchingPlatform.Data.Repositories
             return await _context.Doctors
                 .Include(d => d.User)
                 .Include(d => d.Facility)
+                .Include(d => d.WorkingSchedules)
                 .FirstOrDefaultAsync(d => d.DoctorId == doctorId);
+        }
+
+        public async Task<Doctor> GetDoctorByUserIdAsync(string userId)
+        {
+            return await _context.Doctors
+                .Include(d => d.User)
+                .Include(d => d.Facility)
+                .FirstOrDefaultAsync(d => d.UserId == userId);
         }
 
         public async Task AddDoctorAsync(Doctor doctor)
@@ -117,6 +127,11 @@ namespace MedicalSearchingPlatform.Data.Repositories
                 .OrderByDescending(d => d.Appointments.Count)
                 .Take(top)
                 .ToListAsync();
+        }
+
+        public async Task<Doctor> GetDoctorByUserId(string userId)
+        {
+            return await _context.Doctors.FirstOrDefaultAsync(x => x.UserId == userId);
         }
     }
 }

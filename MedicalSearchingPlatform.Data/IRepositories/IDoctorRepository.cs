@@ -4,6 +4,7 @@ namespace MedicalSearchingPlatform.Data.IRepositories
 {
     public interface IDoctorRepository
     {
+        Task<Doctor> GetDoctorByUserId(string userId);
         Task<IEnumerable<Doctor>> GetAllDoctorsAsync();
         Task<Doctor> GetDoctorByIdAsync(string doctorId);
         Task AddDoctorAsync(Doctor doctor);
@@ -18,5 +19,6 @@ namespace MedicalSearchingPlatform.Data.IRepositories
             decimal? maxFee);
 
         Task<IEnumerable<Doctor>> GetMostBookedDoctorsAsync(int top);
+        Task<Doctor> GetDoctorByUserIdAsync(string userId);
     }
 }

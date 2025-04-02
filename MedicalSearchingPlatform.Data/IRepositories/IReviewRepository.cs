@@ -6,6 +6,7 @@ namespace MedicalSearchingPlatform.Data.Repositories
     {
         Task<IEnumerable<Review>> GetAllReviewsAsync();
         Task<Review> GetReviewByIdAsync(string reviewId);
+        Task<List<Review>> GetReviewByPatientId(string patientId);
         Task<IEnumerable<Review>> GetReviewsByDoctorIdAsync(string doctorId);
         Task<IEnumerable<Review>> GetReviewsByFacilityIdAsync(string facilityId);
         Task AddReviewAsync(Review review);

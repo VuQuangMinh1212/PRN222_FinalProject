@@ -25,6 +25,12 @@ namespace MedicalSearchingPlatform.Data.Repositories
                                           .FirstOrDefaultAsync(p => p.PatientId == patientId);
         }
 
+        public async Task<Patient> GetPatientByUserIdAsync(string userId)
+        {
+            return await _context.Patients.Include(p => p.User)
+                                          .FirstOrDefaultAsync(p => p.UserId == userId);
+        }
+
         public async Task AddPatientAsync(Patient patient)
         {
             await _context.Patients.AddAsync(patient);
@@ -45,6 +51,11 @@ namespace MedicalSearchingPlatform.Data.Repositories
                 _context.Patients.Remove(patient);
                 await _context.SaveChangesAsync();
             }
+        }
+
+        public async Task<Patient> GetPatientByUserId(string userId)
+        {
+            return await _context.Patients.FirstOrDefaultAsync(x => x.UserId == userId);
         }
     }
 }

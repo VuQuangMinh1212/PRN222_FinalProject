@@ -1,79 +1,74 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using MedicalSearchingPlatform.Business.Interfaces;
+using MedicalSearchingPlatform.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using MedicalSearchingPlatform.Data.DataContext;
-using MedicalSearchingPlatform.Data.Entities;
+using System.Security.Claims;
 
 namespace MedicalSearchingPlatform.Pages.AppointmentPage
 {
     public class EditModel : PageModel
     {
-        private readonly MedicalSearchingPlatform.Data.DataContext.ApplicationDbContext _context;
-
-        public EditModel(MedicalSearchingPlatform.Data.DataContext.ApplicationDbContext context)
+        private readonly IAppointmentService _appointmentService;
+        private readonly IDoctorService _doctorService;
+        public EditModel(IAppointmentService appointmentService, IDoctorService doctorService)
         {
-            _context = context;
+            _appointmentService = appointmentService;
+            _doctorService = doctorService;
         }
 
         [BindProperty]
         public Appointment Appointment { get; set; } = default!;
+        public SelectList AppointmentStatus { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(string id)
+        public async Task<IActionResult> OnGetDoctorEditStatusAsync(string id)
         {
-            if (id == null)
+            Appointment = await _appointmentService.GetAppointmentByIdAsync(id);
+            if (Appointment.Status == "Pending")
             {
-                return NotFound();
+                AppointmentStatus = new SelectList(new List<Object>
+                {
+                    new{Value ="Accepted", Text ="Accept"},
+                    new{Value ="Canceled", Text ="Cancel"},
+                }, "Value", "Text");
             }
-
-            var appointment =  await _context.Appointments.FirstOrDefaultAsync(m => m.AppointmentId == id);
-            if (appointment == null)
+            else
             {
-                return NotFound();
+                AppointmentStatus = new SelectList(new List<Object>
+                {
+                    new{Value ="Canceled", Text ="Cancel"},
+                    new{Value ="Completed", Text ="Complete"},
+                }, "Value", "Text");
             }
-            Appointment = appointment;
-           ViewData["DoctorId"] = new SelectList(_context.Doctors, "DoctorId", "DoctorId");
-           ViewData["PatientId"] = new SelectList(_context.Patients, "PatientId", "PatientId");
             return Page();
         }
 
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more information, see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPost()
         {
-            if (!ModelState.IsValid)
+            var existingAppointment = await _appointmentService.GetAppointmentByIdAsync(Appointment.AppointmentId);
+            if (existingAppointment == null)
             {
-                return Page();
+                return NotFound();
             }
-
-            _context.Attach(Appointment).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!AppointmentExists(Appointment.AppointmentId))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            existingAppointment.Status = Appointment.Status;
+            await _appointmentService.UpdateAppointmentAsync(existingAppointment);
 
             return RedirectToPage("./Index");
         }
 
-        private bool AppointmentExists(string id)
+        public async Task<IActionResult> OnGetCancleAsync(string id)
         {
-            return _context.Appointments.Any(e => e.AppointmentId == id);
+            var appointment = await _appointmentService.GetAppointmentByIdAsync(id);
+            if (appointment == null)
+            {
+                return Page();
+            }
+
+            appointment.Status = "Cancled";
+
+            await _appointmentService.UpdateAppointmentAsync(appointment);
+
+            return RedirectToPage("./History");
         }
     }
 }

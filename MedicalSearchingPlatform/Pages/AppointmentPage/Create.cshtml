@@ -1,70 +1,147 @@
 ﻿@page
+@using System.Security.Claims
 @model MedicalSearchingPlatform.Pages.AppointmentPage.CreateModel
 
 @{
-    ViewData["Title"] = "Create";
+    Layout = null;
 }
 
-<div class="create-appointment container">
+<div class="account container">
+    <h2 class="text-center my-4">Making Appointment</h2>
 
-<h4>Create Appointment</h4>
+    <div class="row">
+        <div class="col-md-12 mx-auto">
+            <form method="post" asp-page="/AppointmentPage/Create" onsubmit="return jQueryModalPost(event,this)">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <input asp-for="Appointment.AppointmentId" class="form-control" type="hidden" />
+                    <span asp-validation-for="Appointment.AppointmentId" class="text-danger" type="hidden"></span>
+                </div>
+                <div class="form-group">
+                    <span class="text-danger">*</span>
+                    <label for="FacilityId">Select Medical Facility</label>
+                    <select id="FacilityId" class="form-control" asp-items="ViewBag.Facilities">
+                        <option value="">Select a facility</option>
+                    </select>
+                </div>
+                <input type="hidden" asp-for="Appointment.PatientId" />
+                <div class="form-group">
+                    <label>Select Services</label>
+                    <div>
+                        @foreach (var service in Model.AvailableServices)
+                        {
+                            <div class="form-check">
+                                <input type="checkbox"
+                                       class="form-check-input"
+                                       name="SelectedServices"
+                                       value="@service.Value"
+                                       id="service-@service.Value"
+                                @(Model.SelectedServices.Contains(service.Value) ? "checked" : "") />
+                                <label class="form-check-label" for="service-@service.Value">
+                                    @service.Text
+                                </label>
+                            </div>
+                        }
+                    </div>
+                </div>
 
-    <div class="card shadow-lg form-edit">
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <input asp-for="Appointment.AppointmentId" class="form-control" type="hidden"/>
-                <span asp-validation-for="Appointment.AppointmentId" class="text-danger" type="hidden"></span>
-            </div>
-            <div class="form-group">
-                <span class="text-danger">*</span>
-                <label asp-for="Appointment.DoctorId" class="control-label fw-bold"></label>
-                @if (ViewBag.DoctorId != null)
-                {
-                    <select asp-for="Appointment.DoctorId" class="form-control" asp-items="ViewBag.DoctorId"></select>
-                }
-                else
-                {
-                    <select class="form-control" disabled><option>No doctors available</option></select>
-                }
-            </div>
-            <div class="form-group">
-                <span class="text-danger">*</span>
-                <label asp-for="Appointment.PatientId" class="control-label fw-bold"></label>
-                @if (ViewBag.PatientId != null)
-                {
-                    <select asp-for="Appointment.PatientId" class="form-control" asp-items="ViewBag.PatientId"></select>
-                }
-                else
-                {
-                    <select class="form-control" disabled><option>No patients available</option></select>
-                }
-            </div>
-            <div class="form-group">
-                <span class="text-danger">*</span>
-                <label asp-for="Appointment.AppointmentDate" class="control-label fw-bold"></label>
-                <input asp-for="Appointment.AppointmentDate" class="form-control" />
-                <span asp-validation-for="Appointment.AppointmentDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Appointment.AppointmentInfo" class="control-label fw-bold"></label>
-                <input asp-for="Appointment.AppointmentInfo" class="form-control" />
-                <span asp-validation-for="Appointment.AppointmentInfo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <span class="text-danger">*</span>
-                <label asp-for="Appointment.Status" class="control-label fw-bold"></label>
-                <input asp-for="Appointment.Status" class="form-control" />
-                <span asp-validation-for="Appointment.Status" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn-create-appointment" />
-            </div>
-        </form>
+                <div class="form-group">
+                    <span class="text-danger">*</span>
+                    <label asp-for="Appointment.DoctorId" class="control-label"></label>
+                    <select id="DoctorId" asp-for="Appointment.DoctorId" class="form-control">
+                        <option value="">Select a doctor</option>
+                    </select>
+                </div>
+
+                <div class="form-group my-3">
+                    <span class="text-danger">*</span>
+                    <label for="scheduleDropdown">Available Schedules</label>
+                    <select id="scheduleDropdown" asp-for="Appointment.ScheduleId" class="form-control">
+                        <option value="">Select a schedule</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Appointment.AppointmentInfo" class="control-label"></label>
+                    <input asp-for="Appointment.AppointmentInfo" class="form-control" />
+                    <span asp-validation-for="Appointment.AppointmentInfo" class="text-danger"></span>
+                </div>
+                <div class="form-group" hidden>
+                    <span class="text-danger">*</span>
+                    <label asp-for="Appointment.Status" class="control-label"></label>
+                    <input asp-for="Appointment.Status" class="form-control" />
+                    <span asp-validation-for="Appointment.Status" class="text-danger"></span>
+                </div>
+                <div class="form-group d-flex justify-content-end mt-2">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
+<script>
+    $(document).ready(function () {
+        $("#FacilityId").change(function () {
+            var facilityId = $(this).val();
+            var doctorDropdown = $("#DoctorId");
+            if (facilityId) {
+                $.ajax({
+                    url: "/AppointmentPage/Create?handler=Doctors&facilityId=" + facilityId,
+                    type: "GET",
+                    success: function (data) {
+                        doctorDropdown.empty();
+                        if (data.length > 0) {
+                            doctorDropdown.append('<option value="">Select a doctor</option>');
+                            $.each(data, function (index, item) {
+                                doctorDropdown.append('<option value="' + item.value + '">' + item.text + '</option>');
+                            });
+                        } else {
+                            doctorDropdown.append('<option value="">No doctors available</option>');
+                        }
+                        doctorDropdown.trigger("change"); // Gọi sự kiện thay đổi để cập nhật lịch làm việc
+                    },
+                    error: function () {
+                        alert("Failed to load doctors. Please try again.");
+                    }
+                });
+            } else {
+                doctorDropdown.empty().append('<option value="">Select a doctor</option>');
+                $("#scheduleDropdown").empty().append('<option value="">Select a schedule</option>');
+            }
+        });
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+        $("#DoctorId").change(function () {
+        var doctorId = $(this).val();
+        var scheduleDropdown = $("#scheduleDropdown");
+        if (doctorId) {
+            $.ajax({
+                url: "/AppointmentPage/Create?handler=Schedules&doctorId=" + doctorId,
+                type: "GET",
+                success: function (data) {
+                    scheduleDropdown.empty();
+                    if (data.length > 0) {
+                        scheduleDropdown.append('<option value="">Select a schedule</option>');
+
+                        data.forEach(group => {
+                            var optgroup = $('<optgroup>', { label: group.date });
+                            group.schedules.forEach(schedule => {
+                                optgroup.append('<option value="' + schedule.value + '">' + schedule.text + '</option>');
+                            });
+                            scheduleDropdown.append(optgroup);
+                        });
+                    } else {
+                        scheduleDropdown.append('<option value="">No available schedules</option>');
+                    }
+                },
+                error: function () {
+                    alert("Failed to load schedules. Please try again.");
+                }
+            });
+        } else {
+            scheduleDropdown.empty().append('<option value="">Select a schedule</option>');
+        }
+    });
+    });
+</script>
+

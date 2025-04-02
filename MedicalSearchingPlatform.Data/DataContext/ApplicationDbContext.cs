@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MedicalSearchingPlatform.Data.DataContext
 {
-    public class ApplicationDbContext : IdentityDbContext<IdentityUser>
+    public class ApplicationDbContext : IdentityDbContext<User>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
@@ -21,7 +21,9 @@ namespace MedicalSearchingPlatform.Data.DataContext
         public DbSet<Payment> Payments { get; set; }
         public DbSet<ArticleLike> ArticleLikes { get; set; }
         public DbSet<ArticleCategory> ArticleCategories { get; set; }
+        public DbSet<WorkingSchedule> WorkingSchedules { get; set; }
         public DbSet<MedicalRecord> MedicalRecords { get; set; }
+        public DbSet<AppointmentsServices> AppointmentServices { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -73,31 +75,41 @@ namespace MedicalSearchingPlatform.Data.DataContext
                 .HasForeignKey(d => d.FacilityId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<Doctor>()
+                .HasMany(d => d.WorkingSchedules)
+                .WithOne(d => d.Doctor)
+                .HasForeignKey(d => d.DoctorId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             // Review Configuration
             modelBuilder.Entity<Review>()
                 .HasKey(r => r.ReviewId);
             modelBuilder.Entity<Review>()
                 .Property(r => r.CreatedDate)
                 .HasDefaultValueSql("GETDATE()");
+
             modelBuilder.Entity<Review>()
                 .HasOne(r => r.Patient)
                 .WithMany()
                 .HasForeignKey(r => r.PatientId)
                 .OnDelete(DeleteBehavior.NoAction); // Prevents cascade cycles
+
             modelBuilder.Entity<Review>()
                 .HasOne(r => r.Doctor)
                 .WithMany()
                 .HasForeignKey(r => r.DoctorId)
                 .OnDelete(DeleteBehavior.Cascade);
+
             modelBuilder.Entity<Review>()
                 .HasOne(r => r.MedicalFacility)
-                .WithMany()
+                .WithMany(f => f.Reviews)
                 .HasForeignKey(r => r.FacilityId)
                 .OnDelete(DeleteBehavior.NoAction);
 
             // Patient Configuration
             modelBuilder.Entity<Patient>()
                 .HasKey(p => p.PatientId);
+
             modelBuilder.Entity<Patient>()
                 .HasOne(p => p.User)
                 .WithOne()
@@ -112,11 +124,6 @@ namespace MedicalSearchingPlatform.Data.DataContext
                 .WithMany()
                 .HasForeignKey(a => a.PatientId)
                 .OnDelete(DeleteBehavior.Cascade);
-            modelBuilder.Entity<Appointment>()
-                .HasOne(a => a.Doctor)
-                .WithMany()
-                .HasForeignKey(a => a.DoctorId)
-                .OnDelete(DeleteBehavior.Restrict);
 
             // Appointment Configuration
             modelBuilder.Entity<Appointment>()
@@ -124,6 +131,12 @@ namespace MedicalSearchingPlatform.Data.DataContext
                 .WithMany(d => d.Appointments)
                 .HasForeignKey(a => a.DoctorId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Appointment>()
+               .HasOne(a => a.WorkingSchedule)
+               .WithMany(ws => ws.Appointments)
+               .HasForeignKey(a => a.ScheduleId)
+               .OnDelete(DeleteBehavior.NoAction);
 
 
             // Article Configuration
@@ -173,6 +186,10 @@ namespace MedicalSearchingPlatform.Data.DataContext
                 .HasForeignKey(al => al.UserId)
                 .OnDelete(DeleteBehavior.NoAction);
 
+            // Working Schedule
+
+            modelBuilder.Entity<WorkingSchedule>().HasKey(ws => ws.ScheduleId);
+
             modelBuilder.Entity<MedicalRecord>()
                 .HasKey(mr => mr.MedicalRecordId);
             modelBuilder.Entity<MedicalRecord>()
@@ -191,6 +208,21 @@ namespace MedicalSearchingPlatform.Data.DataContext
             modelBuilder.Entity<MedicalRecord>()
                 .Property(mr => mr.IsShared)
                 .HasDefaultValue(false);
+
+            modelBuilder.Entity<AppointmentsServices>()
+         .HasKey(aps => new { aps.AppointmentId, aps.ServiceId });
+
+            modelBuilder.Entity<AppointmentsServices>()
+                .HasOne(aps => aps.Appointment)
+                .WithMany(a => a.AppointmentsServices)
+                .HasForeignKey(aps => aps.AppointmentId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<AppointmentsServices>()
+                .HasOne(aps => aps.MedicalService)
+                .WithMany(ms => ms.AppointmentsServices)
+                .HasForeignKey(aps => aps.ServiceId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

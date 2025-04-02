@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Doctors";
 }
-<div class="account container mt-5">
+<div class="account container">
 <h2 class="text-center">Find a Doctor</h2>
 
     <form method="get" class="bg-light p-4 rounded">
@@ -60,7 +60,7 @@
                 <td>@doctor.Fee.ToString("C")</td>
                 <td>@(doctor.Reviews.Any() ? doctor.Reviews.Average(r => r.Rating).ToString("F1") : "N/A")</td>
                 <td>
-                    <a asp-page="./Details" asp-route-id="@doctor.DoctorId" class="btn-save-medical">Details</a>
+                    <a asp-page="/DoctorPage/Details" asp-route-id="@doctor.DoctorId" class="btn-save-medical">Details</a>
                 </td>
             </tr>
         }

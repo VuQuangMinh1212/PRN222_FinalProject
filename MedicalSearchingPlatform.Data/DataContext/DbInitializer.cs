@@ -102,9 +102,26 @@ namespace MedicalSearchingPlatform.Data
             {
                 var patients = new List<Patient>
                 {
-                    new Patient { PatientId = "P1", UserId = "U6", MedicalHistory = "No major issues", ConditionsToNote = "Allergic to penicillin" },
-                    new Patient { PatientId = "P2", UserId = "U7", MedicalHistory = "History of high blood pressure", ConditionsToNote = "Takes medication daily" }
+                    new Patient { PatientId = "P1", UserId = "U7", MedicalHistory = "No known allergies", ConditionsToNote = "Asthma" },
+                    new Patient { PatientId = "P2", UserId = "U8", MedicalHistory = "Diabetes Type 2", ConditionsToNote = "Requires insulin therapy" },
+                    new Patient { PatientId = "P3", UserId = "U9", MedicalHistory = "Hypertension", ConditionsToNote = "Takes daily medication" },
+                    new Patient { PatientId = "P4", UserId = "U10", MedicalHistory = "No major issues", ConditionsToNote = "Frequent headaches" },
+                    new Patient { PatientId = "P5", UserId = "U11", MedicalHistory = "High cholesterol", ConditionsToNote = "Diet-controlled" },
+                    new Patient { PatientId = "P6", UserId = "U12", MedicalHistory = "Allergic to penicillin", ConditionsToNote = "Avoid penicillin-based medications" },
+                    new Patient { PatientId = "P7", UserId = "U13", MedicalHistory = "History of heart disease", ConditionsToNote = "Regular check-ups required" },
+                    new Patient { PatientId = "P8", UserId = "U14", MedicalHistory = "No known conditions", ConditionsToNote = "Vegetarian diet" },
+                    new Patient { PatientId = "P9", UserId = "U15", MedicalHistory = "Asthma since childhood", ConditionsToNote = "Uses inhaler" },
+                    new Patient { PatientId = "P10", UserId = "U16", MedicalHistory = "Past surgery: Appendectomy", ConditionsToNote = "No complications" },
+                    new Patient { PatientId = "P11", UserId = "U17", MedicalHistory = "Seasonal allergies", ConditionsToNote = "Uses antihistamines" },
+                    new Patient { PatientId = "P12", UserId = "U18", MedicalHistory = "No chronic illness", ConditionsToNote = "Exercises regularly" },
+                    new Patient { PatientId = "P13", UserId = "U19", MedicalHistory = "Diabetes Type 1", ConditionsToNote = "Insulin-dependent" },
+                    new Patient { PatientId = "P14", UserId = "U20", MedicalHistory = "Mild hypertension", ConditionsToNote = "Monitored regularly" },
+                    new Patient { PatientId = "P15", UserId = "U21", MedicalHistory = "History of kidney stones", ConditionsToNote = "Increased water intake recommended" },
+                    new Patient { PatientId = "P16", UserId = "U22", MedicalHistory = "Thyroid disorder", ConditionsToNote = "Under medication" },
+                    new Patient { PatientId = "P17", UserId = "U23", MedicalHistory = "Recovering from surgery", ConditionsToNote = "Requires physiotherapy" },
+                    new Patient { PatientId = "P18", UserId = "U24", MedicalHistory = "No medical conditions", ConditionsToNote = "Healthy lifestyle" }
                 };
+
 
                 context.Patients.AddRange(patients);
                 context.SaveChanges();
@@ -115,11 +132,11 @@ namespace MedicalSearchingPlatform.Data
             {
                 var services = new List<MedicalService>
                 {
-                    new MedicalService { ServiceId = "S1", ServiceName = "General Checkup", Description = "Routine health examination.", Status = "Active" },
-                    new MedicalService { ServiceId = "S2", ServiceName = "Pediatrics", Description = "Healthcare services for children.", Status = "Active" },
-                    new MedicalService { ServiceId = "S3", ServiceName = "Cardiology", Description = "Heart health and diagnostics.", Status = "Active" },
-                    new MedicalService { ServiceId = "S4", ServiceName = "Dermatology", Description = "Skin care and treatment services.", Status = "Active" },
-                    new MedicalService { ServiceId = "S5", ServiceName = "Physical Therapy", Description = "Rehabilitation for injuries and mobility.", Status = "Active" }
+                    new MedicalService { ServiceId = "S1", ServiceName = "General Checkup", Description = "Routine health examination.", Price = 25000, Status = "Active" },
+                    new MedicalService { ServiceId = "S2", ServiceName = "Pediatrics", Description = "Healthcare services for children.", Price = 25000, Status = "Active" },
+                    new MedicalService { ServiceId = "S3", ServiceName = "Cardiology", Description = "Heart health and diagnostics.", Price = 25000, Status = "Active" },
+                    new MedicalService { ServiceId = "S4", ServiceName = "Dermatology", Description = "Skin care and treatment services.", Price = 25000, Status = "Active" },
+                    new MedicalService { ServiceId = "S5", ServiceName = "Physical Therapy", Description = "Rehabilitation for injuries and mobility.", Price = 25000, Status = "Active" }
                 };
 
                 context.MedicalServices.AddRange(services);

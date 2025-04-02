@@ -10,11 +10,11 @@ namespace MedicalSearchingPlatform.Data.Entities
 
         [ForeignKey("User")]
         public string UserId { get; set; }
-        public User User { get; set; }
+        public virtual User User { get; set; }
 
         [ForeignKey("MedicalFacility")]
         public string FacilityId { get; set; }
-        public MedicalFacility Facility { get; set; }
+        public virtual MedicalFacility Facility { get; set; }
 
         public string Specialization { get; set; }
         public int ExperienceYears { get; set; }
@@ -30,9 +30,11 @@ namespace MedicalSearchingPlatform.Data.Entities
         // New fields
         [Column(TypeName = "decimal(10,2)")]
         public decimal Fee { get; set; }
-        public ICollection<Review> Reviews { get; set; }
 
-        public ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
-        public ICollection<MedicalRecord> MedicalRecords { get; set; } = new List<MedicalRecord>();
+        public virtual ICollection<Review> Reviews { get; set; }
+
+        public virtual ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
+        public virtual ICollection<WorkingSchedule> WorkingSchedules { get; set; } = new List<WorkingSchedule>();
+        public virtual ICollection<MedicalRecord> MedicalRecords { get; set; } = new List<MedicalRecord>();
     }
 }

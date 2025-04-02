@@ -1,0 +1,151 @@
+﻿@page
+@model MedicalSearchingPlatform.Pages.WorkingSchedulePage.CreateModel
+@{
+    Layout = null;
+
+    var timeSlots = new List<SelectListItem>();
+    var today = DateTime.Today;
+    var now = DateTime.Now;
+    var currentWeek = (today.DayOfYear - 1) / 7 + 1; // Số tuần hiện tại
+
+    // Danh sách khung giờ từ 08:00 - 19:00
+    for (int hour = 8; hour < 19; hour++)
+    {
+        string startTime = $"{hour:D2}:00";
+        string endTime = $"{hour + 1:D2}:00";
+        string timeRange = $"{startTime} - {endTime}";
+        timeSlots.Add(new SelectListItem { Value = startTime, Text = timeRange });
+    }
+
+    var currentCulture = System.Globalization.CultureInfo.CurrentCulture;
+    var calendar = currentCulture.Calendar;
+    var currentDate = DateTime.Now;
+    var week = calendar.GetWeekOfYear(currentDate, currentCulture.DateTimeFormat.CalendarWeekRule, currentCulture.DateTimeFormat.FirstDayOfWeek);
+    var minWeek = $"{currentDate:yyyy}-W{week:D2}";
+
+    var weekDays = new List<string> { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
+}
+<div class="row">
+    <div class="col-md-12 mx-auto">
+        <form method="post" asp-page="/WorkingSchedulePage/Create" onsubmit="return jQueryModalPost(event,this)">
+            <div asp-validation-summary="All" class="text-danger"></div>
+
+            <input type="hidden" name="DoctorId" value="@Model.DoctorId" />
+
+            <!-- Chọn tuần -->
+            <div class="form-group mb-2">
+                <label class="control-label">Chọn tuần</label>
+                <input type="week" id="selectedWeek" onchange="updateCheckboxes(this.value)" name="SelectedWeek" class="form-control" required
+                       min="@minWeek" />
+            </div>
+
+            <!-- Chọn ngày làm việc -->
+            <div class="form-group mb-2">
+                <label class="control-label">Chọn ngày làm việc</label>
+                <div class="row">
+                    @foreach (var day in weekDays)
+                    {
+                        int dayIndex = weekDays.IndexOf(day);
+                        bool isPastDay = dayIndex < (int)today.DayOfWeek;
+
+                        <div class="col-md-3">
+                            <input type="checkbox" name="SelectedDays" value="@day" id="day-@day"
+                            @(isPastDay ? "disabled" : "") />
+                            <label for="day-@day">@day</label>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Chọn khung giờ -->
+            <div class="form-group mb-2">
+                <label class="control-label">Chọn khung giờ</label>
+                <div class="row">
+                    @foreach (var slot in timeSlots)
+                    {
+                        <div class="col-md-3">
+                            <input type="checkbox" name="SelectedTimeSlots" value="@slot.Value" id="slot-@slot.Value" ) />
+                            <label for="slot-@slot.Value">@slot.Text</label>
+                        </div>
+                    }
+                </div>
+            </div>
+
+
+            <!-- Trạng thái hoạt động -->
+            <div class="form-group form-check mb-2">
+                <label class="form-check-label">
+                    <input class="form-check-input" name="IsAvailable" type="checkbox" value="true" checked /> Hoạt động
+                </label>
+            </div>
+
+            <!-- Nút tạo lịch -->
+            <div class="form-group d-flex justify-content-end mt-2">
+                <button type="submit" class="btn btn-primary">Create Schedule</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function updateCheckboxes(selectedWeek) {
+        let currentWeek = getCurrentWeekString();
+        let today = new Date();
+        let todayIndex = today.getDay();
+        let currentHour = today.getHours();
+
+
+        document.querySelectorAll("input[type='checkbox']").forEach((checkbox) => {
+            checkbox.checked = false;
+        });
+
+        document.querySelectorAll("input[name='SelectedDays']").forEach((checkbox) => {
+            let dayIndex = getDayIndex(checkbox.value);
+
+            console.log(selectedWeek, currentWeek, todayIndex, dayIndex); // Debug xem giá trị
+
+            if (selectedWeek === currentWeek) {
+                if (todayIndex === 0) { // Nếu hôm nay là Chủ Nhật
+                    checkbox.disabled = (dayIndex >= 0 && dayIndex <= 6); // Disable từ Thứ 2 -> Chủ Nhật
+                } else {
+                    checkbox.disabled = ((dayIndex <= todayIndex) && dayIndex != 0); // Disable các ngày trước hôm nay
+                }
+            } else {
+                checkbox.disabled = false; // Nếu chọn tuần khác thì không disable ngày nào
+            }
+        });
+    }
+
+    function getCurrentWeekString() {
+        let now = new Date();
+        let year = now.getFullYear();
+        let week = getISOWeekNumber(now);
+        return `${year}-W${week.toString().padStart(2, '0')}`;
+    }
+
+    function getISOWeekNumber(date) {
+        let target = new Date(date.valueOf());
+        let dayNumber = (target.getDay() + 6) % 7; // Chuyển Chủ Nhật thành 6, Thứ Hai thành 0
+        target.setDate(target.getDate() - dayNumber + 3); // Lùi về thứ Năm trong tuần
+
+        let firstThursday = new Date(target.getFullYear(), 0, 4); // Ngày Thứ Năm đầu tiên của năm
+        let yearStart = new Date(firstThursday.getFullYear(), 0, 1);
+
+        // Nếu ngày đầu năm không phải thứ Năm, thì nó thuộc tuần cuối của năm trước
+        if (firstThursday.getDay() !== 4) {
+            yearStart.setDate(yearStart.getDate() - (yearStart.getDay() - 1));
+        }
+
+        let diff = target - yearStart;
+        let oneWeek = 604800000; // 7 ngày tính bằng mili giây
+
+        return Math.round(diff / oneWeek);
+    }
+
+
+
+    function getDayIndex(day) {
+        const weekDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+        return weekDays.indexOf(day);
+    }
+</script>

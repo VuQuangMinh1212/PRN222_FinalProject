@@ -5,6 +5,7 @@ namespace MedicalSearchingPlatform.Business.Interfaces
     public interface IDoctorService
     {
         Task<IEnumerable<Doctor>> GetAllDoctorsAsync();
+        Task<Doctor> GetDoctorByUserId(string userId);
         Task<Doctor> GetDoctorByIdAsync(string doctorId);
         Task AddDoctorAsync(Doctor doctor);
         Task UpdateDoctorAsync(Doctor doctor);
@@ -18,6 +19,7 @@ namespace MedicalSearchingPlatform.Business.Interfaces
         decimal? maxFee);
 
         Task<IEnumerable<Doctor>> GetMostBookedDoctorsAsync(int top);
+        Task<Doctor> GetDoctorByUserIdAsync(string userId);
     }
 
 

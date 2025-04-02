@@ -16,7 +16,7 @@ namespace MedicalSearchingPlatform.Data.Repositories
 
         public async Task<IEnumerable<Appointment>> GetAllAppointmentsAsync()
         {
-            return await _context.Appointments.Include(a => a.Patient).Include(a => a.Doctor).ToListAsync();
+            return await _context.Appointments.Include(a => a.Patient).Include(a => a.Doctor).ThenInclude(a => a.User).ToListAsync();
         }
 
         public async Task<Appointment> GetAppointmentByIdAsync(string appointmentId)
@@ -25,6 +25,7 @@ namespace MedicalSearchingPlatform.Data.Repositories
                                               .ThenInclude(p => p.User)
                                               .Include(a => a.Doctor)
                                               .ThenInclude(d => d.User)
+                                               .Include(a => a.AppointmentsServices)
                                               .FirstOrDefaultAsync(a => a.AppointmentId == appointmentId);
         }
 
@@ -35,7 +36,12 @@ namespace MedicalSearchingPlatform.Data.Repositories
 
         public async Task<IEnumerable<Appointment>> GetAppointmentsByDoctorIdAsync(string doctorId)
         {
-            return await _context.Appointments.Where(a => a.DoctorId == doctorId).ToListAsync();
+            return await _context.Appointments
+                .Include(x => x.Patient)
+                    .ThenInclude(p => p.User)
+                    .Include(a => a.AppointmentsServices)
+                .Where(a => a.DoctorId == doctorId)
+                .ToListAsync();
         }
 
         public async Task AddAppointmentAsync(Appointment appointment)
@@ -77,6 +83,15 @@ namespace MedicalSearchingPlatform.Data.Repositories
              .Select(e => ($"{e.Month}/{e.Year}", e.Count))
              .ToList()
      );
+        }
+
+        public async Task<Appointment> GetCurrentBookAppointment(string patientId, string docterId, string scheduleId)
+        {
+            return await _context.Appointments
+                .Where(a => a.PatientId == patientId 
+                    && a.DoctorId == docterId 
+                    && a.ScheduleId == scheduleId)
+                .FirstOrDefaultAsync();
         }
     }
 }

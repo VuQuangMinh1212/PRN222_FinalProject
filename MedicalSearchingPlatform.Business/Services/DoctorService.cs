@@ -24,6 +24,11 @@ namespace MedicalSearchingPlatform.Business.Services
             return await _doctorRepository.GetDoctorByIdAsync(doctorId);
         }
 
+        public async Task<Doctor> GetDoctorByUserIdAsync(string doctorId)
+        {
+            return await _doctorRepository.GetDoctorByUserIdAsync(doctorId);
+        }
+
         public async Task AddDoctorAsync(Doctor doctor)
         {
             doctor.CreatedAt = DateTime.UtcNow;
@@ -57,6 +62,11 @@ namespace MedicalSearchingPlatform.Business.Services
         public async Task<IEnumerable<Doctor>> GetMostBookedDoctorsAsync(int top)
         {
             return await _doctorRepository.GetMostBookedDoctorsAsync(top);
+        }
+
+        public async Task<Doctor> GetDoctorByUserId(string userId)
+        {
+            return await _doctorRepository.GetDoctorByUserId(userId);
         }
     }
 }

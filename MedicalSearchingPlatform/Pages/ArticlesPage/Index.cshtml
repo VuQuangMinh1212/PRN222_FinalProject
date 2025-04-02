@@ -1,0 +1,78 @@
+﻿@page
+@model MedicalSearchingPlatform.Pages.ArticlesPage.IndexModel
+
+@{
+    ViewData["Title"] = "Latest News & Articles";
+}
+<div class="articels container">
+<h1 class="text-center my-4">Latest News & Articles</h1>
+
+@if (User.IsInRole("Staff"))
+{
+    <p class="text-end">
+        <a class="btn btn-success" onclick="jQueryModalGet('/ArticlesPage/Create','Create Articles')">
+            <i class="fa fa-plus"></i> Create New
+        </a>
+    </p>
+}
+
+<div>
+    <div class="row">
+        @if (Model.ArticlePaginated != null && Model.ArticlePaginated.Any())
+        {
+            @foreach (var item in Model.ArticlePaginated)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <a asp-page="./Details" asp-route-id="@item.ArticleId" class="text-dark text-decoration-none">
+                                    @item.Title
+                                </a>
+                            </h5>
+                            <p class="text-muted small">
+                                By <strong>@item.Author?.FullName</strong> | Published on @item.PublishedDate.ToString("yyyy-MM-dd")
+                            </p>
+                            <p class="card-text text-truncate" style="max-height: 3em;">
+                                @item.Content
+                            </p>
+                            <span class="badge @(item.Status == "Published" ? "bg-success" : "bg-secondary")">
+                                @item.Status
+                            </span>
+                        </div>
+                        @if (User.IsInRole("Staff"))
+                        {
+                            <div class="card-footer d-flex align-items-center bg-white">
+                                <a class="btn btn-warning btn-sm me-2" onclick="jQueryModalGet('/ArticlesPage/Edit?id=@item.ArticleId','Edit article')">
+                                    <i class="fa fa-pen"></i> Edit
+                                </a>
+                                <form method="post" asp-page="/ArticlesPage/Delete" asp-route-id="@item.ArticleId" onsubmit="return jQueryModalDelete(this)">
+                                    <button class="btn btn-danger btn-sm text-white" type="submit"><i class="fa fa-trash"></i> Delete</button>
+                                </form>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+
+        }
+        else
+        {
+            <div class="col-12 text-center text-muted">
+                <p>No articles available.</p>
+            </div>
+        }
+        <div class="d-flex justify-content-center">
+            @if (Model.ArticlePaginated.HasPreviousPage)
+            {
+                <a class="me-1" asp-page="/ArticlesPage/Index" asp-route-pageIndex="@(Model.ArticlePaginated.PageIndex - 1)">Previous</a>
+            }
+            <span>Page @Model.ArticlePaginated.PageIndex of @Model.ArticlePaginated.TotalPages</span>
+            @if (Model.ArticlePaginated.HasNextPage)
+            {
+                <a class="ms-1" asp-page="/ArticlesPage/Index" asp-route-pageIndex="@(Model.ArticlePaginated.PageIndex + 1)">Next</a>
+            }
+        </div>
+    </div>
+</div>
+</div>

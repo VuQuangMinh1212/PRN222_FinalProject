@@ -23,6 +23,11 @@ namespace MedicalSearchingPlatform.Business.Services
             return await _patientRepository.GetPatientByIdAsync(patientId);
         }
 
+        public async Task<Patient> GetPatientByUserIdAsync(string patientId)
+        {
+            return await _patientRepository.GetPatientByUserIdAsync(patientId);
+        }
+
         public async Task AddPatientAsync(Patient patient)
         {
             await _patientRepository.AddPatientAsync(patient);
@@ -36,6 +41,11 @@ namespace MedicalSearchingPlatform.Business.Services
         public async Task DeletePatientAsync(string patientId)
         {
             await _patientRepository.DeletePatientAsync(patientId);
+        }
+
+        public async Task<Patient> GetPatientByUserId(string userId)
+        {
+            return await _patientRepository.GetPatientByUserId(userId);
         }
     }
 }
