@@ -2,21 +2,16 @@
 @using MedicalSearchingPlatform.Data.Entities
 @using Microsoft.AspNetCore.Identity
 @model MedicalSearchingPlatform.Pages.MedicalServicePage.IndexModel
-@inject UserManager<User> _userManager
-
 @{
     ViewData["Title"] = "Medical Services";
-    var user = await _userManager.GetUserAsync(User);
-    string userRole = user != null ? (await _userManager.GetRolesAsync(user)).FirstOrDefault() ?? "Guest" : "Guest";
-    bool isStaff = userRole == "Staff";
 }
 
 <div class="medical-service container mt-5">
     <h2 class="text-center mb-4">Medical Services</h2>
 
-    @if (isStaff)
+    @if ((bool)ViewData["IsStaff"])
     {
-        <a asp-page="Create" class="btn btn-success mb-3">
+        <a asp-page="Create" class="btn-create-new-account mb-4">
             <i class="bi bi-plus-circle"></i> Create New Service
         </a>
     }
@@ -27,25 +22,27 @@
             <div class="col-md-4 mb-4">
                 <div class="card shadow-sm h-100">
                     <div class="card-body">
-                        <h5 class="card-title">@item.ServiceName</h5>
+                        <h5 class="card-title text-center">@item.ServiceName</h5>
                         <p class="card-text">@item.Description</p>
                         <span class="badge @(item.Status == "Active" ? "bg-success" : "bg-danger")">
                             @item.Status
                         </span>
                     </div>
-                    <div class="card-footer text-center">
-                        <a asp-page="./Details" asp-route-id="@item.ServiceId" class="btn btn-info btn-sm">
+                    <div class="d-flex p-2 gap-2 card-footer">
+                        <a asp-page="./Details" asp-route-id="@item.ServiceId" class="btn-save">
                             <i class="bi bi-info-circle"></i> Details
                         </a>
-                        @if (isStaff)
+                        @if ((bool)ViewData["IsStaff"])
                         {
-                            <a asp-page="./Edit" asp-route-id="@item.ServiceId" class="btn btn-warning btn-sm">
+                            <a asp-page="./Edit" asp-route-id="@item.ServiceId" class="btn-edit">
                                 <i class="bi bi-pencil"></i> Edit
                             </a>
-                            <a asp-page="./Delete" asp-route-id="@item.ServiceId" class="btn btn-danger btn-sm">
+                            <a asp-page="./Delete" asp-route-id="@item.ServiceId" class="btn-delete">
                                 <i class="bi bi-trash"></i> Delete
                             </a>
-                        }
+                       }
+                           
+                        
                     </div>
                 </div>
             </div>

@@ -4,7 +4,7 @@
 @{
     ViewData["Title"] = "Latest News & Articles";
 }
-<div class="articels">
+<div class="articels container">
 <h1 class="text-center my-4">Latest News & Articles</h1>
 
 @if (User.IsInRole("Staff"))
@@ -16,7 +16,7 @@
     </p>
 }
 
-<div class="container">
+<div>
     <div class="row">
         @if (Model.ArticlePaginated != null && Model.ArticlePaginated.Any())
         {

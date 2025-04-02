@@ -53,12 +53,12 @@
 <!-- Newest Facilities Section -->
 <section class="section-2">
     <h2 class="text-center">Newest Facilities</h2>
-    <div class="row">
+    <div class="d-flex justify-content-center flex-wrap gap-4">
         @if (Model.LatestFacilities != null && Model.LatestFacilities.Any())
         {
             @foreach (var facility in Model.LatestFacilities)
             {
-                <div class="facilities col-md-4">
+                <div class="facilities">
                     <a asp-page="/MedicalFacilityPage/Details" asp-route-id="@facility.FacilityId" class="text-decoration-none">
                         <div class="card shadow-sm">
                             <img src="@facility.ImageUrl" class="card-img-top" alt="@facility.FacilityName">
@@ -81,12 +81,12 @@
 <!-- Newest Doctors Section -->
 <section class="section-3">
     <h2 class="text-center">Our Newest Doctors</h2>
-    <div class="row">
+    <div class="d-flex justify-content-center flex-wrap gap-4">
         @if (Model.LatestDoctors != null && Model.LatestDoctors.Any())
         {
             @foreach (var doctor in Model.LatestDoctors)
             {
-                <div class="col-md-4">
+                <div class="facilities">
                     <a asp-page="/DoctorPage/Details" asp-route-id="@doctor.DoctorId" class="text-decoration-none">
                         <div class="card shadow-sm">
                             <img src="@doctor.ImageUrl" class="card-img-top" alt="@doctor.User.FullName">

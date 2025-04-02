@@ -32,7 +32,7 @@ namespace MedicalSearchingPlatform.Pages.MedicalServicePage
 
             // Get the logged-in user's role
             var user = await _userManager.GetUserAsync(User);
-            UserRole = user != null ? (await _userManager.GetRolesAsync(user)).FirstOrDefault() ?? "Guest" : "Guest";
+            ViewData["IsStaff"] = user != null && user.Role == "Staff";
 
             return Page();
         }
