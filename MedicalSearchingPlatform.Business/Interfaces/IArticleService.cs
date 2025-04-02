@@ -16,6 +16,7 @@ namespace MedicalSearchingPlatform.Services
         Task<IEnumerable<Article>> GetMostLikedArticlesAsync(int top);
 
         Task<int> GetArticleLikeCountAsync(string articleId);
+        Task<int> GetTotalArticelsAsync();
 
     }
 }

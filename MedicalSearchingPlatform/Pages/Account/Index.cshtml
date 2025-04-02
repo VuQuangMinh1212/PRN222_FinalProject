@@ -57,15 +57,17 @@
                         </span>
                     </td>
                     <td>
-                        <a asp-page="Detail" asp-route-id="@user.Id" class="btn btn-info btn-sm">Detail</a>
-                        <button type="button" class="btn @(user.IsActive ? "btn-danger" : "btn-success") btn-sm"
+                        <div class="d-flex justify-content-center gap-2">
+                        <a asp-page="Detail" asp-route-id="@user.Id" class="btn-edit-profile">Detail</a>
+                        <button type="button" class="btn @(user.IsActive ? "btn-deletes" : "btn-edits") btn-sm"
                                 data-bs-toggle="modal" data-bs-target="#confirmDeactivateModal"
                                 data-userid="@user.Id" data-username="@user.FullName">
                             @(user.IsActive ? "Deactivate" : "Activate")
                         </button>
+                        </div>
                     </td>
                 </tr>
-            }
+            } 
         </tbody>
     </table>
 </div>

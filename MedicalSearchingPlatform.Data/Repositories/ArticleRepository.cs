@@ -81,5 +81,9 @@ namespace MedicalSearchingPlatform.Data.Repositories
             return await _context.ArticleLikes.CountAsync(l => l.ArticleId == articleId);
         }
 
+        public async Task<int> GetTotalArticelsAsync()
+        {
+            return await _context.Articles.CountAsync();
+        }
     }
 }

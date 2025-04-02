@@ -5,22 +5,19 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
-
-<h4>MedicalRecord</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
+<div class="delete-medical container">
+<h2 class="text-center">Create MedicalRecord</h2>
+    <div class="card shadow-lg form-edit">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <span class="text-danger">*</span>
-                <label asp-for="MedicalRecord.PatientId" class="control-label"></label>
+                <label asp-for="MedicalRecord.PatientId" class="control-label fw-bold"></label>
                 <select asp-for="MedicalRecord.PatientId" class="form-control" asp-items="ViewBag.PatientId"></select>
             </div>
             <div class="form-group">
                 <span class="text-danger">*</span>
-                <label asp-for="MedicalRecord.DoctorId" class="control-label">Doctor</label>
+                <label asp-for="MedicalRecord.DoctorId" class="control-label fw-bold">Doctor</label>
                 @if (HttpContext.Session.GetString("UserRole") == "Doctor")
                 {
                     <input type="text" class="form-control" value="@Model.CurrentDoctorName" readonly />
@@ -32,34 +29,35 @@
                 }
             </div>
             <div class="form-group">
-                <label asp-for="MedicalRecord.Diagnosis" class="control-label"></label>
+                <label asp-for="MedicalRecord.Diagnosis" class="control-label fw-bold"></label>
                 <input asp-for="MedicalRecord.Diagnosis" class="form-control" />
                 <span asp-validation-for="MedicalRecord.Diagnosis" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="MedicalRecord.Treatment" class="control-label"></label>
+                <label asp-for="MedicalRecord.Treatment" class="control-label fw-bold"></label>
                 <input asp-for="MedicalRecord.Treatment" class="form-control" />
                 <span asp-validation-for="MedicalRecord.Treatment" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="MedicalRecord.Notes" class="control-label"></label>
+                <label asp-for="MedicalRecord.Notes" class="control-label fw-bold"></label>
                 <input asp-for="MedicalRecord.Notes" class="form-control" />
                 <span asp-validation-for="MedicalRecord.Notes" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="MedicalRecord.AttachmentUrl" class="control-label"></label>
+                <label asp-for="MedicalRecord.AttachmentUrl" class="control-label fw-bold"></label>
                 <input asp-for="MedicalRecord.AttachmentUrl" class="form-control" />
                 <span asp-validation-for="MedicalRecord.AttachmentUrl" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+            <div class="form-group d-flex justify-content-center gap-2">
+                <input type="submit" value="Create" class="btn-save-medical" />
+                <div>
+                    <a asp-page="Index" class="btn-back">Back to List</a>
+                </div>
             </div>
         </form>
     </div>
-</div>
 
-<div>
-    <a asp-page="Index">Back to List</a>
+
 </div>
 
 @section Scripts {

@@ -34,14 +34,14 @@
 
             <!-- Chọn tuần -->
             <div class="form-group mb-2">
-                <label class="control-label">Chọn tuần</label>
+                <label class="control-label fw-bold">Chọn tuần</label>
                 <input type="week" id="selectedWeek" onchange="updateCheckboxes(this.value)" name="SelectedWeek" class="form-control" required
                        min="@minWeek" />
             </div>
 
             <!-- Chọn ngày làm việc -->
             <div class="form-group mb-2">
-                <label class="control-label">Chọn ngày làm việc</label>
+                <label class="control-label fw-bold">Chọn ngày làm việc</label>
                 <div class="row">
                     @foreach (var day in weekDays)
                     {
@@ -59,7 +59,7 @@
 
             <!-- Chọn khung giờ -->
             <div class="form-group mb-2">
-                <label class="control-label">Chọn khung giờ</label>
+                <label class="control-label fw-bold">Chọn khung giờ</label>
                 <div class="row">
                     @foreach (var slot in timeSlots)
                     {
@@ -81,7 +81,7 @@
 
             <!-- Nút tạo lịch -->
             <div class="form-group d-flex justify-content-end mt-2">
-                <button type="submit" class="btn btn-primary">Create Schedule</button>
+                <button type="submit" class="btn-save-medical">Create Schedule</button>
             </div>
         </form>
     </div>

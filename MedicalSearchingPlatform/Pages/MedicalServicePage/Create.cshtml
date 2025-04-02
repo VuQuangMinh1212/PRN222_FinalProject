@@ -8,24 +8,24 @@
 <div class="create-account container mt-5">
     <h2 class="text-center">Create Medical Service</h2>
 
-    <div class="card shadow-lg p-4">
+    <div class="card shadow-lg form-edit">
         <form method="post" id="createForm">
             <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
 
             <div class="mb-3">
-                <label asp-for="MedicalService.ServiceName" class="form-label">Service Name</label>
+                <label asp-for="MedicalService.ServiceName" class="form-label fw-bold">Service Name</label>
                 <input asp-for="MedicalService.ServiceName" class="form-control" required />
                 <span asp-validation-for="MedicalService.ServiceName" class="text-danger"></span>
             </div>
 
             <div class="mb-3">
-                <label asp-for="MedicalService.Description" class="form-label">Description</label>
+                <label asp-for="MedicalService.Description" class="form-label fw-bold">Description</label>
                 <textarea asp-for="MedicalService.Description" class="form-control" rows="3" required></textarea>
                 <span asp-validation-for="MedicalService.Description" class="text-danger"></span>
             </div>
 
             <div class="mb-3">
-                <label asp-for="MedicalService.Status" class="form-label">Status</label>
+                <label asp-for="MedicalService.Status" class="form-label fw-bold">Status</label>
                 <select asp-for="MedicalService.Status" class="form-select" required>
                     <option value="Active">Active</option>
                     <option value="Inactive">Inactive</option>

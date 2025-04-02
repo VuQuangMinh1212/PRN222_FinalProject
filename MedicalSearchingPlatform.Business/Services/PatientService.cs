@@ -47,5 +47,10 @@ namespace MedicalSearchingPlatform.Business.Services
         {
             return await _patientRepository.GetPatientByUserId(userId);
         }
+
+        public async Task<int> GetTotalPatientsAsync()
+        {
+            return await _patientRepository.GetTotalPatientsAsync();
+        }
     }
 }

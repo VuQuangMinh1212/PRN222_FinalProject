@@ -6,8 +6,7 @@
     Layout = null;
 }
 
-<div class="account container">
-    <h2 class="text-center my-4">Making Appointment</h2>
+<div class="container">
 
     <div class="row">
         <div class="col-md-12 mx-auto">
@@ -19,14 +18,14 @@
                 </div>
                 <div class="form-group">
                     <span class="text-danger">*</span>
-                    <label for="FacilityId">Select Medical Facility</label>
+                    <label for="FacilityId" class="control-label fw-bold">Select Medical Facility</label>
                     <select id="FacilityId" class="form-control" asp-items="ViewBag.Facilities">
                         <option value="">Select a facility</option>
                     </select>
                 </div>
                 <input type="hidden" asp-for="Appointment.PatientId" />
                 <div class="form-group">
-                    <label>Select Services</label>
+                    <label class="control-label fw-bold">Select Services</label>
                     <div>
                         @foreach (var service in Model.AvailableServices)
                         {
@@ -47,7 +46,7 @@
 
                 <div class="form-group">
                     <span class="text-danger">*</span>
-                    <label asp-for="Appointment.DoctorId" class="control-label"></label>
+                    <label asp-for="Appointment.DoctorId" class="control-label fw-bold"></label>
                     <select id="DoctorId" asp-for="Appointment.DoctorId" class="form-control">
                         <option value="">Select a doctor</option>
                     </select>
@@ -55,20 +54,20 @@
 
                 <div class="form-group my-3">
                     <span class="text-danger">*</span>
-                    <label for="scheduleDropdown">Available Schedules</label>
+                    <label for="scheduleDropdown" class="control-label fw-bold">Available Schedules</label>
                     <select id="scheduleDropdown" asp-for="Appointment.ScheduleId" class="form-control">
                         <option value="">Select a schedule</option>
                     </select>
                 </div>
 
                 <div class="form-group">
-                    <label asp-for="Appointment.AppointmentInfo" class="control-label"></label>
+                    <label asp-for="Appointment.AppointmentInfo" class="control-label fw-bold"></label>
                     <input asp-for="Appointment.AppointmentInfo" class="form-control" />
                     <span asp-validation-for="Appointment.AppointmentInfo" class="text-danger"></span>
                 </div>
                 <div class="form-group" hidden>
                     <span class="text-danger">*</span>
-                    <label asp-for="Appointment.Status" class="control-label"></label>
+                    <label asp-for="Appointment.Status" class="control-label fw-bold"></label>
                     <input asp-for="Appointment.Status" class="form-control" />
                     <span asp-validation-for="Appointment.Status" class="text-danger"></span>
                 </div>

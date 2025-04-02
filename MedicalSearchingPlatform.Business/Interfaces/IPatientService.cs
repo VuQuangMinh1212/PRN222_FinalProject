@@ -11,5 +11,7 @@ namespace MedicalSearchingPlatform.Business.Interfaces
         Task UpdatePatientAsync(Patient patient);
         Task DeletePatientAsync(string patientId);
         Task<Patient> GetPatientByUserIdAsync(string userId);
+
+        Task<int> GetTotalPatientsAsync();
     }
 }

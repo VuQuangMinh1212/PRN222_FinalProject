@@ -76,9 +76,9 @@
                             else if (roles.Contains("Doctor"))
                             {
                                 <li class="nav-item"><a class="nav-link text-white @(ViewData["Title"] == "Appointments" ? "active" : "")" asp-page="/AppointmentPage/Index">Appointments</a></li>
-                                <li class="nav-item"><a class="nav-link text-white @(ViewData["Title"] == "Schedules" ? "active" : "")" asp-page="/WorkingSchedulePage/Index">Schedule</a></li>
+                                <li class="nav-item"><a class="nav-link text-white @(ViewData["Title"] == "Lịch làm việc bác sĩ" ? "active" : "")" asp-page="/WorkingSchedulePage/Index">Schedule</a></li>
                                 @* <li class="nav-item"><a class="nav-link text-white @(ViewData["Title"] == "Appointment History" ? "active" : "")" asp-page="/AppointmentPage/History">History</a></li> *@
-                                <li class="nav-item"><a class="nav-link text-white @(ViewData["Title"] == "Medical Record" ? "active" : "")" asp-page="/MedicalRecordPage/Index">Medical Record</a></li>
+                                <li class="nav-item"><a class="nav-link text-white @(ViewData["Title"] == "Medical Records" ? "active" : "")" asp-page="/MedicalRecordPage/Index">Medical Record</a></li>
                                 <li class="nav-item"><a class="nav-link text-white @(ViewData["Title"] == "Privacy Policy" ? "active" : "")" asp-page="/Privacy">Privacy</a></li>
                             }
                         }
@@ -132,8 +132,8 @@
     <div class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" id="form-modal">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
-                <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title text-white">Custom Modal Title</h5>
+                <div class="modal-header text-white modal-full">
+                    <h5 class="modal-title text-white fw-bold">Custom Modal Title</h5>
                     <button type="button" class="btn btn-danger text-white ms-auto" data-dismiss="modal" aria-label="Close" onclick="$('#form-modal').modal('hide')">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -202,7 +202,7 @@
 
 
     <!-- ======= Hero Section ======= -->
-    <main id="main" class="mt-5" style="margin-top:7rem!important">
+    <main id="main" class="mt-5">
         @RenderBody()
     </main>
 

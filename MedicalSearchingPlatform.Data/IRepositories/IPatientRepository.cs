@@ -11,5 +11,6 @@ namespace MedicalSearchingPlatform.Data.IRepositories
         Task AddPatientAsync(Patient patient);
         Task UpdatePatientAsync(Patient patient);
         Task DeletePatientAsync(string patientId);
+        Task<int> GetTotalPatientsAsync();
     }
 }

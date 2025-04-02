@@ -1,70 +1,59 @@
 ﻿@page
 @model MedicalSearchingPlatform.Pages.MedicalRecordPage.DeleteModel
-
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Delete Medical Record";
 }
 
-<h1>Delete</h1>
+<div class="dashboard container mt-5">
+    <div class="card shadow-lg">
+        <div class="card-header bg-danger text-white text-center">
+            <h2 class="text-white">Delete Medical Record</h2>
+        </div>
+        <div class="card-body">
+            <h5 class="text-center text-danger">Are you sure you want to delete this record?</h5>
+            <hr />
+            <dl class="row">
+                <dt class="col-sm-3">Patient</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.MedicalRecord.Patient.User.FullName)</dd>
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>MedicalRecord</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.MedicalRecord.Patient)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.MedicalRecord.Patient.PatientId)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.MedicalRecord.Doctor)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.MedicalRecord.Doctor.DoctorId)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.MedicalRecord.RecordDate)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.MedicalRecord.RecordDate)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.MedicalRecord.Diagnosis)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.MedicalRecord.Diagnosis)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.MedicalRecord.Treatment)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.MedicalRecord.Treatment)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.MedicalRecord.Notes)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.MedicalRecord.Notes)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.MedicalRecord.AttachmentUrl)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.MedicalRecord.AttachmentUrl)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.MedicalRecord.IsShared)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.MedicalRecord.IsShared)
-        </dd>
-    </dl>
-    
-    <form method="post">
-        <input type="hidden" asp-for="MedicalRecord.MedicalRecordId" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-page="./Index">Back to List</a>
-    </form>
+                <dt class="col-sm-3">Doctor</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.MedicalRecord.Doctor.User.FullName)</dd>
+
+                <dt class="col-sm-3">Record Date</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.MedicalRecord.RecordDate)</dd>
+
+                <dt class="col-sm-3">Diagnosis</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.MedicalRecord.Diagnosis)</dd>
+
+                <dt class="col-sm-3">Treatment</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.MedicalRecord.Treatment)</dd>
+
+                <dt class="col-sm-3">Notes</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.MedicalRecord.Notes)</dd>
+
+                <dt class="col-sm-3">Attachment</dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.MedicalRecord.AttachmentUrl)
+                </dd>
+
+                <dt class="col-sm-3">Shared</dt>
+                <dd class="col-sm-9">
+                    <span class="badge @(Model.MedicalRecord.IsShared ? "bg-success" : "bg-secondary")">
+                        @(Model.MedicalRecord.IsShared ? "Yes" : "No")
+                    </span>
+                </dd>
+            </dl>
+        </div>
+        <div class="card-footer text-center">
+            <form method="post" onsubmit="return confirm('Are you sure you want to delete this medical record? This action cannot be undone!');">
+                <input type="hidden" asp-for="MedicalRecord.MedicalRecordId" />
+                <button type="submit" class="btn btn-danger">
+                    <i class="bi bi-trash"></i> Delete
+                </button>
+                <a asp-page="./Index" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left"></i> Back to List
+                </a>
+            </form>
+        </div>
+    </div>
 </div>

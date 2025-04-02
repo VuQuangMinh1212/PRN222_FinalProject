@@ -15,5 +15,7 @@ namespace MedicalSearchingPlatform.Data.IRepositories
         Task DeleteAppointmentAsync(string appointmentId);
         Task<IEnumerable<(string MonthName, int Count)>> GetAppointmentCountByMonthAsync();
 
+        Task<int> GetTotalAppointmentsAsync();
+
     }
 }

@@ -77,5 +77,10 @@ namespace MedicalSearchingPlatform.Business.Services
         {
             return await _appointmentRepository.GetAppointmentByScheduleIdAsync(scheduleId);
         }
+
+        public async Task<int> GetTotalAppointmentsAsync()
+        {
+            return await _appointmentRepository.GetTotalAppointmentsAsync();
+        }
     }
 }

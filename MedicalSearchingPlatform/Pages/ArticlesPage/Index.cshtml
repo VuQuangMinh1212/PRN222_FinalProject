@@ -9,11 +9,11 @@
 
 @if (User.IsInRole("Staff"))
 {
-    <p class="text-end">
-        <a class="btn btn-success" onclick="jQueryModalGet('/ArticlesPage/Create','Create Articles')">
+    <div class="d-flex justify-content-start mb-3">
+        <a class="btn-save-medical" onclick="jQueryModalGet('/ArticlesPage/Create','Create Articles')">
             <i class="fa fa-plus"></i> Create New
         </a>
-    </p>
+    </div>
 }
 
 <div>
@@ -42,12 +42,12 @@
                         </div>
                         @if (User.IsInRole("Staff"))
                         {
-                            <div class="card-footer d-flex align-items-center bg-white">
-                                <a class="btn btn-warning btn-sm me-2" onclick="jQueryModalGet('/ArticlesPage/Edit?id=@item.ArticleId','Edit article')">
+                            <div class="card-footer d-flex align-items-center bg-white justify-content-center gap-2">
+                                <a class="btn-edit" onclick="jQueryModalGet('/ArticlesPage/Edit?id=@item.ArticleId','Edit article')">
                                     <i class="fa fa-pen"></i> Edit
                                 </a>
                                 <form method="post" asp-page="/ArticlesPage/Delete" asp-route-id="@item.ArticleId" onsubmit="return jQueryModalDelete(this)">
-                                    <button class="btn btn-danger btn-sm text-white" type="submit"><i class="fa fa-trash"></i> Delete</button>
+                                    <button class="btn-delete" type="submit"><i class="fa fa-trash"></i> Delete</button>
                                 </form>
                             </div>
                         }

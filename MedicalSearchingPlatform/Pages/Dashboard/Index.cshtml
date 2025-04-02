@@ -50,38 +50,119 @@
 
 <style>
     .chart-container {
-        width: 60%;
-        margin: 0 auto;
-        padding-bottom: 20px;
+        width: 100%;
+        max-width: 600px;
+        margin: auto;
+    }
+
+    .dashboard-card {
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        transition: transform 0.2s ease-in-out;
+        border: 1px solid #d9d9d9;
+    }
+
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+        }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+
+    .stat-card {
+        display: flex;
+        align-items: center;
+        background: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s;
+        border: 1px solid #d9d9d9;
+    }
+
+        .stat-card:hover {
+            transform: scale(1.05);
+        }
+
+    .stat-icon {
+        font-size: 2rem;
+        margin-right: 15px;
+        color: #36A2EB;
+    }
+
+    .stat-info h2 {
+        margin: 0;
+        font-size: 1.8rem;
+        font-weight: bold;
+    }
+
+    .stat-info p {
+        margin: 0;
+        color: #666;
     }
 </style>
 
-<div class="dashboard container mt-5 d-flex flex-column gap-3">
-    <h2 class="text-center">Dashboard</h2>
+<div class="dashboard container mt-5">
+    <h2 class="text-center mb-4 fw-bold">Dashboard</h2>
 
-    <div class="row mb-4 card shadow p-4" style="margin-bottom: 20px;">
-        <div class="col-12 text-center">
-            <h4 class="fw-bold text-dark">Bác sĩ được đặt lịch nhiều nhất</h4>
-            <div class="chart-container">
-                <canvas id="doctorChart"></canvas>
+    <div class="stats-grid">
+        <div class="stat-card">
+            <i class="bi bi-people-fill stat-icon"></i>
+            <div class="stat-info">
+                <h2>@Model.TotalPatients</h2>
+                <p>Tổng số bệnh nhân</p>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <i class="bi bi-calendar-check-fill stat-icon"></i>
+            <div class="stat-info">
+                <h2>@Model.TotalAppointments</h2>
+                <p>Tổng số lịch hẹn</p>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <i class="bi bi-file-earmark-text stat-icon"></i>
+            <div class="stat-info">
+                <h2>@Model.TotalArticels</h2>
+                <p>Tổng số bài viêt</p>
             </div>
         </div>
     </div>
 
-    <div class="row mb-4 card shadow p-4" style="margin-bottom: 20px;">
-        <div class="col-12 text-center">
-            <h4 class="fw-bold text-dark">Bài viết được nhiều lượt thích nhất</h4>
-            <div class="chart-container">
-                <canvas id="blogChart"></canvas>
+
+    <div class="row g-4">
+        <div class="col-md-6">
+            <div class="dashboard-card text-center">
+                <h4 class="fw-bold text-dark">Bác sĩ được đặt lịch nhiều nhất</h4>
+                <div class="chart-container">
+                    <canvas id="doctorChart"></canvas>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="row card shadow p-4" style="margin-bottom: 20px;">
-        <div class="col-12 text-center">
-            <h4 class="fw-bold text-dark">Bảng báo cáo số lượng lịch hẹn</h4>
-            <div class="chart-container">
-                <canvas id="appointmentChart"></canvas>
+        <div class="col-md-6">
+            <div class="dashboard-card text-center">
+                <h4 class="fw-bold text-dark">Bảng báo cáo số lượng lịch hẹn</h4>
+                <div class="chart-container">
+                    <canvas id="appointmentChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="dashboard-card text-center">
+                <h4 class="fw-bold text-dark">Bài viết được nhiều lượt thích nhất</h4>
+                <div class="chart-container">
+                    <canvas id="blogChart"></canvas>
+                </div>
             </div>
         </div>
     </div>

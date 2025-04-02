@@ -17,5 +17,7 @@ namespace MedicalSearchingPlatform.Data.Repositories
 
         Task<int> GetArticleLikeCountAsync(string articleId);
 
+        Task<int> GetTotalArticelsAsync();
+
     }
 }
