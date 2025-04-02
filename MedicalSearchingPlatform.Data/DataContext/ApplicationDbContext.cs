@@ -210,7 +210,7 @@ namespace MedicalSearchingPlatform.Data.DataContext
                 .HasDefaultValue(false);
 
             modelBuilder.Entity<AppointmentsServices>()
-    .HasKey(aps => new { aps.AppointmentId, aps.ServiceId });
+         .HasKey(aps => new { aps.AppointmentId, aps.ServiceId });
 
             modelBuilder.Entity<AppointmentsServices>()
                 .HasOne(aps => aps.Appointment)
@@ -220,7 +220,7 @@ namespace MedicalSearchingPlatform.Data.DataContext
 
             modelBuilder.Entity<AppointmentsServices>()
                 .HasOne(aps => aps.MedicalService)
-                .WithMany()
+                .WithMany(ms => ms.AppointmentsServices)
                 .HasForeignKey(aps => aps.ServiceId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
