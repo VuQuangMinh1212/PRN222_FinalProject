@@ -1,58 +1,58 @@
 ﻿using MedicalSearchingPlatform.Data.Entities;
 using MedicalSearchingPlatform.Data.Repositories;
+using Net.payOS.Types;
+using Net.payOS;
+using MedicalSearchingPlatform.Business.Services;
+using MedicalSearchingPlatform.Business.Interfaces;
 
 namespace MedicalSearchingPlatform.Services
 {
     public class PaymentService : IPaymentService
     {
-        private readonly IPaymentRepository _paymentRepository;
+        private readonly string _clientId = "YOUR_CLIENT_ID";
+        private readonly string _apiKey = "YOUR_API_KEY";
+        private readonly string _checksumKey = "YOUR_CHECKSUM_KEY";
+        private readonly MedicalServiceService _medicalServiceService;
 
-        public PaymentService(IPaymentRepository paymentRepository)
+        private readonly PayOS _payOS;
+        private readonly string _domain = "http://localhost:7290";
+
+        public PaymentService(MedicalServiceService medicalServiceService)
         {
-            _paymentRepository = paymentRepository;
+            _medicalServiceService = medicalServiceService;
+            _payOS = new PayOS(_clientId, _apiKey, _checksumKey);
         }
 
-        public async Task<IEnumerable<Payment>> GetAllPaymentsAsync()
+        public async Task<string> CreatePaymentLink(decimal totalPrice)
         {
-            return await _paymentRepository.GetAllPaymentsAsync();
+            var paymentLinkRequest = new PaymentData(
+                orderCode: int.Parse(DateTimeOffset.Now.ToString("ffffff")),
+                amount: (int)totalPrice,
+                description: "Thanh toán đơn hàng",
+                items: [new("Mì tôm hảo hảo ly", 1, 2000)],
+                returnUrl: $"{_domain}/Success",
+                cancelUrl: $"{_domain}/Cancel"
+            );
+
+            var response = await _payOS.createPaymentLink(paymentLinkRequest);
+            return response.checkoutUrl;
         }
 
-        public async Task<Payment> GetPaymentByIdAsync(string paymentId)
+        public async Task<decimal> CalculateTotalPriceAsync(List<string> serviceIds)
         {
-            return await _paymentRepository.GetPaymentByIdAsync(paymentId);
-        }
+            decimal totalPrice = 0;
 
-        public async Task<IEnumerable<Payment>> GetPaymentsByPatientIdAsync(string patientId)
-        {
-            return await _paymentRepository.GetPaymentsByPatientIdAsync(patientId);
-        }
-
-        public async Task<bool> ProcessPaymentAsync(Payment payment)
-        {
-            try
+            foreach (var serviceId in serviceIds)
             {
-                payment.PaymentDate = DateTime.UtcNow;
-                payment.Status = "Completed";
-                await _paymentRepository.AddPaymentAsync(payment);
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        public async Task<bool> RefundPaymentAsync(string paymentId)
-        {
-            var payment = await _paymentRepository.GetPaymentByIdAsync(paymentId);
-            if (payment == null || payment.Status == "Refunded")
-            {
-                return false;
+                var service = await _medicalServiceService.GetServiceByIdAsync(serviceId); 
+                if (service != null)
+                {
+                    totalPrice += service.Price;
+                }
             }
 
-            payment.Status = "Refunded";
-            await _paymentRepository.UpdatePaymentAsync(payment);
-            return true;
+            return totalPrice;
         }
+
     }
 }

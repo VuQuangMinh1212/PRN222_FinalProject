@@ -18,6 +18,10 @@
                 <h5 class="fw-bold text-dark">Description:</h5>
                 <p class="text-muted">@Model.MedicalService.Description</p>
             </div>
+            <div class="mb-3 d-flex justify-content-center gap-2">
+                <h5 class="fw-bold text-dark">Price:</h5>
+                <p class="text-muted">@Model.MedicalService.Price</p>
+            </div>
             <div class="mb-3 d-flex justify-content-center">
                 <span class="align-content-center badge @(Model.MedicalService.Status == "Active" ? "bg-success" : "bg-danger")">
                     @Model.MedicalService.Status

@@ -75,7 +75,6 @@ public class SignInModel : PageModel
             var userName = user.FullName ?? user.UserName;
             var roles = await _userManager.GetRolesAsync(user);
             var userRole = user.Role;
-            Debug.WriteLine("------------------------------------------------" + userRole);
             HttpContext.Session.SetString("UserName", userName);
             HttpContext.Session.SetString("UserRole", userRole);
 

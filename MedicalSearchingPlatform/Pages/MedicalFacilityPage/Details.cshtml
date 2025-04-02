@@ -1,5 +1,11 @@
 ﻿@page
 @model MedicalSearchingPlatform.Pages.MedicalFacilityPage.DetailsModel
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+@{
+    var userRole = HttpContextAccessor.HttpContext?.Session.GetString("UserRole");
+    var isStaff = userRole == "Staff";
+}
 
 @{
     ViewData["Title"] = "Details";
@@ -21,7 +27,11 @@
     </div>
 
     <div class="mt-3 d-flex justify-content-center gap-2">
+        
+            @if (isStaff)
+            {
         <a asp-page="./Edit" asp-route-id="@Model.MedicalFacility.FacilityId" class="btn-edit-medical">Edit</a>
+            }
         <a asp-page="./Index" class="btn-back">Back to List</a>
     </div>
 </div>

@@ -1,5 +1,6 @@
 ﻿using MedicalSearchingPlatform.Business.Interfaces;
 using MedicalSearchingPlatform.Data.Entities;
+using MedicalSearchingPlatform.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -16,6 +17,8 @@ namespace MedicalSearchingPlatform.Pages.AppointmentPage
         private readonly IWorkingScheduleService _workingScheduleService;
         private readonly IMedicalServiceService _medicalServiceService;
         private readonly IAppoimentMedicalService _appoimentMedicalService;
+        private readonly IPaymentService _paymentService;
+        private decimal totalPrice;
 
         [BindProperty]
         public Appointment Appointment { get; set; } = new Appointment();
@@ -30,7 +33,8 @@ namespace MedicalSearchingPlatform.Pages.AppointmentPage
             IWorkingScheduleService workingScheduleService,
             IMedicalFacilityService facilityService,
              IMedicalServiceService medicalServiceService,
-             IAppoimentMedicalService appoimentMedicalService)
+             IAppoimentMedicalService appoimentMedicalService,
+             IPaymentService paymentService)
         {
             _appointmentService = appointmentService;
             _doctorService = doctorService;
@@ -39,6 +43,7 @@ namespace MedicalSearchingPlatform.Pages.AppointmentPage
             _facilityService = facilityService;
             _medicalServiceService = medicalServiceService;
             _appoimentMedicalService = appoimentMedicalService;
+            _paymentService = paymentService;
         }
 
 
@@ -128,6 +133,11 @@ namespace MedicalSearchingPlatform.Pages.AppointmentPage
             Appointment.PatientId = patient.PatientId;
 
             var currentBook = await _appointmentService.GetCurrentBookAppointment(Appointment.PatientId, Appointment.DoctorId, Appointment.ScheduleId);
+            Doctor doctor = await _doctorService.GetDoctorByIdAsync(Appointment.DoctorId);
+            if (doctor != null)
+            {
+                totalPrice =doctor.Fee;
+            }
             if (currentBook != null)
             {
                 return new JsonResult(new { isValid = false, message = "This day you have booked" });
@@ -166,5 +176,26 @@ namespace MedicalSearchingPlatform.Pages.AppointmentPage
 
             return new JsonResult(doctors);
         }
+
+        public async Task<IActionResult> OnPostCheckoutAsync([FromBody] CheckoutRequest request)
+        {
+            if (request == null || request.Services.Count == 0)
+            {
+                return new JsonResult(new { isValid = false, message = "No services selected for checkout." });
+            }
+
+            var totalPrice = await _paymentService.CalculateTotalPriceAsync(request.Services);
+
+            // Create a payment request and redirect to the payment page
+            var paymentUrl = await _paymentService.CreatePaymentLink(totalPrice);
+
+            return new JsonResult(new { isValid = true, redirect = paymentUrl });
+        }
+
+        public class CheckoutRequest
+        {
+            public List<string> Services { get; set; }
+        }
+
     }
 }

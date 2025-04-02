@@ -73,7 +73,8 @@
                     <span asp-validation-for="Appointment.Status" class="text-danger"></span>
                 </div>
                 <div class="form-group d-flex justify-content-end mt-2">
-                    <input type="submit" value="Create" class="btn btn-primary" />
+                    <input type="submit" value="Create" class="btn btn-primary me-2" />
+                    <button type="button" class="btn btn-success" id="checkoutButton">Checkout</button>
                 </div>
             </form>
         </div>
@@ -142,6 +143,35 @@
             scheduleDropdown.empty().append('<option value="">Select a schedule</option>');
         }
     });
+    });
+
+     document.getElementById("checkoutButton").addEventListener("click", function () {
+        var selectedServices = [];
+        document.querySelectorAll('input[name="SelectedServices"]:checked').forEach((el) => {
+            selectedServices.push(el.value);
+        });
+
+        if (selectedServices.length === 0) {
+            alert("Please select at least one service before proceeding to checkout.");
+            return;
+        }
+
+        fetch('/AppointmentPage/Create?handler=Checkout', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ services: selectedServices })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.isValid) {
+                window.location.href = data.redirect;
+            } else {
+                alert(data.message);
+            }
+        })
+        .catch(error => console.error("Error:", error));
     });
 </script>
 
