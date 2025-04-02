@@ -32,7 +32,6 @@
                 contentType: false,
                 processData: false,
                 success: function (res) {
-                    console.log(res);
                     if (res.isValid) {
                         $('#modal-message').html(res.message).removeClass("text-danger").addClass("text-success");
                         $('#form-modal form')[0].reset();
@@ -56,7 +55,8 @@
         return false;
     }
 
-    jQueryModalDelete = form => {
+    jQueryModalDelete = (event, form) => {
+        event.preventDefault();
         if (confirm('Are you sure to delete this record ?')) {
             try {
                 $.ajax({
@@ -66,7 +66,16 @@
                     contentType: false,
                     processData: false,
                     success: function (res) {
-                        $('#viewAll').html(res);
+                        if (res.isValid) {
+                            $('#modal-message').html(res.message).removeClass("text-danger").addClass("text-success");
+                            setTimeout(() => {
+                                $('#form-modal').modal('hide');
+                                $('#modal-message').html("");
+                                location.href = res.redirect;
+                            }, 2000)
+                        } else {
+                            $('#modal-message').html(res.message).removeClass("test-success").addClass("text-danger");
+                        }
                     },
                     error: function (err) {
                         console.log(err)
@@ -77,5 +86,12 @@
             }
         }
         return false;
+    }
+
+    submitDeleteForm = (scheduleId) => {
+        // Set the schedule ID for the delete form
+        $('#deleteScheduleId').val(scheduleId);
+        // Submit the delete form
+        $('#deleteForm').submit();
     }
 });

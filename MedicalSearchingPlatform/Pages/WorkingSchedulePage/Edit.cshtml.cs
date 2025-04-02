@@ -17,10 +17,13 @@ namespace MedicalSearchingPlatform.Pages.WorkingSchedulePage
     {
         private readonly IWorkingScheduleService _workingScheduleService;
         private readonly IDoctorService _doctorService;
-        public EditModel(IWorkingScheduleService workingScheduleService, IDoctorService doctorService)
+        private readonly IAppointmentService _appointmentService;
+        public EditModel(IWorkingScheduleService workingScheduleService,
+            IDoctorService doctorService, IAppointmentService appointmentService)
         {
             _workingScheduleService = workingScheduleService;
             _doctorService = doctorService;
+            _appointmentService = appointmentService;
         }
 
         [BindProperty]
@@ -38,11 +41,16 @@ namespace MedicalSearchingPlatform.Pages.WorkingSchedulePage
 
         public async Task<IActionResult> OnPostAsync()
         {
-            WorkingSchedule.EndTime = WorkingSchedule.StartTime.Add(TimeSpan.FromHours(1));
+            var appointment = await _appointmentService.GetAppoimentByScheduleIdAsync(WorkingSchedule.ScheduleId);
+            if (appointment != null)
+            {
+                return new JsonResult(new { isValid = false, message = "This slot have appointment can't edit" });
+            }
             if (!ModelState.IsValid)
             {
                 return Page();
             }
+            WorkingSchedule.EndTime = WorkingSchedule.StartTime.Add(TimeSpan.FromHours(1));
 
             await _workingScheduleService.UpdateWorkingSchedule(WorkingSchedule);
 
