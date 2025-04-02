@@ -126,7 +126,7 @@ namespace MedicalSearchingPlatform.Pages.AppointmentPage
             var patient = await _patientService.GetPatientByUserId(userId);
             if (patient == null)
             {
-                return new JsonResult(new {isValid = false,message = "Patient not found..."})
+                return new JsonResult(new { isValid = false, message = "Patient not found..." });
             }
             Appointment.PatientId = patient.PatientId;
 
