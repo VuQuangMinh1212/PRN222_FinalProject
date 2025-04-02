@@ -113,12 +113,19 @@
 
                 }
 
-                @if (User.IsInRole("Patient"))
+                @if (SignInManager.IsSignedIn(User))
                 {
-                    <!-- Make an Appointment Button -->
-                    <a onclick="jQueryModalGet('/AppointmentPage/Create', 'Make Appointment')" class="btn btn-warning ms-3 text-dark fw-bold">Make an Appointment</a>
+                    var user = await _userManager.GetUserAsync(User);
+                    string roles = user != null ? (await _dbContext.Users
+                    .Where(u => u.Id == user.Id)
+                    .Select(u => u.Role)
+                    .FirstOrDefaultAsync()) ?? "Unknown" : "Guest";
+                    @if (roles.Contains("Patient"))
+                    {
+                        <a onclick="jQueryModalGet('/AppointmentPage/Create', 'Make Appointment')" class="btn btn-warning ms-3 text-dark fw-bold">Make an Appointment</a>
+                    }
                 }
-            </div>
+        </div>
     </header>
 
     <!--  Custom Modal -->

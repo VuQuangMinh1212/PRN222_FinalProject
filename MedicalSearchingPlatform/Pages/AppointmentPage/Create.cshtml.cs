@@ -76,6 +76,15 @@ namespace MedicalSearchingPlatform.Pages.AppointmentPage
                 ViewData["DoctorId"] = new SelectList(new List<SelectListItem>());
             }
 
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (!string.IsNullOrEmpty(userId))
+            {
+                var patient = await _patientService.GetPatientByUserIdAsync(userId);
+                if (patient != null && HttpContext.Session.GetString("UserRole") == "Patient")
+                {
+                    Appointment.PatientId = patient.PatientId;
+                }
+
                 var services = await _medicalServiceService.GetAllServicesAsync();
                 AvailableServices = new SelectList(services, "ServiceId", "ServiceName");
 
@@ -83,6 +92,7 @@ namespace MedicalSearchingPlatform.Pages.AppointmentPage
             }
             return RedirectToPage("/Account/Login");
         }
+
 
 
         public async Task<JsonResult> OnGetSchedulesAsync(string doctorId)

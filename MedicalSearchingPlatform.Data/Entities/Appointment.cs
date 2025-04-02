@@ -33,5 +33,6 @@ namespace MedicalSearchingPlatform.Data.Entities
         [Required]
         [MaxLength(50)]
         public string Status { get; set; } // Pending, Confirmed, Cancelled
+        public virtual ICollection<AppointmentsServices> AppointmentsServices { get; set; } = new List<AppointmentsServices>();
     }
 }
