@@ -82,6 +82,7 @@ namespace MedicalSearchingPlatform.Pages.AppointmentPage
             var schedules = await _workingScheduleService.GetAvailableWorkingScheduleOfDoctor(doctorId);
 
             var groupedSchedules = schedules
+                .Where(ws =>ws.WorkDate > DateTime.Now)
                 .GroupBy(ws => ws.WorkDate.ToString("yyyy-MM-dd")) // Nhóm theo ngày
                 .Select(g => new
                 {
@@ -97,20 +98,26 @@ namespace MedicalSearchingPlatform.Pages.AppointmentPage
             return new JsonResult(groupedSchedules);
         }
 
-
         public async Task<IActionResult> OnPostAsync()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var patient = await _patientService.GetPatientByUserId(userId);
             Appointment.PatientId = patient.PatientId;
-            bool isBooked = await _appointmentService.BookAppointmentAsync(Appointment);
-            if (!isBooked)
+
+            var currentBook = await _appointmentService.GetCurrentBookAppointment(Appointment.PatientId, Appointment.DoctorId, Appointment.ScheduleId);
+            if (currentBook != null)
             {
-                ModelState.AddModelError("", "Failed to book appointment. Please try again.");
-                return Page();
+                return new JsonResult(new { isValid = false, message = "This day you have booked" });
             }
 
-            return RedirectToPage("./Index");
+            bool isBooked = await _appointmentService.BookAppointmentAsync(Appointment);
+            
+            if (!isBooked)
+            {
+                return new JsonResult(new { isValid = false, message = "Failed to book appointment. Please try again." });
+            }
+
+            return new JsonResult(new { isValid = true, message = "Book appointment success" });
         }
 
         public async Task<IActionResult> OnGetDoctorsAsync(string facilityId)

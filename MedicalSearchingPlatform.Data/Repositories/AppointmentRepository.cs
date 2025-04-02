@@ -82,5 +82,14 @@ namespace MedicalSearchingPlatform.Data.Repositories
              .ToList()
      );
         }
+
+        public async Task<Appointment> GetCurrentBookAppointment(string patientId, string docterId, string scheduleId)
+        {
+            return await _context.Appointments
+                .Where(a => a.PatientId == patientId 
+                    && a.DoctorId == docterId 
+                    && a.ScheduleId == scheduleId)
+                .FirstOrDefaultAsync();
+        }
     }
 }

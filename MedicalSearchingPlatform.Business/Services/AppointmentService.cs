@@ -60,5 +60,9 @@ namespace MedicalSearchingPlatform.Business.Services
             return await _appointmentRepository.GetAppointmentCountByMonthAsync();
         }
 
+        public async Task<Appointment> GetCurrentBookAppointment(string patientId, string doctorId, string scheduleId)
+        {
+            return await _appointmentRepository.GetCurrentBookAppointment(patientId, doctorId, scheduleId);
+        }
     }
 }

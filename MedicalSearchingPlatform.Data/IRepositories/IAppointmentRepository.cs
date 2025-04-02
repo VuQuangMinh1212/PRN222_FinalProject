@@ -5,6 +5,7 @@ namespace MedicalSearchingPlatform.Data.IRepositories
     public interface IAppointmentRepository
     {
         Task<IEnumerable<Appointment>> GetAllAppointmentsAsync();
+        Task<Appointment> GetCurrentBookAppointment(string patientId, string docterId, string scheduleId);
         Task<Appointment> GetAppointmentByIdAsync(string appointmentId);
         Task<IEnumerable<Appointment>> GetAppointmentsByPatientIdAsync(string patientId);
         Task<IEnumerable<Appointment>> GetAppointmentsByDoctorIdAsync(string doctorId);
