@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using MedicalSearchingPlatform.Business.Interfaces;
 using MedicalSearchingPlatform.Data.Entities;
 using Microsoft.AspNetCore.Identity;
@@ -31,8 +27,8 @@ namespace MedicalSearchingPlatform.Pages.AppointmentPage
 
             // Filter past appointments for the logged-in user
             AppointmentHistory = allAppointments
-                .Where(a => a.AppointmentDate < DateTime.UtcNow &&
-                           (a.Patient.UserId == user.Id || a.Doctor.UserId == user.Id))
+                .Where(a => a.Patient.UserId == user.Id)
+                .OrderByDescending(a => a.AppointmentDate)
                 .ToList();
         }
     }

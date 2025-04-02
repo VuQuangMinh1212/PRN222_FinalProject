@@ -1,16 +1,20 @@
-﻿using MedicalSearchingPlatform.Business.Interfaces;
+﻿using MedicalSearchingPlatform.Business.Hubs;
+using MedicalSearchingPlatform.Business.Interfaces;
 using MedicalSearchingPlatform.Data.Entities;
 using MedicalSearchingPlatform.Data.IRepositories;
+using Microsoft.AspNetCore.SignalR;
 
 namespace MedicalSearchingPlatform.Business.Services
 {
     public class AppointmentService : IAppointmentService
     {
         private readonly IAppointmentRepository _appointmentRepository;
+        private readonly IHubContext<SignalRServer> _hubContext;
 
-        public AppointmentService(IAppointmentRepository appointmentRepository)
+        public AppointmentService(IAppointmentRepository appointmentRepository, IHubContext<SignalRServer> hubContext)
         {
             _appointmentRepository = appointmentRepository;
+            _hubContext = hubContext;
         }
 
         public async Task<IEnumerable<Appointment>> GetAllAppointmentsAsync()
@@ -38,6 +42,8 @@ namespace MedicalSearchingPlatform.Business.Services
             if (appointment == null) return false;
 
             await _appointmentRepository.AddAppointmentAsync(appointment);
+            await _hubContext.Clients.Group("Doctor").SendAsync("LoadDoctorAppointments");
+            await _hubContext.Clients.Group("Patient").SendAsync("LoadPatientAppointments");
             return true;
         }
 
@@ -46,6 +52,8 @@ namespace MedicalSearchingPlatform.Business.Services
             if (appointment == null) return false;
 
             await _appointmentRepository.UpdateAppointmentAsync(appointment);
+            await _hubContext.Clients.Group("Doctor").SendAsync("LoadDoctorAppointments");
+            await _hubContext.Clients.Group("Patient").SendAsync("LoadPatientAppointments");
             return true;
         }
 

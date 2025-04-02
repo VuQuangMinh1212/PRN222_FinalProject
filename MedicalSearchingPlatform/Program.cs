@@ -56,6 +56,7 @@ builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
 builder.Services.AddScoped<IArticleCategoryRepository, ArticleCategoryRepository>();
 builder.Services.AddScoped<IWorkingScheduleRepository, WorkingScheduleRepository>();
 builder.Services.AddScoped<IMedicalRecordRepository, MedicalRecordRepository>();
+builder.Services.AddScoped<IAppoimentMedicalServiceRepository, AppoimentMedicalServiceRepository>();
 
 
 builder.Services.AddScoped<IUserService, UserService>();
@@ -70,6 +71,7 @@ builder.Services.AddScoped<IPaymentService, PaymentService>();
 builder.Services.AddScoped<IArticleCategoryService, ArticleCategoryService>();
 builder.Services.AddScoped<IWorkingScheduleService, WorkingScheduleService>();
 builder.Services.AddScoped<IMedicalRecordService, MedicalRecordService>();
+builder.Services.AddScoped<IAppoimentMedicalService, AppoimentMedicalService>();
 
 //SignalR
 builder.Services.AddSignalR();

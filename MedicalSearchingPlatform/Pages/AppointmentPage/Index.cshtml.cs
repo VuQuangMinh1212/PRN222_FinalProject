@@ -38,7 +38,7 @@ namespace MedicalSearchingPlatform.Pages.AppointmentPage
                 ScheduleTime = $"{appointment.WorkingSchedule.StartTime.ToString(@"hh\:mm")} - {appointment.WorkingSchedule.EndTime.ToString(@"hh\:mm")}",
                 AppointmentInfo = appointment.AppointmentInfo,
                 Status = appointment.Status
-            }).ToList();
+            }).OrderByDescending(a => a.AppointmentDate).ToList();
 
             Appointments = appointmentViewModels;
         }

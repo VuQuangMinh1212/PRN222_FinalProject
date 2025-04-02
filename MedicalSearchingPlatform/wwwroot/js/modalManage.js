@@ -32,12 +32,14 @@
                 contentType: false,
                 processData: false,
                 success: function (res) {
+                    console.log(res);
                     if (res.isValid) {
                         $('#modal-message').html(res.message).removeClass("text-danger").addClass("text-success");
                         $('#form-modal form')[0].reset();
                         setTimeout(() => {
                             $('#form-modal').modal('hide');
                             $('#modal-message').html("");
+                            location.href = res.redirect;
                         }, 2000)
                     } else {
                         $('#modal-message').html(res.message).removeClass("test-success").addClass("text-danger");

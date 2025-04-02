@@ -14,6 +14,7 @@ namespace MedicalSearchingPlatform.Data.Entities
         public string ScheduleId { get; set; } = Guid.NewGuid().ToString();
 
         [Required]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime WorkDate { get; set; } = DateTime.Now;
 
         [Required]

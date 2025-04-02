@@ -2,57 +2,36 @@
 @model MedicalSearchingPlatform.Pages.AppointmentPage.EditModel
 
 @{
-    ViewData["Title"] = "Edit";
+    Layout = null;
 }
-<div class="edit-medical container mt-5">
-    <h2 class="text-center justify-content-center">Edit Appointment</h2>
-
 <div class="row">
-    <div class="col-md-4">
-        <form method="post">
+    <div class="col-md-12 mx-2">
+        <form method="post" asp-page="/AppointmentPage/Edit" onsubmit="return JQueryModalPost(event,this)">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Appointment.AppointmentId" />
             <div class="form-group">
-                <span class="text-danger">*</span>
-                <label asp-for="Appointment.PatientId" class="control-label"></label>
-                <select asp-for="Appointment.PatientId" class="form-control" asp-items="ViewBag.PatientId"></select>
-                <span asp-validation-for="Appointment.PatientId" class="text-danger"></span>
+                <label asp-for="Appointment.Patient.User.FullName" class="control-label"></label>
+                <input asp-for="Appointment.Patient.User.FullName" readonly class="form-control" />
+                <span asp-validation-for="Appointment.Patient.User.FullName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <span class="text-danger">*</span>
-                <label asp-for="Appointment.DoctorId" class="control-label"></label>
-                <select asp-for="Appointment.DoctorId" class="form-control" asp-items="ViewBag.DoctorId"></select>
-                <span asp-validation-for="Appointment.DoctorId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <span class="text-danger">*</span>
-                <label asp-for="Appointment.AppointmentDate" class="control-label"></label>
-                <input asp-for="Appointment.AppointmentDate" class="form-control" />
-                <span asp-validation-for="Appointment.AppointmentDate" class="text-danger"></span>
+                <label asp-for="Appointment.WorkingSchedule.WorkDate" class="control-label"></label>
+                <input value="@Model.Appointment.WorkingSchedule.WorkDate.ToString("yyyy-MM-dd")" readonly class="form-control" />
+                <span asp-validation-for="Appointment.WorkingSchedule.WorkDate" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Appointment.AppointmentInfo" class="control-label"></label>
-                <input asp-for="Appointment.AppointmentInfo" class="form-control" />
+                <input asp-for="Appointment.AppointmentInfo" readonly class="form-control" />
                 <span asp-validation-for="Appointment.AppointmentInfo" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <span class="text-danger">*</span>
                 <label asp-for="Appointment.Status" class="control-label"></label>
-                <input asp-for="Appointment.Status" class="form-control" />
+                <select asp-for="Appointment.Status" class="form-control" asp-items="@Model.AppointmentStatus"></select>
                 <span asp-validation-for="Appointment.Status" class="text-danger"></span>
             </div>
-            <div class="form-group d-flex mt-3 gap-2">
-                    <input type="submit" value="Save" class="btn-save-medical" />
-
-                    <div>
-                        <a asp-page="./Index" class="btn-back">Back to List</a>
-                    </div>
+            <div class="form-group d-flex justify-content-end mt-3 gap-2">
+                <input type="submit" value="Save" class="btn-save-medical" />
             </div>
         </form>
     </div>
 </div>
-
-</div>
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

@@ -33,20 +33,49 @@
                         <td>@item.ScheduleTime</td>
                         <td>@item.AppointmentInfo</td>
                         <td>
-                            <span class="badge @(item.Status == "Completed" ? "bg-success" : "bg-warning")">
+                            @{
+                                var statusStyle = "";
+                                if (item.Status == "Completed")
+                                {
+                                    statusStyle = "bg-success";
+                                }
+                                else if (item.Status == "Accepted")
+                                {
+                                    statusStyle = "bg-success";
+                                }
+                                else if (item.Status == "Canceled")
+                                {
+                                    statusStyle = "bg-danger";
+                                }
+                                else
+                                {
+                                    statusStyle = "bg-warning";
+                                }
+                            }
+                            <span class="badge @statusStyle">
                                 @item.Status
                             </span>
                         </td>
                         <td class="text-center">
-                            <a asp-page="./Edit" asp-route-id="@item.AppointmentId" class="btn btn-sm btn-outline-primary">
-                                <i class="bi bi-pencil-square"></i>
-                            </a>
-                            <a asp-page="./Details" asp-route-id="@item.AppointmentId" class="btn btn-sm btn-outline-info">
-                                <i class="bi bi-eye"></i>
-                            </a>
-                            <a asp-page="./Delete" asp-route-id="@item.AppointmentId" class="btn btn-sm btn-outline-danger">
-                                <i class="bi bi-trash"></i>
-                            </a>
+                            @if (item.Status == "Pending" || item.Status == "Accepted")
+                            {
+                                <a onclick="jQueryModalGet('/AppointmentPage/Edit?handler=DoctorEditStatus&id=@item.AppointmentId','Edit Appointment')" class="btn btn-sm btn-outline-primary">
+                                    <i class="bi bi-pencil-square"></i>
+                                </a>
+                            }
+                            else
+                            {
+                                <a class="btn btn-info text-white" onclick="jQueryModalGet('/AppointmentPage/Details?id=@item.AppointmentId','Appointment Detail')">Detail</a>
+                            }
+                            @* <a asp-page="./Edit" asp-route-id="@item.AppointmentId" class="btn btn-sm btn-outline-primary"> *@
+                            @*     <i class="bi bi-pencil-square"></i> *@
+                            @* </a> *@
+                            @* <a asp-page="./Details" asp-route-id="@item.AppointmentId" class="btn btn-sm btn-outline-info"> *@
+                            @*     <i class="bi bi-eye"></i> *@
+                            @* </a> *@
+                            @* <a asp-page="./Delete" asp-route-id="@item.AppointmentId" class="btn btn-sm btn-outline-danger"> *@
+                            @*     <i class="bi bi-trash"></i> *@
+                            @* </a> *@
                         </td>
                     </tr>
                 }

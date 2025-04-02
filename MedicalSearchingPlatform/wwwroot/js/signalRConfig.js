@@ -10,6 +10,14 @@ connection.on("LoadAllSchedule", function () {
     location.href = '/WorkingSchedulePage/Index';
 })
 
+connection.on("LoadDoctorAppointments", function () {
+    location.href = "/AppointmentPage/Index";
+});
+
+connection.on("LoadPatientAppointments", function () {
+    location.href = "/AppointmentPage/History";
+});
+
 connection.start().catch(function (err) {
     return console.error(err.toString());
 });

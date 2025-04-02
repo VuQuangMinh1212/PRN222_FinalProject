@@ -12,9 +12,11 @@
             <thead class="table-dark">
                 <tr>
                     <th>Doctor</th>
-                    <th>Patient</th>
+                    @* <th>Patient</th> *@
                     <th>Appointment Date</th>
-                    <th>Details</th>
+                    <th>Schedule Date</th>
+                    <th>Scheudle Time</th>
+                    @* <th>Details</th> *@
                     <th>Status</th>
                     <th>Action</th>
                 </tr>
@@ -22,14 +24,39 @@
             <tbody>
                 @foreach (var item in Model.AppointmentHistory)
                 {
+                    var statusClass = "";
+                    if (item.Status == "Pending")
+                    {
+                        statusClass = "bg-warning";
+                    }
+                    else if (item.Status == "Canceled")
+                    {
+                        statusClass = "bg-danger";
+                    }
+                    else
+                    {
+                        statusClass = "bg-success";
+                    }
                     <tr>
                         <td>@item.Doctor?.User?.FullName</td>
-                        <td>@item.Patient?.User?.FullName</td>
                         <td>@item.AppointmentDate.ToString("yyyy-MM-dd HH:mm")</td>
-                        <td>@item.AppointmentInfo</td>
+                        <td>@item.WorkingSchedule.WorkDate.ToString("yyyy-MM-dd")</td>
+                        <td>@($"{item.WorkingSchedule.StartTime.ToString(@"hh\:mm")} - {item.WorkingSchedule.EndTime.ToString(@"hh\:mm")}")</td>
+                        @* <td>@item.AppointmentInfo</td> *@
                         <td>
-                            <span class="badge bg-success">Completed</span>
+                            <span class="badge @statusClass">@item.Status</span>
                         </td>
+                        <td>
+                            @if (item.Status == "Pending")
+                            {
+                                <a class="btn btn-danger text-white btn-sm" href="/AppointmentPage/Edit?handler=Cancle&id=@item.AppointmentId">Cancle</a>
+                            }
+                            else
+                            {
+                                <a class="btn btn-info text-white btn-sm" onclick="jQueryModalGet('/AppointmentPage/Details?id=@item.AppointmentId','Appointment Detail')">Detail</a>
+                            }
+                        </td>
+
                     </tr>
                 }
             </tbody>

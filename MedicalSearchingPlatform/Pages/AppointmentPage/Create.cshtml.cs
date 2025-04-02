@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
+﻿using MedicalSearchingPlatform.Business.Interfaces;
+using MedicalSearchingPlatform.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using MedicalSearchingPlatform.Data.Entities;
-using MedicalSearchingPlatform.Business.Interfaces;
 using System.Security.Claims;
-using Microsoft.EntityFrameworkCore;
 
 namespace MedicalSearchingPlatform.Pages.AppointmentPage
 {
@@ -19,23 +13,32 @@ namespace MedicalSearchingPlatform.Pages.AppointmentPage
         private readonly IDoctorService _doctorService;
         private readonly IMedicalFacilityService _facilityService;
         private readonly IPatientService _patientService;
-        private IWorkingScheduleService _workingScheduleService;
+        private readonly IWorkingScheduleService _workingScheduleService;
+        private readonly IMedicalServiceService _medicalServiceService;
+        private readonly IAppoimentMedicalService _appoimentMedicalService;
 
         [BindProperty]
         public Appointment Appointment { get; set; } = new Appointment();
         public SelectList WorkingSchedules { get; set; }
+        [BindProperty]
+        public List<string> SelectedServices { get; set; } = new List<string>();
+        public SelectList AvailableServices { get; set; }
 
         public CreateModel(IAppointmentService appointmentService,
             IDoctorService doctorService,
             IPatientService patientService,
             IWorkingScheduleService workingScheduleService,
-            IMedicalFacilityService facilityService)
+            IMedicalFacilityService facilityService,
+             IMedicalServiceService medicalServiceService,
+             IAppoimentMedicalService appoimentMedicalService)
         {
             _appointmentService = appointmentService;
             _doctorService = doctorService;
             _patientService = patientService;
             _workingScheduleService = workingScheduleService;
             _facilityService = facilityService;
+            _medicalServiceService = medicalServiceService;
+            _appoimentMedicalService = appoimentMedicalService;
         }
 
 
@@ -50,7 +53,7 @@ namespace MedicalSearchingPlatform.Pages.AppointmentPage
 
             WorkingSchedules = new SelectList(selectedItem, "Value", "Text");
 
-            Appointment = new Appointment { Status = "Scheduled" };
+            Appointment = new Appointment { Status = "Pending" };
 
             var facilities = await _facilityService.GetAllFacilitiesAsync();
             ViewData["Facilities"] = new SelectList(facilities, "FacilityId", "FacilityName");
@@ -73,7 +76,12 @@ namespace MedicalSearchingPlatform.Pages.AppointmentPage
                 ViewData["DoctorId"] = new SelectList(new List<SelectListItem>());
             }
 
-            return Page();
+                var services = await _medicalServiceService.GetAllServicesAsync();
+                AvailableServices = new SelectList(services, "ServiceId", "ServiceName");
+
+                return Page();
+            }
+            return RedirectToPage("/Account/Login");
         }
 
 
@@ -82,7 +90,7 @@ namespace MedicalSearchingPlatform.Pages.AppointmentPage
             var schedules = await _workingScheduleService.GetAvailableWorkingScheduleOfDoctor(doctorId);
 
             var groupedSchedules = schedules
-                .Where(ws =>ws.WorkDate > DateTime.Now)
+                .Where(ws => ws.WorkDate > DateTime.Now)
                 .GroupBy(ws => ws.WorkDate.ToString("yyyy-MM-dd")) // Nhóm theo ngày
                 .Select(g => new
                 {
@@ -102,6 +110,11 @@ namespace MedicalSearchingPlatform.Pages.AppointmentPage
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var patient = await _patientService.GetPatientByUserId(userId);
+            if (patient == null)
+            {
+                return new JsonResult(new { isValid = false, message = "Patient not found..." });
+            }
+
             Appointment.PatientId = patient.PatientId;
 
             var currentBook = await _appointmentService.GetCurrentBookAppointment(Appointment.PatientId, Appointment.DoctorId, Appointment.ScheduleId);
@@ -111,13 +124,21 @@ namespace MedicalSearchingPlatform.Pages.AppointmentPage
             }
 
             bool isBooked = await _appointmentService.BookAppointmentAsync(Appointment);
-            
+
             if (!isBooked)
             {
                 return new JsonResult(new { isValid = false, message = "Failed to book appointment. Please try again." });
             }
 
-            return new JsonResult(new { isValid = true, message = "Book appointment success" });
+            var listAppointmentService = new List<AppointmentsServices>();
+            foreach (var item in SelectedServices)
+            {
+                listAppointmentService.Add(new AppointmentsServices { AppointmentId = Appointment.AppointmentId, ServiceId = item });
+            }
+
+            await _appoimentMedicalService.CreateAppointmentService(listAppointmentService);
+
+            return new JsonResult(new { isValid = true, message = "Book appointment success", redirect = "/AppointmentPage/History" });
         }
 
         public async Task<IActionResult> OnGetDoctorsAsync(string facilityId)
