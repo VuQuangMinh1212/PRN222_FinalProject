@@ -34,14 +34,14 @@ builder.Services.AddIdentity<User, IdentityRole>()
 
 builder.Services.AddSession();
 builder.Services.AddHttpContextAccessor();
-//builder.Services.AddAuthentication()
-//    .AddGoogle(options =>
-//    {
-//        options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
-//        options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
-//        options.SignInScheme = IdentityConstants.ExternalScheme;
-//        options.CallbackPath = "/signin-google";
-//    });
+builder.Services.AddAuthentication()
+    .AddGoogle(options =>
+    {
+        options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+        options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+        options.SignInScheme = IdentityConstants.ExternalScheme;
+        options.CallbackPath = "/signin-google";
+    });
 
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
