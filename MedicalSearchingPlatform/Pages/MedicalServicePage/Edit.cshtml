@@ -8,25 +8,25 @@
 <div class="edit-medical container mt-5">
     <h2 class="text-center">Edit Medical Service</h2>
 
-    <div class="card shadow-lg p-4">
+    <div class="card shadow-lg form-edit">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="MedicalService.ServiceId" />
 
             <div class="mb-3">
-                <label class="form-label">Service Name</label>
+                <label class="form-labelead fw-bold">Service Name</label>
                 <input asp-for="MedicalService.ServiceName" class="form-control" required />
                 <span asp-validation-for="MedicalService.ServiceName" class="text-danger"></span>
             </div>
 
             <div class="mb-3">
-                <label class="form-label">Description</label>
+                <label class="form-label fw-bold">Description</label>
                 <textarea asp-for="MedicalService.Description" class="form-control" rows="3" required></textarea>
                 <span asp-validation-for="MedicalService.Description" class="text-danger"></span>
             </div>
 
             <div class="mb-3">
-                <label class="form-label">Status</label>
+                <label class="form-label fw-bold">Status</label>
                 <select asp-for="MedicalService.Status" class="form-select" required>
                     <option value="Active" selected="@(Model.MedicalService.Status == "Active" ? "selected" : null)">Active</option>
                     <option value="Inactive" selected="@(Model.MedicalService.Status == "Inactive" ? "selected" : null)">Inactive</option>
@@ -34,8 +34,8 @@
                 <span asp-validation-for="MedicalService.Status" class="text-danger"></span>
             </div>
 
-            <div class="text-center mt-4">
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmSaveModal">
+            <div class="d-flex justify-content-center gap-2 mt-4">
+                <button type="button" class="btn-search-account" data-bs-toggle="modal" data-bs-target="#confirmSaveModal">
                     Save Changes
                 </button>
                 <a asp-page="Index" class="btn btn-secondary">Cancel</a>
@@ -58,7 +58,7 @@
             <div class="modal-footer">
                 <form method="post">
                     <input type="hidden" asp-for="MedicalService.ServiceId" />
-                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="submit" class="btn-search-account">Save</button>
                 </form>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
             </div>

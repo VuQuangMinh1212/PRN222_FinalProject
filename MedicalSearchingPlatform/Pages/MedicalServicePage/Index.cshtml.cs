@@ -22,9 +22,10 @@ namespace MedicalSearchingPlatform.Pages.MedicalServicePage
 
         public async Task OnGetAsync()
         {
-            var user = await _userManager.GetUserAsync(User);
-            UserRole = user != null ? (await _userManager.GetRolesAsync(user)).FirstOrDefault() ?? "Guest" : "Guest";
             MedicalService = await _context.MedicalServices.ToListAsync();
+
+            var user = await _userManager.GetUserAsync(User);
+            ViewData["IsStaff"] = user != null && user.Role == "Staff";
         }
     }
 }

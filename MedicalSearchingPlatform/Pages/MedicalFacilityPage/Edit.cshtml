@@ -7,42 +7,42 @@
 
 <div class="edit-medical container mt-5">
 <h2 class="text-center">Edit MedicalFacility</h2>
-    <div class="d-flex justify-content-center">
-    <div class="form-edit col-md-4">
+
+    <div class="card shadow-lg form-edit">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="MedicalFacility.FacilityId" />
             <div class="form-group">
                 <span class="text-danger">*</span>
-                <label asp-for="MedicalFacility.FacilityName" class="control-label"></label>
+                <label asp-for="MedicalFacility.FacilityName" class="control-label fw-bold"></label>
                 <input asp-for="MedicalFacility.FacilityName" class="form-control" />
                 <span asp-validation-for="MedicalFacility.FacilityName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <span class="text-danger">*</span>
-                <label asp-for="MedicalFacility.Address" class="control-label"></label>
+                <label asp-for="MedicalFacility.Address" class="control-label fw-bold"></label>
                 <input asp-for="MedicalFacility.Address" class="form-control" />
                 <span asp-validation-for="MedicalFacility.Address" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <span class="text-danger">*</span>
-                <label asp-for="MedicalFacility.Infor" class="control-label"></label>
+                <label asp-for="MedicalFacility.Infor" class="control-label fw-bold"></label>
                 <input asp-for="MedicalFacility.Infor" class="form-control" />
                 <span asp-validation-for="MedicalFacility.Infor" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="MedicalFacility.PhoneNumber" class="control-label"></label>
+                <label asp-for="MedicalFacility.PhoneNumber" class="control-label fw-bold"></label>
                 <input asp-for="MedicalFacility.PhoneNumber" class="form-control" />
                 <span asp-validation-for="MedicalFacility.PhoneNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="MedicalFacility.ImageUrl" class="control-label"></label>
+                <label asp-for="MedicalFacility.ImageUrl" class="control-label fw-bold"></label>
                 <input asp-for="MedicalFacility.ImageUrl" class="form-control" />
                 <span asp-validation-for="MedicalFacility.ImageUrl" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <span class="text-danger">*</span>
-                <label asp-for="MedicalFacility.CreatedAt" class="control-label"></label>
+                <label asp-for="MedicalFacility.CreatedAt" class="control-label fw-bold"></label>
                 <input asp-for="MedicalFacility.CreatedAt" class="form-control" />
                 <span asp-validation-for="MedicalFacility.CreatedAt" class="text-danger"></span>
             </div>
@@ -54,7 +54,7 @@
             </div>
 
         </form>
-    </div>
+
 </div>
 
 

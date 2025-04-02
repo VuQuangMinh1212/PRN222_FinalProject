@@ -237,14 +237,14 @@ h6 {
         transition: color 0.3s;
     }
 .navbar-nav {
-    font-size: 1.2rem;
+    font-size: 16px;
     display: flex;
-    gap: 20px;
+    gap: 5px;
 }
 
 .navbar-nav .nav-item .nav-link {
     position: relative;
-    font-size: 20px;
+    font-size: 16px;
     transition: color 0.3s ease-in-out;
     padding-bottom: 5px; /* Tạo khoảng cách với gạch chân */
 }
@@ -1209,7 +1209,7 @@ h6 {
     gap: 10px;
 }
     .btn-create-new-account:hover, .btn-edit-profile:hover, .btn-edit-medical:hover,
-    .btn-save-medical:hover{
+    .btn-save-medical:hover, .btn-save:hover{
         font-weight: bold;
         background-color: #1a79589e;
         color: #fff;
@@ -1223,6 +1223,65 @@ h6 {
         padding: 50px 0;
     }
 
+.btn-save {
+    width: 100%;
+    padding: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px !important;
+    border: 0;
+    background-color: #2ac28e;
+    border-radius: 5px;
+    margin-top: 5px;
+    cursor: pointer;
+    color: #fff !important;
+    gap: 10px;
+}
+
+.btn-edit {
+    width: 100%;
+    padding: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px !important;
+    border: 0;
+    background-color: #f8b400;
+    border-radius: 5px;
+    margin-top: 5px;
+    cursor: pointer;
+    color: #fff !important;
+    gap: 10px;
+}
+
+    .btn-edit:hover {
+        font-weight: bold;
+        background-color: #f8b400a1;
+        color: #fff;
+    }
+
+.btn-delete {
+    width: 100%;
+    padding: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px !important;
+    border: 0;
+    background-color: #dc3545;
+    border-radius: 5px;
+    margin-top: 5px;
+    cursor: pointer;
+    color: #fff !important;
+    gap: 10px;
+}
+
+    .btn-delete:hover {
+        font-weight: bold;
+        background-color: #dc3545c7;
+        color: #fff;
+    }
 .btn-search-account {
     width: 130px;
     padding: 8px;
@@ -1245,7 +1304,6 @@ h6 {
 
 .account-detail {
     padding: 120px 100px;
-    margin-bottom: 170px;
 }
 
 .btn-back {
@@ -1290,18 +1348,23 @@ h6 {
         justify-content: center;
     }
 
-.delete-medical{
-    padding: 120px 0;
-    margin-bottom: 130px;
-}
 
-.medical-service-details {
+.medical-service-details, .delete-medical {
     padding: 120px 0;
-    margin-bottom: 150px;
 }
 
 .dashboard{
     padding: 100px 0;
+}
+
+.facilities{
+    height: 350px;
+    width: 300px;
+
+}
+
+.form-edit{
+    padding: 30px 350px;
 }
 /*--------------------------------------------------------------
 # Preloader

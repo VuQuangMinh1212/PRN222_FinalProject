@@ -3,14 +3,15 @@
 @{
     ViewData["Title"] = "Index";
 }
-
-<h1>Index</h1>
+<div class="account container mt-5">
+<h2 class="text-center">Medical Record</h2>
 
 <p>
-    <a asp-page="Create">Create New</a>
+        <a asp-page="Create" class="btn-save-medical">Create New</a>
 </p>
-<table class="table">
-    <thead>
+    <div class="table-responsive mt-4">
+        <table class="table table-hover table-bordered text-center shadow">
+            <thead class="table-dark">
         <tr>
             <th>@Html.DisplayNameFor(model => model.MedicalRecord[0].Patient)</th>
             <th>@Html.DisplayNameFor(model => model.MedicalRecord[0].Doctor)</th>
@@ -20,7 +21,7 @@
             <th>@Html.DisplayNameFor(model => model.MedicalRecord[0].Notes)</th>
             <th>@Html.DisplayNameFor(model => model.MedicalRecord[0].AttachmentUrl)</th>
             <th>@Html.DisplayNameFor(model => model.MedicalRecord[0].IsShared)</th>
-            <th></th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -36,7 +37,7 @@
                 <td>@Html.DisplayFor(modelItem => item.AttachmentUrl)</td>
                 <td>@Html.DisplayFor(modelItem => item.IsShared)</td>
                 <td>
-                    <a asp-page="./Details" asp-route-id="@item.MedicalRecordId">Details</a>
+                            <a asp-page="./Details" asp-route-id="@item.MedicalRecordId" class="btn-save-medical">Details</a>
                     @if (User.IsInRole("Doctor"))
                     {
                         <a asp-page="./Edit" asp-route-id="@item.MedicalRecordId">Edit</a> 
@@ -48,3 +49,5 @@
         }
     </tbody>
 </table>
+</div>
+</div>

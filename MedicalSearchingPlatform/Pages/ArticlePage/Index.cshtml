@@ -4,19 +4,19 @@
 @{
     ViewData["Title"] = "Latest News & Articles";
 }
-<div class="articels">
+<div class="articels container">
 <h1 class="text-center my-4">Latest News & Articles</h1>
 
 @if ((bool)ViewData["IsStaff"])
 {
-    <p class="text-end">
-        <a class="btn btn-success" onclick="jQueryModalGet('?handler=CreateArticle','Create Article')">
+    <p class="text-start">
+        <a class="btn-create-new-account" onclick="jQueryModalGet('?handler=CreateArticle','Create Article')">
             <i class="fa fa-plus"></i> Create New
         </a>
     </p>
 }
 
-<div class="container">
+<div>
     <div class="row">
         @if (Model.Articles != null && Model.Articles.Any())
         {
@@ -42,11 +42,11 @@
                         </div>
                         @if ((bool)ViewData["IsStaff"])
                         {
-                            <div class="card-footer bg-white">
-                                <a class="btn btn-warning btn-sm" asp-page="./Edit" asp-route-id="@item.ArticleId">
+                            <div class="card-footer bg-white d-flex gap-2 justify-content-center ">
+                                <a class="btn-edit" asp-page="./Edit" asp-route-id="@item.ArticleId">
                                     <i class="fa fa-pen"></i> Edit
                                 </a>
-                                <a class="btn btn-danger btn-sm" asp-page="./Delete" asp-route-id="@item.ArticleId">
+                                <a class="btn-delete" asp-page="./Delete" asp-route-id="@item.ArticleId">
                                     <i class="fa fa-trash"></i> Delete
                                 </a>
                             </div>

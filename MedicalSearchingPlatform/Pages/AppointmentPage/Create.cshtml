@@ -8,8 +8,8 @@
 <div class="create-appointment container">
 
 <h4>Create Appointment</h4>
-<div class="form-create row">
-    <div class="col-md-4">
+
+    <div class="card shadow-lg form-edit">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
@@ -18,7 +18,7 @@
             </div>
             <div class="form-group">
                 <span class="text-danger">*</span>
-                <label asp-for="Appointment.DoctorId" class="control-label"></label>
+                <label asp-for="Appointment.DoctorId" class="control-label fw-bold"></label>
                 @if (ViewBag.DoctorId != null)
                 {
                     <select asp-for="Appointment.DoctorId" class="form-control" asp-items="ViewBag.DoctorId"></select>
@@ -30,7 +30,7 @@
             </div>
             <div class="form-group">
                 <span class="text-danger">*</span>
-                <label asp-for="Appointment.PatientId" class="control-label"></label>
+                <label asp-for="Appointment.PatientId" class="control-label fw-bold"></label>
                 @if (ViewBag.PatientId != null)
                 {
                     <select asp-for="Appointment.PatientId" class="form-control" asp-items="ViewBag.PatientId"></select>
@@ -42,18 +42,18 @@
             </div>
             <div class="form-group">
                 <span class="text-danger">*</span>
-                <label asp-for="Appointment.AppointmentDate" class="control-label"></label>
+                <label asp-for="Appointment.AppointmentDate" class="control-label fw-bold"></label>
                 <input asp-for="Appointment.AppointmentDate" class="form-control" />
                 <span asp-validation-for="Appointment.AppointmentDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Appointment.AppointmentInfo" class="control-label"></label>
+                <label asp-for="Appointment.AppointmentInfo" class="control-label fw-bold"></label>
                 <input asp-for="Appointment.AppointmentInfo" class="form-control" />
                 <span asp-validation-for="Appointment.AppointmentInfo" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <span class="text-danger">*</span>
-                <label asp-for="Appointment.Status" class="control-label"></label>
+                <label asp-for="Appointment.Status" class="control-label fw-bold"></label>
                 <input asp-for="Appointment.Status" class="form-control" />
                 <span asp-validation-for="Appointment.Status" class="text-danger"></span>
             </div>
@@ -62,7 +62,6 @@
             </div>
         </form>
     </div>
-</div>
 </div>
 
 

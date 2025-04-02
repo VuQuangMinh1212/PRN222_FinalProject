@@ -28,7 +28,7 @@
     <!-- ======= Header/Navbar ======= -->
     <header id="header" class="fixed-top ">
         <div class="container d-flex align-items-center justify-content-between">
-            <h1 class="logo me-auto">
+            <h1 class="logo">
                 <a asp-page="/Index" class="text-white">FUMedical</a>
             </h1>
 
@@ -99,12 +99,12 @@
                     </ul>
                 </div>
             </nav>
-            <div class="d-flex align-items-center gap-3 header-right">
+            <div class="d-flex align-items-center gap-2 header-right">
                 @if (User.Identity.IsAuthenticated)
                 {
                     var user = await _userManager.GetUserAsync(User);
                     bool isInactive = user != null && !user.IsActive;
-                    <a href="/Account/Detail" class="btn btn-outline-light me-3">Profile</a>
+                    <a href="/Account/Detail" class="btn btn-outline-light">Profile</a>
                     <form method="post" asp-page="/Account/Signin" asp-page-handler="Logout" class="d-inline">
                         <button class="btn btn-danger text-white" type="submit">Logout</button>
                     </form>

@@ -5,14 +5,13 @@
     ViewData["Title"] = "Details";
 }
 <div class="medical-facility container mt-5">
-    <h2 class="text-center">Medical Facility Details</h2>
+    <h2 class="text-center">@Model.MedicalFacility.FacilityName</h2>
     <div class="p-4">
         <div class="text-center mb-4">
             <img src="@Model.MedicalFacility.ImageUrl" class="img-fluid rounded" alt="Medical Facility Image" style="max-width: 100%; height: auto;">
         </div>
         <div class="d-flex justify-content-center">
         <div class="medical-facility-infor">
-        <p><strong>@Html.DisplayNameFor(model => model.MedicalFacility.FacilityName):</strong> @Html.DisplayFor(model => model.MedicalFacility.FacilityName)</p>
         <p><strong>@Html.DisplayNameFor(model => model.MedicalFacility.Address):</strong> @Html.DisplayFor(model => model.MedicalFacility.Address)</p>
         <p><strong>@Html.DisplayNameFor(model => model.MedicalFacility.Infor):</strong> @Html.DisplayFor(model => model.MedicalFacility.Infor)</p>
         <p><strong>@Html.DisplayNameFor(model => model.MedicalFacility.PhoneNumber):</strong> @Html.DisplayFor(model => model.MedicalFacility.PhoneNumber)</p>

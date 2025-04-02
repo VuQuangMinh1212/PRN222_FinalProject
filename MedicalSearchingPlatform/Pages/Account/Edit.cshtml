@@ -7,7 +7,7 @@
 
 <div class="account container mt-5">
     <h2 class="text-center">Edit Account</h2>
-
+    <div class="card shadow-lg form-edit">
     <form method="post">
         <input type="hidden" asp-for="Input.Id" />
 
@@ -50,15 +50,16 @@
                 <input type="text" class="form-control" asp-for="Input.Role" readonly />
             </div>
 
-            <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">
+            <button type="button" class="btn-delete" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">
                 Delete Account
             </button>
         }
 
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmSaveModal">
+        <button type="button" class="btn-save" data-bs-toggle="modal" data-bs-target="#confirmSaveModal">
             Save
         </button>
     </form>
+    </div>
 </div>
 
 <!-- Save Confirmation Modal -->

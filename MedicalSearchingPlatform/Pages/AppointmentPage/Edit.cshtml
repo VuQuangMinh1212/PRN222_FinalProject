@@ -7,41 +7,41 @@
 <div class="edit-medical container mt-5">
     <h2 class="text-center justify-content-center">Edit Appointment</h2>
 
-<div class="row">
-    <div class="col-md-4">
+
+    <div class="card shadow-lg form-edit">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Appointment.AppointmentId" />
             <div class="form-group">
                 <span class="text-danger">*</span>
-                <label asp-for="Appointment.PatientId" class="control-label"></label>
+                <label asp-for="Appointment.PatientId" class="control-label fw-bold"></label>
                 <select asp-for="Appointment.PatientId" class="form-control" asp-items="ViewBag.PatientId"></select>
                 <span asp-validation-for="Appointment.PatientId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <span class="text-danger">*</span>
-                <label asp-for="Appointment.DoctorId" class="control-label"></label>
+                <label asp-for="Appointment.DoctorId" class="control-label fw-bold"></label>
                 <select asp-for="Appointment.DoctorId" class="form-control" asp-items="ViewBag.DoctorId"></select>
                 <span asp-validation-for="Appointment.DoctorId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <span class="text-danger">*</span>
-                <label asp-for="Appointment.AppointmentDate" class="control-label"></label>
+                <label asp-for="Appointment.AppointmentDate" class="control-label fw-bold"></label>
                 <input asp-for="Appointment.AppointmentDate" class="form-control" />
                 <span asp-validation-for="Appointment.AppointmentDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Appointment.AppointmentInfo" class="control-label"></label>
+                <label asp-for="Appointment.AppointmentInfo" class="control-label fw-bold"></label>
                 <input asp-for="Appointment.AppointmentInfo" class="form-control" />
                 <span asp-validation-for="Appointment.AppointmentInfo" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <span class="text-danger">*</span>
-                <label asp-for="Appointment.Status" class="control-label"></label>
+                <label asp-for="Appointment.Status" class="control-label fw-bold"></label>
                 <input asp-for="Appointment.Status" class="form-control" />
                 <span asp-validation-for="Appointment.Status" class="text-danger"></span>
             </div>
-            <div class="form-group d-flex mt-3 gap-2">
+            <div class="form-group d-flex mt-3 gap-2 justify-content-center">
                     <input type="submit" value="Save" class="btn-save-medical" />
 
                     <div>
@@ -50,7 +50,6 @@
             </div>
         </form>
     </div>
-</div>
 
 </div>
 @section Scripts {
