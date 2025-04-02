@@ -25,6 +25,7 @@ namespace MedicalSearchingPlatform.Data.Repositories
                                               .ThenInclude(p => p.User)
                                               .Include(a => a.Doctor)
                                               .ThenInclude(d => d.User)
+                                               .Include(a => a.AppointmentsServices)
                                               .FirstOrDefaultAsync(a => a.AppointmentId == appointmentId);
         }
 
@@ -38,6 +39,7 @@ namespace MedicalSearchingPlatform.Data.Repositories
             return await _context.Appointments
                 .Include(x => x.Patient)
                     .ThenInclude(p => p.User)
+                    .Include(a => a.AppointmentsServices)
                 .Where(a => a.DoctorId == doctorId)
                 .ToListAsync();
         }

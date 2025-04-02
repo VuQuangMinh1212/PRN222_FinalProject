@@ -9,5 +9,6 @@
         public string Status { get; set; }
 
         public virtual ICollection<MedicalFacilityService> FacilityServices { get; set; } = new List<MedicalFacilityService>();
+        public virtual ICollection<AppointmentsServices> AppointmentsServices { get; set; } = new List<AppointmentsServices>();
     }
 }

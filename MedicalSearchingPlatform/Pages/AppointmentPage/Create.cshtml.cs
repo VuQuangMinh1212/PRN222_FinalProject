@@ -10,6 +10,8 @@ using MedicalSearchingPlatform.Data.Entities;
 using MedicalSearchingPlatform.Business.Interfaces;
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
+using MedicalSearchingPlatform.Business.Services;
+using System.Diagnostics;
 
 namespace MedicalSearchingPlatform.Pages.AppointmentPage
 {
@@ -20,22 +22,27 @@ namespace MedicalSearchingPlatform.Pages.AppointmentPage
         private readonly IMedicalFacilityService _facilityService;
         private readonly IPatientService _patientService;
         private IWorkingScheduleService _workingScheduleService;
+        private readonly IMedicalServiceService _medicalServiceService;
 
         [BindProperty]
         public Appointment Appointment { get; set; } = new Appointment();
         public SelectList WorkingSchedules { get; set; }
+        public List<string> SelectedServices { get; set; } = new List<string>(); 
+        public SelectList AvailableServices { get; set; }
 
         public CreateModel(IAppointmentService appointmentService,
             IDoctorService doctorService,
             IPatientService patientService,
             IWorkingScheduleService workingScheduleService,
-            IMedicalFacilityService facilityService)
+            IMedicalFacilityService facilityService,
+             IMedicalServiceService medicalServiceService)
         {
             _appointmentService = appointmentService;
             _doctorService = doctorService;
             _patientService = patientService;
             _workingScheduleService = workingScheduleService;
             _facilityService = facilityService;
+            _medicalServiceService = medicalServiceService;
         }
 
 
@@ -73,8 +80,23 @@ namespace MedicalSearchingPlatform.Pages.AppointmentPage
                 ViewData["DoctorId"] = new SelectList(new List<SelectListItem>());
             }
 
-            return Page();
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (!string.IsNullOrEmpty(userId))
+            {
+                var patient = await _patientService.GetPatientByUserIdAsync(userId);
+                if (patient != null && HttpContext.Session.GetString("UserRole") == "Patient")
+                {
+                    Appointment.PatientId = patient.PatientId;
+                }
+
+                var services = await _medicalServiceService.GetAllServicesAsync();
+                AvailableServices = new SelectList(services, "ServiceId", "ServiceName");
+
+                return Page(); 
+            }
+            return RedirectToPage("/Account/Login");
         }
+
 
 
         public async Task<JsonResult> OnGetSchedulesAsync(string doctorId)
@@ -100,17 +122,45 @@ namespace MedicalSearchingPlatform.Pages.AppointmentPage
 
         public async Task<IActionResult> OnPostAsync()
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var patient = await _patientService.GetPatientByUserId(userId);
-            Appointment.PatientId = patient.PatientId;
-            bool isBooked = await _appointmentService.BookAppointmentAsync(Appointment);
-            if (!isBooked)
+            try
             {
-                ModelState.AddModelError("", "Failed to book appointment. Please try again.");
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (string.IsNullOrEmpty(userId))
+                {
+                    Debug.WriteLine("User not authenticated, redirecting to login.");
+                    return RedirectToPage("/Account/Login");
+                }
+
+                var patient = await _patientService.GetPatientByUserIdAsync(userId);
+                if (patient == null)
+                {
+                    Debug.WriteLine("Patient not found for user: " + userId);
+                    ModelState.AddModelError("", "Patient not found.");
+                    return Page();
+                }
+
+                Appointment.PatientId = patient.PatientId;
+                Debug.WriteLine("PatientId set: " + Appointment.PatientId);
+
+                bool isBooked = await _appointmentService.BookAppointmentAsync(Appointment);
+                Debug.WriteLine($"BookAppointmentAsync result: {isBooked}");
+
+                if (!isBooked)
+                {
+                    Debug.WriteLine("Booking failed, returning to page.");
+                    ModelState.AddModelError("", "Failed to book appointment. Please try again.");
+                    return Page();
+                }
+
+                Debug.WriteLine("Booking successful, redirecting to Index.");
+                return RedirectToPage("./Index");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Exception in OnPostAsync: {ex.Message}\nStackTrace: {ex.StackTrace}");
+                ModelState.AddModelError("", "An unexpected error occurred. Please try again.");
                 return Page();
             }
-
-            return RedirectToPage("./Index");
         }
 
         public async Task<IActionResult> OnGetDoctorsAsync(string facilityId)

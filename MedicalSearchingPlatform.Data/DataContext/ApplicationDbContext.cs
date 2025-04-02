@@ -23,6 +23,7 @@ namespace MedicalSearchingPlatform.Data.DataContext
         public DbSet<ArticleCategory> ArticleCategories { get; set; }
         public DbSet<WorkingSchedule> WorkingSchedules { get; set; }
         public DbSet<MedicalRecord> MedicalRecords { get; set; }
+        public DbSet<AppointmentsServices> AppointmentServices { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -123,11 +124,6 @@ namespace MedicalSearchingPlatform.Data.DataContext
                 .WithMany()
                 .HasForeignKey(a => a.PatientId)
                 .OnDelete(DeleteBehavior.Cascade);
-            modelBuilder.Entity<Appointment>()
-                .HasOne(a => a.Doctor)
-                .WithMany()
-                .HasForeignKey(a => a.DoctorId)
-                .OnDelete(DeleteBehavior.Restrict);
 
             // Appointment Configuration
             modelBuilder.Entity<Appointment>()
@@ -212,6 +208,21 @@ namespace MedicalSearchingPlatform.Data.DataContext
             modelBuilder.Entity<MedicalRecord>()
                 .Property(mr => mr.IsShared)
                 .HasDefaultValue(false);
+
+            modelBuilder.Entity<AppointmentsServices>()
+    .HasKey(aps => new { aps.AppointmentId, aps.ServiceId });
+
+            modelBuilder.Entity<AppointmentsServices>()
+                .HasOne(aps => aps.Appointment)
+                .WithMany(a => a.AppointmentsServices)
+                .HasForeignKey(aps => aps.AppointmentId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<AppointmentsServices>()
+                .HasOne(aps => aps.MedicalService)
+                .WithMany()
+                .HasForeignKey(aps => aps.ServiceId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
