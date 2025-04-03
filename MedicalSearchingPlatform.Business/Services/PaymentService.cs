@@ -30,8 +30,8 @@ namespace MedicalSearchingPlatform.Services
                 amount: (int)totalPrice,
                 description: "Thanh toán đơn hàng",
                 items: [new("Dịch vụ y tế", 1, 2000)],
-                returnUrl: $"{_domain}/Success",
-                cancelUrl: $"{_domain}/Cancel"
+                returnUrl: $"https://localhost:7290/Success",
+                cancelUrl: $"https://localhost:7290/Cancel"
             );
 
             var response = await _payOS.createPaymentLink(paymentLinkRequest);
