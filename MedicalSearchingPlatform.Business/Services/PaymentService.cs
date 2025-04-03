@@ -29,7 +29,7 @@ namespace MedicalSearchingPlatform.Services
                 orderCode: int.Parse(DateTimeOffset.Now.ToString("ffffff")),
                 amount: (int)totalPrice,
                 description: "Thanh toán đơn hàng",
-                items: [new("Mì tôm hảo hảo ly", 1, 2000)],
+                items: [new("Dịch vụ y tế", 1, 2000)],
                 returnUrl: $"{_domain}/Success",
                 cancelUrl: $"{_domain}/Cancel"
             );

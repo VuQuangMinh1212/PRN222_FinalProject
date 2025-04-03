@@ -2,6 +2,7 @@
 @model MedicalSearchingPlatform.Pages.SuccessModel
 @{
 }
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,7 +14,26 @@
 <body>
     <div class="main-box">
         <h4 class="payment-titlte">
-            Thanh toán thành công. Cảm ơn bạn đã sử dụng payOS!
+            @if (Model.Status == "PAID" && Model.Cancel == "false")
+            {
+                <text>Thanh toán thành công. Cảm ơn bạn đã sử dụng payOS!</text>
+            }
+            else if (Model.Cancel == "true")
+            {
+                <text>Thanh toán bị hủy. Vui lòng thử lại.</text>
+            }
+            else if (Model.Status == "PENDING" || Model.Status == "PROCESSING")
+            {
+                <text>Thanh toán đang được xử lý. Vui lòng chờ.</text>
+            }
+            else if (Model.Status == "CANCELLED")
+            {
+                <text>Thanh toán đã bị hủy.</text>
+            }
+            else
+            {
+                <text>Đã có lỗi xảy ra trong quá trình thanh toán. Trạng thái: @Model.Status</text>
+            }
         </h4>
         <p>
             Nếu có bất kỳ câu hỏi nào, hãy gửi email tới
