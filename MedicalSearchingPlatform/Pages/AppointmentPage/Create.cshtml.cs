@@ -1,8 +1,10 @@
 ﻿using MedicalSearchingPlatform.Business.Interfaces;
 using MedicalSearchingPlatform.Data.Entities;
+using MedicalSearchingPlatform.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Diagnostics;
 using System.Security.Claims;
 
 namespace MedicalSearchingPlatform.Pages.AppointmentPage
@@ -16,6 +18,8 @@ namespace MedicalSearchingPlatform.Pages.AppointmentPage
         private readonly IWorkingScheduleService _workingScheduleService;
         private readonly IMedicalServiceService _medicalServiceService;
         private readonly IAppoimentMedicalService _appoimentMedicalService;
+        private readonly IPaymentService _paymentService;
+        private decimal totalPrice;
 
         [BindProperty]
         public Appointment Appointment { get; set; } = new Appointment();
@@ -30,7 +34,8 @@ namespace MedicalSearchingPlatform.Pages.AppointmentPage
             IWorkingScheduleService workingScheduleService,
             IMedicalFacilityService facilityService,
              IMedicalServiceService medicalServiceService,
-             IAppoimentMedicalService appoimentMedicalService)
+             IAppoimentMedicalService appoimentMedicalService,
+             IPaymentService paymentService)
         {
             _appointmentService = appointmentService;
             _doctorService = doctorService;
@@ -39,6 +44,7 @@ namespace MedicalSearchingPlatform.Pages.AppointmentPage
             _facilityService = facilityService;
             _medicalServiceService = medicalServiceService;
             _appoimentMedicalService = appoimentMedicalService;
+            _paymentService = paymentService;
         }
 
 
@@ -116,41 +122,6 @@ namespace MedicalSearchingPlatform.Pages.AppointmentPage
             return new JsonResult(groupedSchedules);
         }
 
-        public async Task<IActionResult> OnPostAsync()
-        {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var patient = await _patientService.GetPatientByUserId(userId);
-            if (patient == null)
-            {
-                return new JsonResult(new { isValid = false, message = "Patient not found..." });
-            }
-
-            Appointment.PatientId = patient.PatientId;
-
-            var currentBook = await _appointmentService.GetCurrentBookAppointment(Appointment.PatientId, Appointment.DoctorId, Appointment.ScheduleId);
-            if (currentBook != null)
-            {
-                return new JsonResult(new { isValid = false, message = "This day you have booked" });
-            }
-
-            bool isBooked = await _appointmentService.BookAppointmentAsync(Appointment);
-
-            if (!isBooked)
-            {
-                return new JsonResult(new { isValid = false, message = "Failed to book appointment. Please try again." });
-            }
-
-            var listAppointmentService = new List<AppointmentsServices>();
-            foreach (var item in SelectedServices)
-            {
-                listAppointmentService.Add(new AppointmentsServices { AppointmentId = Appointment.AppointmentId, ServiceId = item });
-            }
-
-            await _appoimentMedicalService.CreateAppointmentService(listAppointmentService);
-
-            return new JsonResult(new { isValid = true, message = "Book appointment success", redirect = "/AppointmentPage/History" });
-        }
-
         public async Task<IActionResult> OnGetDoctorsAsync(string facilityId)
         {
             if (string.IsNullOrEmpty(facilityId))
@@ -166,5 +137,61 @@ namespace MedicalSearchingPlatform.Pages.AppointmentPage
 
             return new JsonResult(doctors);
         }
+
+        public async Task<IActionResult> OnPostAsync()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var patient = await _patientService.GetPatientByUserId(userId);
+            if (patient == null)
+            {
+                return new JsonResult(new { isValid = false, message = "Patient not found..." });
+            }
+
+            Appointment.PatientId = patient.PatientId;
+
+            // Ensure services have been selected
+            if (SelectedServices == null || !SelectedServices.Any())
+            {
+                return new JsonResult(new { isValid = false, message = "No services selected." });
+            }
+
+            // Calculate total price using the selected services
+            totalPrice = await _paymentService.CalculateTotalPriceAsync(SelectedServices);
+            if (totalPrice <= 0)
+            {
+                return new JsonResult(new { isValid = false, message = "Error calculating total price." });
+            }
+
+            // Create the payment link
+            var paymentUrl = await _paymentService.CreatePaymentLink(totalPrice);
+            if (string.IsNullOrEmpty(paymentUrl))
+            {
+                return new JsonResult(new { isValid = false, message = "Payment link generation failed." });
+            }
+
+            // Create appointment if payment link is valid
+            var currentBook = await _appointmentService.GetCurrentBookAppointment(Appointment.PatientId, Appointment.DoctorId, Appointment.ScheduleId);
+            if (currentBook != null)
+            {
+                return new JsonResult(new { isValid = false, message = "This day you have booked" });
+            }
+
+            bool isBooked = await _appointmentService.BookAppointmentAsync(Appointment);
+            if (!isBooked)
+            {
+                return new JsonResult(new { isValid = false, message = "Failed to book appointment. Please try again." });
+            }
+
+            // Handle appointment services
+            var listAppointmentService = new List<AppointmentsServices>();
+            foreach (var item in SelectedServices)
+            {
+                listAppointmentService.Add(new AppointmentsServices { AppointmentId = Appointment.AppointmentId, ServiceId = item });
+            }
+            await _appoimentMedicalService.CreateAppointmentService(listAppointmentService);
+
+            // Return payment URL
+            return new JsonResult(new { isValid = true, redirect = paymentUrl });
+        }
     }
-}
+    }
