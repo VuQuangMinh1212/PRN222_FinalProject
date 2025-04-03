@@ -1,6 +1,7 @@
 ﻿using MedicalSearchingPlatform.Business.Interfaces;
 using MedicalSearchingPlatform.Data.Entities;
 using MedicalSearchingPlatform.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Security.Claims;
@@ -12,12 +13,14 @@ namespace MedicalSearchingPlatform.Pages.MedicalFacilityPage
         private readonly IMedicalFacilityService _facilityService;
         private readonly IReviewService _reviewService;
         private readonly IPatientService _patientService;
+        private readonly UserManager<User> _userManager;
 
-        public IndexModel(IMedicalFacilityService facilityService, IReviewService reviewService, IPatientService patientService)
+        public IndexModel(IMedicalFacilityService facilityService, IReviewService reviewService, IPatientService patientService, UserManager<User> userManager)
         {
             _facilityService = facilityService;
             _reviewService = reviewService;
             _patientService = patientService;
+            _userManager = userManager;
         }
 
         public IList<MedicalFacility> MedicalFacility { get; set; } = default!;
@@ -44,7 +47,10 @@ namespace MedicalSearchingPlatform.Pages.MedicalFacilityPage
             }
             MedicalFacility = (await _facilityService.SearchFacilityAsync(
                 SearchName, SearchAddress, SearchInfor,
-                SearchPhoneNumber)).ToList();
+            SearchPhoneNumber)).ToList();
+
+            var user = await _userManager.GetUserAsync(User);
+            ViewData["IsStaff"] = user != null && user.Role == "Staff";
         }
     }
 }

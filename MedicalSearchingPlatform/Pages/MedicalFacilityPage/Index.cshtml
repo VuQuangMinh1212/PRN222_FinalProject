@@ -7,18 +7,14 @@
 
 @{
     ViewData["Title"] = "Medical Facilities";
-
-    var user = await _userManager.GetUserAsync(User);
-    string userRole = user != null ? (await _userManager.GetRolesAsync(user)).FirstOrDefault() ?? "Guest" : "Guest";
-    bool isStaff = userRole == "Staff";
 }
 
 <div class="medical-facilities mt-4">
     <h2 class="text-center mb-4">Medical Facilities</h2>
 
-    @if (isStaff)
+    @if ((bool)ViewData["IsStaff"])
     {
-        <a asp-page="Create" class="btn btn-success mb-3"><i class="bi bi-plus-circle"></i> Create New</a>
+        <a asp-page="Create" class="btn-save-medical mb-2"><i class="bi bi-plus-circle"></i> Create New</a>
     }
 
     <!-- Search Form -->
@@ -74,14 +70,16 @@
                                 </div>
                             </a>
                         }
-                        @if (isStaff)
+                        @if ((bool)ViewData["IsStaff"])
                         {
-                            <a asp-page="./Edit" asp-route-id="@item.FacilityId" class="btn btn-warning btn-sm">
+                            <div class="d-flex justify-content-center gap-2">
+                            <a asp-page="./Edit" asp-route-id="@item.FacilityId" class="btn-edit">
                                 <i class="bi bi-pencil"></i> Edit
                             </a>
-                            <a asp-page="./Delete" asp-route-id="@item.FacilityId" class="btn btn-danger btn-sm">
+                            <a asp-page="./Delete" asp-route-id="@item.FacilityId" class="btn-delete">
                                 <i class="bi bi-trash"></i> Delete
                             </a>
+                            </div>
                         }
                     </div>
                 </div>
